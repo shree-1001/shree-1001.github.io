@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Chaturanga: Legacy of Kings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ivory: #F6EFDD;
+    --parchment: #EFE4C8;
+    --ink: #2A211A;
+    --maroon: #5C1A1B;
+    --maroon-deep: #430F10;
+    --gold: #B8892B;
+    --gold-bright: #D4AF37;
+    --rule: rgba(92, 26, 27, 0.18);
+    --max-width: 780px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--ivory);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(184,137,43,0.08), transparent 40%),
+      radial-gradient(circle at 85% 92%, rgba(92,26,27,0.06), transparent 45%);
+    color: var(--ink);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--maroon); text-decoration-color: rgba(92,26,27,0.35); }
+  a:hover { text-decoration-color: var(--maroon); }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--gold-bright);
+    outline-offset: 3px;
+  }
+
+  .crown-header {
+    background: linear-gradient(180deg, var(--maroon-deep) 0%, var(--maroon) 100%);
+    color: var(--ivory);
+    padding: 64px 24px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .crown-header::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 6px;
+    background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
+  }
+
+  .crown-seal {
+    font-size: 2.2rem;
+    letter-spacing: 0.35em;
+    margin: 0 0 18px;
+    opacity: 0.85;
+  }
+
+  .crown-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    margin: 0 0 12px;
+    letter-spacing: 0.01em;
+  }
+
+  .crown-header p {
+    font-size: 1.05rem;
+    color: var(--parchment);
+    margin: 0;
+    opacity: 0.9;
+  }
+
+  .effective-date {
+    display: inline-block;
+    margin-top: 22px;
+    padding: 6px 18px;
+    border: 1px solid rgba(212,175,55,0.55);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    color: var(--gold-bright);
+  }
+
+  main {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 56px 24px 100px;
+  }
+
+  .intro {
+    font-size: 1.12rem;
+    color: #4a3a2c;
+    border-left: 3px solid var(--gold);
+    padding-left: 20px;
+    margin-bottom: 48px;
+  }
+
+  nav.toc {
+    background: rgba(184,137,43,0.08);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 56px;
+  }
+
+  nav.toc h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    margin: 0 0 12px;
+    color: var(--maroon);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  nav.toc ol {
+    columns: 2;
+    margin: 0;
+    padding-left: 1.2em;
+    font-size: 0.95rem;
+  }
+
+  nav.toc li { margin-bottom: 6px; break-inside: avoid; }
+  nav.toc a { text-decoration: none; color: var(--ink); }
+  nav.toc a:hover { color: var(--maroon); }
+
+  section {
+    margin-bottom: 52px;
+    scroll-margin-top: 24px;
+  }
+
+  section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 1.65rem;
+    color: var(--maroon);
+    margin: 0 0 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  section h2 .glyph {
+    font-size: 1.1rem;
+    opacity: 0.7;
+  }
+
+  section h2::after {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 2px;
+    background: var(--gold);
+    margin-top: 10px;
+  }
+
+  section h3 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 700;
+    font-size: 1.02rem;
+    color: var(--maroon-deep);
+    margin: 26px 0 8px;
+  }
+
+  section p, section li { color: #362a20; }
+
+  ul { padding-left: 1.3em; }
+  li { margin-bottom: 8px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0 8px;
+    font-size: 0.94rem;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+
+  th {
+    color: var(--maroon);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--gold);
+  }
+
+  .callout {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--maroon);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 18px 0;
+    font-size: 0.96rem;
+  }
+
+  .callout.gold { border-left-color: var(--gold); }
+
+  .contact-card {
+    background: linear-gradient(180deg, var(--maroon) 0%, var(--maroon-deep) 100%);
+    color: var(--ivory);
+    border-radius: 12px;
+    padding: 34px 32px;
+    text-align: left;
+  }
+
+  .contact-card h2 {
+    color: var(--gold-bright);
+    justify-content: left;
+  }
+
+  .contact-card a { color: var(--ivory); font-weight: 700; }
+
+  .contact-card p { color: white; font-weight: 600; }
+
+  footer {
+    text-align: center;
+    padding: 32px 24px 60px;
+    color: #7a6a58;
+    font-size: 0.85rem;
+  }
+
+  ::selection { background: rgba(212,175,55,0.35); }
+
+  @media (max-width: 560px) {
+    nav.toc ol { columns: 1; }
+    .crown-header { padding: 48px 20px 40px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="crown-header">
+  <div class="crown-seal">♔ ♜ ♞ ♗ ♟</div>
+  <h1>Privacy Policy</h1>
+  <p>Chaturanga: Legacy of Kings</p>
+  <span class="effective-date">Effective Date: 1-April-2026 </span>
+</header>
+
+<main>
+  <p class="intro">
+    Chaturanga: Legacy of Kings ("Chaturanga," "we," "us," or "our") is a historically-themed
+    chess strategy game. This policy explains, plainly, what information the app collects, why,
+    who it's shared with, and the choices you have — including for players in the EU/UK (GDPR)
+    and applicable US states (CCPA/CPRA).
+  </p>
+
+  <nav class="toc" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#collect">Information We Collect</a></li>
+      <li><a href="#use">How We Use Your Information</a></li>
+      <li><a href="#social">Friends, Chat &amp; Contact Sync</a></li>
+      <li><a href="#thirdparty">Third-Party Services</a></li>
+      <li><a href="#ads">Advertising &amp; Your Ad Choices</a></li>
+      <li><a href="#sharing">How Information Is Shared</a></li>
+      <li><a href="#retention">Data Retention &amp; Deletion</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#children">Children's Privacy</a></li>
+      <li><a href="#rights">Your Rights (GDPR / CCPA)</a></li>
+      <li><a href="#international">International Data Transfers</a></li>
+      <li><a href="#changes">Changes to This Policy</a></li>
+      <li><a href="#contact">Contact Us</a></li>
+    </ol>
+  </nav>
+
+  <section id="collect">
+    <h2><span class="glyph">♟</span>Information We Collect</h2>
+    <p>We collect only what's needed to run your account, your matches, and the features you
+      actively choose to use.</p>
+
+    <h3>Account information</h3>
+    <ul>
+      <li>Email address and password (if you sign up directly), or your name and profile photo
+        from Google Sign-In (if you use that option). We never see or store your Google password.</li>
+      <li>A display name and, optionally, a profile picture you upload (stored as a small
+        compressed image tied to your account) or an emoji avatar you select.</li>
+      <li>Your country, provided once during onboarding, used to show you relevant leagues and
+        opponents.</li>
+    </ul>
+
+    <h3>Gameplay information</h3>
+    <ul>
+      <li>Match history, moves, results, and ratings.</li>
+      <li>Progress data: league standing, streak, Pana and Diamonds balances, lessons completed,
+        and badges earned.</li>
+      <li>Puzzle and campaign progress.</li>
+    </ul>
+
+    <h3>Social information</h3>
+    <ul>
+      <li>Your friends list and any friend requests you send or receive.</li>
+      <li>Messages you send in chat with friends.</li>
+      <li>A referral code associated with your account, and, if you used someone else's code to
+        sign up, a record of that.</li>
+    </ul>
+
+    <h3>Device and usage information</h3>
+    <ul>
+      <li>General app usage and interaction data via Firebase Analytics (e.g. which features are
+        used, session length) — this is aggregated and not used to build an advertising profile of
+        you outside this app.</li>
+      <li>Basic device information (device model, OS version, app version) for crash diagnostics
+        and compatibility.</li>
+    </ul>
+  </section>
+
+  <section id="use">
+    <h2><span class="glyph">♞</span>How We Use Your Information</h2>
+    <ul>
+      <li>To create and secure your account, and let you sign back in.</li>
+      <li>To run gameplay: matchmaking, move validation, scoring, leagues, and rewards.</li>
+      <li>To power features you opt into: friends, chat, and finding contacts already on the app.</li>
+      <li>To show ads (see <a href="#ads">Advertising</a> below) and, where you've earned it, credit
+        in-app rewards (Energy or Diamonds) for watching one.</li>
+      <li>To understand which parts of the app are actually used, so we can improve it.</li>
+      <li>To detect and respond to abuse, cheating, or violations of our terms.</li>
+    </ul>
+    <div class="callout">
+      We do not sell your personal information, and we do not use your chat messages, match
+      history, or friend list for advertising purposes.
+    </div>
+  </section>
+
+  <section id="social">
+    <h2><span class="glyph">♗</span>Friends, Chat &amp; Contact Sync</h2>
+    <h3>Chat</h3>
+    <p>Messages you send to friends are delivered and stored so your conversation history is
+      available across your devices. Only you and the friend in that conversation can read those
+      messages.</p>
+
+    <h3>Finding friends from your contacts (fully optional)</h3>
+    <p>If you choose to use "Find friends from Contacts," here's exactly what happens — this
+      feature is opt-in and requests permission only at the moment you use it:</p>
+    <ul>
+      <li>Your phone numbers are converted into a one-way cryptographic hash (SHA-256)
+        <strong>on your device</strong>, before anything is sent anywhere.</li>
+      <li>Only those hashes — never the real phone numbers, yours or your contacts' — are checked
+        against other users who've also enabled discovery.</li>
+      <li>We cannot reverse a hash back into a phone number, and we never store your contacts'
+        names, photos, or any other contact details.</li>
+    </ul>
+  </section>
+
+  <section id="thirdparty">
+    <h2><span class="glyph">♖</span>Third-Party Services We Use</h2>
+    <p>We rely on the following service providers to run the app. Each has its own privacy
+      practices, linked below.</p>
+    <table>
+      <thead>
+        <tr><th>Service</th><th>Purpose</th><th>Learn more</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Google Firebase (Auth, Firestore, Analytics, App Check)</td>
+          <td>Account sign-in, storing gameplay/social data, usage analytics, and verifying
+            requests come from the genuine app</td>
+          <td><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase Privacy</a></td>
+        </tr>
+        <tr>
+          <td>Google AdMob</td>
+          <td>Serving interstitial and rewarded ads</td>
+          <td><a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Google Ads Policy</a></td>
+        </tr>
+        <tr>
+          <td>Google Play Services</td>
+          <td>Sign-in, app distribution, core Android functionality</td>
+          <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="ads">
+    <h2><span class="glyph">♘</span>Advertising &amp; Your Ad Choices</h2>
+    <p>Chaturanga shows two kinds of ads through Google AdMob:</p>
+    <ul>
+      <li><strong>Interstitial ads</strong> — a full-screen ad shown right after a match ends.</li>
+      <li><strong>Rewarded ads</strong> — optional ads you choose to watch in exchange for Energy
+        or Diamonds. Watching is always your choice; declining never blocks core gameplay.</li>
+    </ul>
+    <h3>Consent (EU/UK/applicable US states)</h3>
+    <p>If you're in a region where consent is legally required (including the EEA, UK, and
+      applicable US states), you'll see a consent form the first time you open the app, before any
+      personalized ad is requested. You can review or change your choice at any time from
+      <strong>Settings → Privacy Options (Ad Consent)</strong>.</p>
+    <div class="callout gold">
+      Declining personalized ads doesn't reduce the rewards you earn from watching a rewarded ad —
+      you may simply see a less targeted ad.
+    </div>
+  </section>
+
+  <section id="sharing">
+    <h2><span class="glyph">♛</span>How Information Is Shared</h2>
+    <ul>
+      <li><strong>With other players:</strong> your username, avatar, league, streak, badges, and
+        top-league finishes are visible to other signed-in users (this is how leaderboards and
+        public profiles work). Your email is never shown to other players.</li>
+      <li><strong>With service providers:</strong> the third parties listed above, strictly to
+        operate the features described in this policy.</li>
+      <li><strong>For legal reasons:</strong> if required by law, or to protect the rights, safety,
+        or property of Chaturanga, our users, or the public.</li>
+      <li><strong>Business transfers:</strong> if Chaturanga is involved in a merger, acquisition,
+        or sale of assets, your information may transfer as part of that deal, under the same
+        protections described here.</li>
+    </ul>
+    <p>We do not sell your personal information to third parties.</p>
+  </section>
+
+  <section id="retention">
+    <h2><span class="glyph">♙</span>Data Retention &amp; Deletion</h2>
+    <p>We keep your account data for as long as your account is active. You can delete your
+      account and its associated data at any time from <strong>Profile → Reset Profile</strong>,
+      or by contacting us using the details below. Some information may be retained briefly
+      afterward where we're legally required to (for example, financial or fraud records), but it
+      is removed from active use.</p>
+  </section>
+
+  <section id="security">
+    <h2><span class="glyph">♜</span>Security</h2>
+    <p>We use industry-standard safeguards to protect your information, including encrypted
+      connections (HTTPS/TLS) between the app and our servers, database rules that restrict who
+      can read or write which data, and Firebase App Check to help verify that requests come from
+      a genuine copy of the app. No method of storage or transmission is 100% secure, but we work
+      to protect your information appropriately.</p>
+  </section>
+
+  <section id="children">
+    <h2><span class="glyph">♝</span>Children's Privacy</h2>
+    <p>Chaturanga is not directed at children under the age of 13 (or the equivalent minimum age
+      in your region), and we do not knowingly collect personal information from children under
+      that age. If you believe a child has provided us with personal information, please contact
+      us and we will take steps to delete it.</p>
+  </section>
+
+  <section id="rights">
+    <h2><span class="glyph">♚</span>Your Rights</h2>
+    <h3>If you're in the EU/UK/EEA (GDPR)</h3>
+    <ul>
+      <li>Right to access, correct, or delete your personal data.</li>
+      <li>Right to restrict or object to certain processing, and to data portability.</li>
+      <li>Right to withdraw consent (for ads) at any time without affecting prior processing.</li>
+      <li>Right to lodge a complaint with your local data protection authority.</li>
+    </ul>
+    <h3>If you're in California or another applicable US state (CCPA/CPRA)</h3>
+    <ul>
+      <li>Right to know what personal information we collect and how it's used.</li>
+      <li>Right to request deletion of your personal information.</li>
+      <li>Right to opt out of the "sale" or "sharing" of personal information — we do not sell
+        personal information, and you can manage ad-related choices in Settings.</li>
+      <li>Right to non-discrimination for exercising these rights.</li>
+    </ul>
+    <p>To exercise any of these rights, contact us using the details below.</p>
+  </section>
+
+  <section id="international">
+    <h2><span class="glyph">♞</span>International Data Transfers</h2>
+    <p>Our service providers (see <a href="#thirdparty">Third-Party Services</a>) may process and
+      store data in countries other than your own, including the United States. Where required,
+      we rely on appropriate safeguards (such as Standard Contractual Clauses) for these transfers.</p>
+  </section>
+
+  <section id="changes">
+    <h2><span class="glyph">♗</span>Changes to This Policy</h2>
+    <p>We may update this policy from time to time. If we make material changes, we'll update the
+      effective date above and, where appropriate, notify you in the app. Continued use of
+      Chaturanga after an update means you accept the revised policy.</p>
+  </section>
+
+  <section id="contact" class="contact-card">
+    <h2>Contact Us</h2>
+    <p>Questions about this policy, or want to exercise a privacy right? Reach us at: <a href="mailto: adstv351@gmail.com"><b><u>email</b></u>.</a></p>
+  </section>
+</main>
+
+<footer>
+  &copy; <span id="year"></span> Chaturanga: Legacy of Kings. All rights reserved.
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
