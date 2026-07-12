@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -704,4 +704,126 @@ drawBg();
 // ── MINI GAME PREVIEW ──
 const gc = document.getElementById('mini-game');
 const gx = gc.getContext('2d');
-const W = gc.width, H = gc.h
+const W = gc.width, H = gc.height;
+
+const COLS = ['#00f5ff','#ff2d78','#9b30ff','#00f5ff','#ff2d78'];
+const bricks = [];
+const BCOLS = 9, BROWS = 4;
+const BW = (W - 40) / BCOLS - 4, BH = 18;
+for (let r = 0; r < BROWS; r++) {
+  for (let c = 0; c < BCOLS; c++) {
+    bricks.push({
+      x: 20 + c * (BW + 4),
+      y: 28 + r * (BH + 6),
+      alive: true,
+      color: COLS[r % COLS.length]
+    });
+  }
+}
+
+let ball = { x: W/2, y: H - 60, vx: 2.2, vy: -2.8, r: 7 };
+let paddle = { x: W/2 - 45, w: 90, h: 10, y: H - 28 };
+let paddleDir = 1;
+
+function drawMiniGame() {
+  // BG
+  gx.fillStyle = '#05051a';
+  gx.fillRect(0, 0, W, H);
+
+  // Grid
+  gx.strokeStyle = '#00f5ff06';
+  gx.lineWidth = 1;
+  for (let x = 0; x < W; x += 30) { gx.beginPath(); gx.moveTo(x,0); gx.lineTo(x,H); gx.stroke(); }
+  for (let y = 0; y < H; y += 30) { gx.beginPath(); gx.moveTo(0,y); gx.lineTo(W,y); gx.stroke(); }
+
+  // Bricks
+  bricks.forEach(b => {
+    if (!b.alive) return;
+    gx.beginPath();
+    gx.roundRect(b.x, b.y, BW, BH, 3);
+    gx.strokeStyle = b.color;
+    gx.lineWidth = 1.5;
+    gx.stroke();
+    gx.fillStyle = b.color + '22';
+    gx.fill();
+    // glow
+    gx.shadowColor = b.color;
+    gx.shadowBlur = 8;
+    gx.stroke();
+    gx.shadowBlur = 0;
+  });
+
+  // Ball trail
+  for (let i = 3; i > 0; i--) {
+    gx.beginPath();
+    gx.arc(ball.x - ball.vx * i * 2, ball.y - ball.vy * i * 2, ball.r * (1 - i*0.2), 0, Math.PI*2);
+    gx.fillStyle = `rgba(0,245,255,${0.1 - i*0.02})`;
+    gx.fill();
+  }
+
+  // Ball
+  gx.beginPath();
+  gx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2);
+  gx.fillStyle = '#fff';
+  gx.shadowColor = '#00f5ff';
+  gx.shadowBlur = 16;
+  gx.fill();
+  gx.shadowBlur = 0;
+
+  // Paddle
+  const grad = gx.createLinearGradient(paddle.x, 0, paddle.x + paddle.w, 0);
+  grad.addColorStop(0, '#ff2d78');
+  grad.addColorStop(0.5, '#00f5ff');
+  grad.addColorStop(1, '#ff2d78');
+  gx.beginPath();
+  gx.roundRect(paddle.x, paddle.y, paddle.w, paddle.h, 5);
+  gx.fillStyle = grad;
+  gx.shadowColor = '#00f5ff';
+  gx.shadowBlur = 20;
+  gx.fill();
+  gx.shadowBlur = 0;
+
+  // Update ball
+  ball.x += ball.vx; ball.y += ball.vy;
+  if (ball.x - ball.r < 0 || ball.x + ball.r > W) ball.vx *= -1;
+  if (ball.y - ball.r < 0) ball.vy *= -1;
+  if (ball.y + ball.r > H) { ball.y = H - 60; ball.vy = -2.8; ball.x = W/2; }
+
+  // Ball vs paddle
+  if (ball.y + ball.r > paddle.y && ball.x > paddle.x && ball.x < paddle.x + paddle.w) {
+    ball.vy = -Math.abs(ball.vy);
+    ball.vx += (ball.x - (paddle.x + paddle.w/2)) * 0.05;
+  }
+
+  // Ball vs bricks
+  let allDead = true;
+  bricks.forEach(b => {
+    if (!b.alive) return;
+    allDead = false;
+    if (ball.x > b.x && ball.x < b.x + BW && ball.y - ball.r < b.y + BH && ball.y + ball.r > b.y) {
+      b.alive = false;
+      ball.vy *= -1;
+    }
+  });
+  if (allDead) bricks.forEach(b => b.alive = true);
+
+  // Auto paddle
+  const target = ball.x - paddle.w / 2;
+  paddle.x += (target - paddle.x) * 0.08;
+  paddle.x = Math.max(0, Math.min(W - paddle.w, paddle.x));
+
+  requestAnimationFrame(drawMiniGame);
+}
+drawMiniGame();
+
+// ── SCROLL REVEAL ──
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0});
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
