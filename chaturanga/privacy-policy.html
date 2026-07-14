@@ -221,11 +221,19 @@
     text-align: center;
   }
 
+  .contact-card h2::after {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 2px;
+    background: var(--gold);
+    margin-top: 10px;
+  }
+
   .contact-card h2 {
     color: var(--gold-bright);
-    justify-content: center;
+    justify-content: left;
   }
-  .contact-card h2::after { margin-left: auto; margin-right: auto; }
 
   .contact-card a { color: var(--ivory); font-weight: 600; }
 
@@ -502,7 +510,6 @@
 
 <footer>
   &copy; <span id="year"></span> Chaturanga: Legacy of Kings. All rights reserved.
- <p style="margin-top:8px">This privacy policy was last updated on 14 July, 2026</p>
 </footer>
 
 <script>
