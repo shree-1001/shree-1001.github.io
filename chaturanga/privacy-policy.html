@@ -69,7 +69,7 @@
   }
 
   .crown-header h1 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: serif;
     font-weight: 700;
     font-size: clamp(2.4rem, 5vw, 3.4rem);
     margin: 0 0 12px;
@@ -142,8 +142,8 @@
   }
 
   section h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 600;
+    font-family: serif;
+    font-weight: 700;
     font-size: 1.65rem;
     color: var(--maroon);
     margin: 0 0 6px;
@@ -218,15 +218,16 @@
     color: var(--ivory);
     border-radius: 12px;
     padding: 34px 32px;
-    text-align: left;
+    text-align: center;
   }
 
   .contact-card h2 {
     color: var(--gold-bright);
-    justify-content: left;
+    justify-content: center;
   }
+  .contact-card h2::after { margin-left: auto; margin-right: auto; }
 
-  .contact-card a { color: var(--ivory); font-weight: 700; }
+  .contact-card a { color: var(--ivory); font-weight: 600; }
 
   .contact-card p { color: white; font-weight: 600; }
 
@@ -255,7 +256,7 @@
   <div class="crown-seal">♔ ♜ ♞ ♗ ♟</div>
   <h1>Privacy Policy</h1>
   <p>Chaturanga: Legacy of Kings</p>
-  <span class="effective-date">Effective Date: 1-April-2026 </span>
+  <span class="effective-date">Effective Date: 1 April, 2026</span>
 </header>
 
 <main>
@@ -350,16 +351,21 @@
       available across your devices. Only you and the friend in that conversation can read those
       messages.</p>
 
-    <h3>Finding friends from your contacts (fully optional)</h3>
-    <p>If you choose to use "Find friends from Contacts," here's exactly what happens — this
-      feature is opt-in and requests permission only at the moment you use it:</p>
+    <h3>Adding a friend from your contacts (fully optional)</h3>
+    <p>If you use "Add a Friend from Contacts," here's exactly what happens — this feature never
+      requires broad contacts access, only your phone's own contact picker:</p>
     <ul>
-      <li>Your phone numbers are converted into a one-way cryptographic hash (SHA-256)
+      <li>Tapping the button opens your phone's <strong>own built-in contacts picker</strong> — the
+        same system screen any app uses to let you pick one contact. Chaturanga is never given
+        access to your full contact list, only whichever single contact you choose to hand over.</li>
+      <li>That one phone number is converted into a one-way cryptographic hash (SHA-256)
         <strong>on your device</strong>, before anything is sent anywhere.</li>
-      <li>Only those hashes — never the real phone numbers, yours or your contacts' — are checked
+      <li>Only that hash — never the real phone number, yours or your contact's — is checked
         against other users who've also enabled discovery.</li>
-      <li>We cannot reverse a hash back into a phone number, and we never store your contacts'
-        names, photos, or any other contact details.</li>
+      <li>We cannot reverse a hash back into a phone number, and we never store your contact's
+        name, photo, or any other contact details.</li>
+      <li>Want to check more than one person? Just tap the button again and pick another — each
+        pick is a separate, deliberate choice, not an automatic bulk scan.</li>
     </ul>
   </section>
 
@@ -488,7 +494,7 @@
       Chaturanga after an update means you accept the revised policy.</p>
   </section>
 
-  <section id="contact" class="contact-card">
+    <section id="contact" class="contact-card">
     <h2>Contact Us</h2>
     <p>Questions about this policy, or want to exercise a privacy right? Reach us at: <a href="mailto: adstv351@gmail.com"><b><u>email</b></u>.</a></p>
   </section>
