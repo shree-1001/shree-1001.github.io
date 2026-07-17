@@ -114,6 +114,58 @@
             font-family: monospace;
             margin: 2px;
         }
+   .hero-btns {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--cyan);
+    color: #04040f;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 16px 32px;
+    border-radius: 4px;
+    text-decoration: none;
+    box-shadow: var(--glow-cyan);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 40px #00f5ffaa, 0 0 80px #00f5ff55;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    color: var(--pink);
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 16px 32px;
+    border-radius: 4px;
+    border: 1px solid var(--pink);
+    text-decoration: none;
+    box-shadow: var(--glow-pink);
+    transition: transform 0.2s, background 0.2s;
+  }
+  .btn-secondary:hover {
+    transform: translateY(-3px);
+    background: #ff2d7811;
+  }
+
+
     </style>
 </head>
 <body>
