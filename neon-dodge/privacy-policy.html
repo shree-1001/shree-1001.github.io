@@ -12,6 +12,7 @@
     --void:#08040f; --void-2:#12081f; --void-3:#1b0e2c;
     --cyan:#00f0ff; --magenta:#ff2e88; --violet:#8b3bff; --gold:#ffb84d;
     --ice:#eef0ff; --ice-dim:#a9a3c4; --line:rgba(0,240,255,0.15);
+    --nav-h:64px;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
@@ -70,10 +71,11 @@
   .doc strong{ color:var(--ice); }
   .card{ background:var(--void-2); border:1px solid rgba(238,240,255,0.08); border-radius:12px; padding:22px 24px; margin-bottom:16px; }
   .card-title{ font-family:'Share Tech Mono',monospace; font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--cyan); margin-bottom:8px; }
-  .table{ width:100%; border-collapse:collapse; margin:18px 0; font-size:0.95rem; }
-  .table th{ text-align:left; font-family:'Share Tech Mono',monospace; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--cyan); padding:10px 12px; border-bottom:1px solid rgba(0,240,255,0.25); }
+  .table-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin:18px 0; }
+  .table{ width:100%; border-collapse:collapse; margin:0; font-size:0.95rem; }
+  .table th{ text-align:left; font-family:'Share Tech Mono',monospace; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--cyan); padding:10px 12px; border-bottom:1px solid rgba(0,240,255,0.25); white-space:nowrap; }
   .table td{ padding:12px; border-bottom:1px solid rgba(238,240,255,0.07); color:var(--ice-dim); vertical-align:top; }
-  .badge-none{ display:inline-block; font-family:'Share Tech Mono',monospace; font-size:0.7rem; color:var(--gold); border:1px solid rgba(255,184,77,0.4); padding:2px 8px; border-radius:10px; }
+  .badge-none{ display:inline-block; font-family:'Share Tech Mono',monospace; font-size:0.7rem; color:var(--gold); border:1px solid rgba(255,184,77,0.4); padding:2px 8px; border-radius:10px; white-space:nowrap; }
 
   .contact-box{
     text-align:center; padding:40px 30px; border-radius:16px; margin-top:10px;
@@ -90,7 +92,32 @@
   footer a{ border:none; color:var(--ice-dim); }
   footer a:hover{ color:var(--cyan); }
 
-  @media (max-width:780px){ .wrap{ grid-template-columns:1fr; } .toc{ position:static; display:flex; flex-wrap:wrap; gap:4px 16px; } .toc a{ border-left:none; border-bottom:2px solid rgba(238,240,255,0.1); padding-left:0; padding-bottom:6px;} }
+  @media (max-width:780px){
+    .wrap{ grid-template-columns:1fr; padding-top:0; }
+    .toc{
+      position:sticky; top:var(--nav-h,64px); align-self:auto; z-index:60;
+      display:flex; flex-wrap:nowrap; gap:8px; align-items:center;
+      overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
+      margin:0 -20px 40px; padding:14px 20px;
+      background:rgba(8,4,15,0.94); backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(238,240,255,0.1);
+      -webkit-mask-image:linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
+              mask-image:linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
+    }
+    .toc::-webkit-scrollbar{ display:none; }
+    .toc h4{ display:none; }
+    .toc a{
+      flex:0 0 auto; white-space:nowrap; display:inline-block;
+      border:1px solid rgba(238,240,255,0.15); border-left:1px solid rgba(238,240,255,0.15);
+      border-radius:20px; padding:7px 15px; font-family:'Share Tech Mono',monospace;
+      font-size:0.75rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--ice-dim);
+    }
+    .toc a:hover, .toc a.active{ color:var(--cyan); border-color:var(--cyan); background:rgba(0,240,255,0.1); box-shadow:0 0 14px rgba(0,240,255,0.3); }
+    .doc section{ scroll-margin-top:calc(var(--nav-h,64px) + 66px); }
+  }
+  @media (max-width:480px){
+    .table th, .table td{ padding:9px 10px; font-size:0.85rem; }
+  }
 </style>
 </head>
 <body>
@@ -141,6 +168,7 @@
     <section id="collect">
       <h2><span class="num">02</span>What we collect directly</h2>
       <p>Neon Dodge does not ask you to create a profile and does not collect your name, email address, contacts, photos, location, or any other personal information to let you play.</p>
+      <div class="table-scroll">
       <table class="table">
         <tr><th>Category</th><th>Collected by the app?</th></tr>
         <tr><td>Name, email, phone number</td><td><span class="badge-none">Not collected</span></td></tr>
@@ -148,6 +176,7 @@
         <tr><td>Photos, contacts, files</td><td><span class="badge-none">Not collected</span></td></tr>
         <tr><td>In-game scores, levels, settings</td><td>Stored locally on your device only — see below</td></tr>
       </table>
+      </div>
     </section>
 
     <section id="local">
@@ -172,12 +201,14 @@
 
     <section id="permissions">
       <h2><span class="num">05</span>App permissions</h2>
+      <div class="table-scroll">
       <table class="table">
         <tr><th>Permission</th><th>Why it's used</th></tr>
         <tr><td class="mono">INTERNET</td><td>Required so ads can be requested and displayed</td></tr>
         <tr><td class="mono">ACCESS_NETWORK_STATE</td><td>Lets the ad SDK check for a network connection before requesting an ad</td></tr>
         <tr><td class="mono">AD_ID</td><td>Lets AdMob use your device's advertising ID for ad delivery and measurement</td></tr>
       </table>
+      </div>
       <p>Neon Dodge does not request camera, microphone, contacts, location, or storage permissions.</p>
     </section>
 
@@ -225,15 +256,38 @@
 </footer>
 
 <script>
+  // measure nav height for sticky offsets
+  const navEl = document.querySelector('.nav');
+  const setNavHeight = () => document.documentElement.style.setProperty('--nav-h', navEl.offsetHeight + 'px');
+  setNavHeight();
+  window.addEventListener('resize', setNavHeight);
+
+  // scroll-spy: always recompute a single active link from current state,
+  // rather than toggling per-entry — avoids two links ever glowing at once.
   const links = document.querySelectorAll('.toc a');
-  const sections = [...links].map(l => document.querySelector(l.getAttribute('href')));
+  const sections = [...links].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+  const visible = new Set();
+  let currentActiveId = null;
+
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
-      const link = document.querySelector('.toc a[href="#'+e.target.id+'"]');
-      if(e.isIntersecting){ links.forEach(l=>l.classList.remove('active')); link.classList.add('active'); }
+      if(e.isIntersecting) visible.add(e.target.id);
+      else visible.delete(e.target.id);
+    });
+    const activeId = sections.find(s => visible.has(s.id))?.id ?? currentActiveId;
+    if(activeId === currentActiveId) return;
+    currentActiveId = activeId;
+    links.forEach(l=>{
+      const isActive = l.getAttribute('href') === '#' + activeId;
+      l.classList.toggle('active', isActive);
+      if(isActive && window.innerWidth <= 780){
+        l.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+      }
     });
   }, { rootMargin:'-40% 0px -50% 0px' });
-  sections.forEach(s=> s && io.observe(s));
+
+  sections.forEach(s=> io.observe(s));
 </script>
+
 </body>
 </html>
