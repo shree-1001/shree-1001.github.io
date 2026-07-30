@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Dodge — Dodge. Survive. Chase the Horizon.</title>
+<meta name="description" content="Neon Dodge is a synthwave-soaked arcade dodger for Android. Weave through neon obstacles, clear the world map, and chase your best run.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#08040f;
+    --void-2:#12081f;
+    --void-3:#1b0e2c;
+    --cyan:#00f0ff;
+    --magenta:#ff2e88;
+    --violet:#8b3bff;
+    --gold:#ffb84d;
+    --ice:#eef0ff;
+    --ice-dim:#a9a3c4;
+    --line:rgba(0,240,255,0.18);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--ice);
+    font-family:'Rajdhani', sans-serif;
+    font-size:18px;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.logo{ font-family:'Orbitron', sans-serif; letter-spacing:0.02em; }
+  .mono{ font-family:'Share Tech Mono', monospace; }
+  a{ color:inherit; text-decoration:none; }
+  ::selection{ background:var(--magenta); color:var(--void); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px clamp(20px,5vw,64px);
+    background:linear-gradient(to bottom, rgba(8,4,15,0.85), transparent);
+    backdrop-filter:blur(6px);
+  }
+  .brand{ display:flex; align-items:center; gap:10px; font-weight:900; font-size:1.15rem; }
+  .brand .dot{ width:10px; height:10px; border-radius:50%; background:var(--cyan); box-shadow:0 0 12px var(--cyan), 0 0 24px var(--cyan); }
+  .navlinks{ display:flex; gap:clamp(16px,3vw,36px); align-items:center; font-family:'Share Tech Mono',monospace; font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase; }
+  .navlinks a{ position:relative; padding:6px 0; color:var(--ice-dim); transition:color .25s; }
+  .navlinks a:hover, .navlinks a:focus-visible{ color:var(--cyan); }
+  .navlinks a::after{ content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--cyan); transition:width .25s; box-shadow:0 0 8px var(--cyan); }
+  .navlinks a:hover::after{ width:100%; }
+  .nav-cta{
+    border:1px solid var(--cyan); color:var(--cyan) !important; padding:8px 16px; border-radius:4px;
+    box-shadow:0 0 0 rgba(0,240,255,0); transition:box-shadow .3s, background .3s;
+  }
+  .nav-cta:hover{ background:rgba(0,240,255,0.08); box-shadow:0 0 18px rgba(0,240,255,0.5); }
+
+  /* ---------- HERO / HORIZON ---------- */
+  .hero{
+    position:relative; height:100vh; min-height:640px; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    background:
+      radial-gradient(ellipse at 50% 32%, rgba(139,59,255,0.35), transparent 55%),
+      linear-gradient(to bottom, #08040f 0%, #170a2c 35%, #2a0f45 55%, #0d0518 100%);
+  }
+  .stars{ position:absolute; inset:0; z-index:0; }
+  .stars span{
+    position:absolute; width:2px; height:2px; background:var(--ice); border-radius:50%; opacity:0.7;
+    animation:twinkle 3.5s ease-in-out infinite;
+  }
+  @keyframes twinkle{ 0%,100%{ opacity:0.15; } 50%{ opacity:0.9; } }
+
+  .sun{
+    position:absolute; left:50%; top:30%; width:min(46vw,460px); height:min(46vw,460px);
+    transform:translate(-50%,-30%);
+    border-radius:50%;
+    background:linear-gradient(180deg,#ffe94d 0%, #ffb84d 30%, #ff6f5c 55%, #ff2e88 78%, #8b3bff 100%);
+    box-shadow:0 0 90px rgba(255,120,150,0.55), 0 0 180px rgba(139,59,255,0.35);
+    z-index:1;
+    -webkit-mask-image: repeating-linear-gradient(to bottom, black 0px, black 10px, transparent 10px, transparent 18px, black 18px, black 18px);
+            mask-image: repeating-linear-gradient(to bottom, black 0px, black 10px, transparent 10px, transparent 18px, black 18px, black 18px);
+    animation:sunrise 1.6s ease-out;
+  }
+  @keyframes sunrise{ from{ transform:translate(-50%,10%); opacity:0; } to{ transform:translate(-50%,-30%); opacity:1; } }
+
+  .horizon-line{
+    position:absolute; left:0; right:0; top:52%; height:2px; z-index:2;
+    background:var(--cyan); box-shadow:0 0 20px var(--cyan), 0 0 60px var(--cyan);
+  }
+
+  .grid-wrap{
+    position:absolute; left:0; right:0; bottom:0; top:52%; z-index:2;
+    overflow:hidden; perspective:260px; perspective-origin:50% 0%;
+  }
+  .grid-floor{
+    position:absolute; left:-50%; right:-50%; top:0; bottom:-100%;
+    background-image:
+      repeating-linear-gradient(90deg, var(--line) 0 2px, transparent 2px 90px),
+      repeating-linear-gradient(0deg, var(--line) 0 2px, transparent 2px 60px);
+    transform:rotateX(82deg);
+    transform-origin:50% 0%;
+    animation:gridScroll 1.1s linear infinite;
+  }
+  @keyframes gridScroll{ from{ background-position:0 0, 0 0; } to{ background-position:0 0, 0 60px; } }
+
+  .hero-inner{ position:relative; z-index:3; padding:0 20px; }
+  .eyebrow{
+    font-family:'Share Tech Mono',monospace; letter-spacing:0.35em; text-transform:uppercase;
+    font-size:0.75rem; color:var(--cyan); text-shadow:0 0 12px rgba(0,240,255,0.7);
+    margin-bottom:18px; opacity:0; animation:fadeUp .8s ease .1s forwards;
+  }
+  .hero h1{
+    font-size:clamp(3rem, 10vw, 7rem); font-weight:900; line-height:0.95;
+    background:linear-gradient(180deg, #ffffff 0%, #bfeaff 35%, var(--cyan) 60%, var(--magenta) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 0 24px rgba(0,240,255,0.35)) drop-shadow(0 0 46px rgba(255,46,136,0.25));
+    opacity:0; animation:fadeUp .9s ease .25s forwards;
+  }
+  .hero p.tagline{
+    margin-top:20px; font-size:clamp(1.05rem,2vw,1.4rem); color:var(--ice-dim); max-width:620px; margin-inline:auto;
+    opacity:0; animation:fadeUp .9s ease .45s forwards;
+  }
+  @keyframes fadeUp{ from{ opacity:0; transform:translateY(18px); } to{ opacity:1; transform:translateY(0); } }
+
+  .hero-ctas{ margin-top:38px; display:flex; gap:18px; justify-content:center; flex-wrap:wrap; opacity:0; animation:fadeUp .9s ease .65s forwards; }
+  .btn{
+    font-family:'Share Tech Mono',monospace; text-transform:uppercase; letter-spacing:0.1em; font-size:0.85rem;
+    padding:14px 30px; border-radius:6px; cursor:pointer; display:inline-flex; align-items:center; gap:10px;
+    transition:transform .25s, box-shadow .25s;
+  }
+  .btn:hover{ transform:translateY(-3px); }
+  .btn-primary{
+    background:linear-gradient(90deg, var(--magenta), var(--violet));
+    color:#fff; box-shadow:0 6px 24px rgba(255,46,136,0.35);
+  }
+  .btn-primary:hover{ box-shadow:0 10px 34px rgba(255,46,136,0.55); }
+  .btn-ghost{ border:1px solid rgba(238,240,255,0.3); color:var(--ice); }
+  .btn-ghost:hover{ border-color:var(--cyan); color:var(--cyan); box-shadow:0 0 22px rgba(0,240,255,0.3); }
+
+  .scroll-cue{
+    position:absolute; bottom:28px; left:50%; transform:translateX(-50%); z-index:3;
+    font-family:'Share Tech Mono',monospace; font-size:0.7rem; letter-spacing:0.3em; color:var(--ice-dim);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+  }
+  .scroll-cue .bar{ width:1px; height:34px; background:linear-gradient(var(--cyan), transparent); animation:scrollcue 1.6s ease-in-out infinite; }
+  @keyframes scrollcue{ 0%{ transform:scaleY(0.3); opacity:0.3; } 50%{ transform:scaleY(1); opacity:1; } 100%{ transform:scaleY(0.3); opacity:0.3; } }
+
+  /* ---------- SECTIONS ---------- */
+  section{ position:relative; padding:clamp(70px,10vw,130px) clamp(20px,6vw,64px); }
+  .section-head{ max-width:680px; margin:0 auto 56px; text-align:center; }
+  .section-head .eyebrow{ animation:none; opacity:1; }
+  .section-head h2{ font-size:clamp(2rem,4vw,2.8rem); margin-top:14px; }
+  .section-head p{ color:var(--ice-dim); margin-top:14px; font-size:1.1rem; }
+
+  .about{ background:linear-gradient(180deg, var(--void) 0%, var(--void-2) 100%); }
+  .about-grid{ max-width:1040px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:50px; align-items:center; }
+  .about-copy p{ color:var(--ice-dim); margin-bottom:16px; }
+  .about-copy strong{ color:var(--ice); }
+
+  /* ---------- LIVE GAME PREVIEW ---------- */
+  .game-preview{
+    position:relative; aspect-ratio:4/5; border-radius:22px; overflow:hidden;
+    background:linear-gradient(180deg, #170a2c 0%, #2a0f45 40%, #12081f 100%);
+    border:1px solid rgba(0,240,255,0.25);
+    box-shadow:0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.02) inset;
+  }
+  .game-preview::after{
+    content:''; position:absolute; inset:0; pointer-events:none; z-index:20;
+    background-image:repeating-linear-gradient(to bottom, rgba(0,0,0,0.16) 0 1px, transparent 1px 3px);
+    mix-blend-mode:overlay; opacity:0.5;
+  }
+  .gp-corner{ position:absolute; width:22px; height:22px; border:2px solid rgba(0,240,255,0.6); z-index:21; }
+  .gp-corner.tl{ top:14px; left:14px; border-right:none; border-bottom:none; }
+  .gp-corner.tr{ top:14px; right:14px; border-left:none; border-bottom:none; }
+  .gp-corner.bl{ bottom:14px; left:14px; border-right:none; border-top:none; }
+  .gp-corner.br{ bottom:14px; right:14px; border-left:none; border-top:none; }
+
+  .gp-sun{
+    position:absolute; top:16%; left:50%; width:56%; aspect-ratio:1/1; border-radius:50%; transform:translateX(-50%);
+    background:linear-gradient(180deg,#ffe94d 0%,#ff8a3d 35%,#ff2e88 70%,#8b3bff 100%);
+    box-shadow:0 0 70px rgba(255,110,150,0.55);
+    -webkit-mask-image:repeating-linear-gradient(to bottom, black 0 6px, transparent 6px 11px);
+            mask-image:repeating-linear-gradient(to bottom, black 0 6px, transparent 6px 11px);
+    animation:gpSunBob 4s ease-in-out infinite;
+  }
+  @keyframes gpSunBob{ 0%,100%{ transform:translateX(-50%) translateY(0); } 50%{ transform:translateX(-50%) translateY(-6px); } }
+
+  .gp-horizon{ position:absolute; left:0; right:0; top:44%; height:2px; z-index:3; background:var(--cyan); box-shadow:0 0 16px var(--cyan), 0 0 40px var(--cyan); }
+
+  .gp-floor{ position:absolute; left:-60%; right:-60%; top:44%; bottom:0; overflow:hidden; perspective:220px; perspective-origin:50% 0%; z-index:2; }
+  .gp-floor::before{
+    content:''; position:absolute; inset:-60% -60% 0; background-image:
+      repeating-linear-gradient(90deg, rgba(0,240,255,0.4) 0 1.5px, transparent 1.5px 42px),
+      repeating-linear-gradient(0deg, rgba(0,240,255,0.4) 0 1.5px, transparent 1.5px 30px);
+    transform:rotateX(82deg); transform-origin:50% 0%;
+    animation:gpGridScroll 0.9s linear infinite;
+  }
+  @keyframes gpGridScroll{ from{ background-position:0 0, 0 0; } to{ background-position:0 0, 0 30px; } }
+
+  .gp-hud{ position:absolute; top:16px; left:16px; right:16px; z-index:22; display:flex; justify-content:space-between; align-items:flex-start; }
+  .gp-score{ font-family:'Share Tech Mono',monospace; font-size:0.85rem; letter-spacing:0.05em; color:var(--ice); text-shadow:0 0 10px rgba(0,240,255,0.7); }
+  .gp-score span{ display:block; font-size:0.6rem; color:var(--ice-dim); letter-spacing:0.2em; margin-bottom:2px; }
+  .gp-lives{ display:flex; gap:5px; }
+  .gp-lives i{ width:9px; height:9px; border-radius:3px; background:var(--magenta); box-shadow:0 0 8px var(--magenta); display:block; }
+
+  .gp-lane{ position:absolute; bottom:0; width:1px; height:56%; z-index:2; background:linear-gradient(to top, rgba(0,240,255,0.3), transparent); }
+
+  .gp-obstacle{
+    position:absolute; width:11%; aspect-ratio:1/1; border-radius:22%; z-index:9; transform:translateX(-50%);
+    background:linear-gradient(135deg, var(--magenta), var(--violet));
+    box-shadow:0 0 20px rgba(255,46,136,0.75);
+    animation:gpApproach 1.9s linear infinite;
+  }
+  @keyframes gpApproach{ 0%{ top:20%; transform:translateX(-50%) scale(0.25); opacity:0; } 12%{ opacity:1; } 92%{ opacity:1; } 100%{ top:80%; transform:translateX(-50%) scale(1.5); opacity:0; } }
+
+  .gp-player-track{ position:absolute; left:0; right:0; bottom:14%; height:26px; z-index:11; }
+  .gp-dot{ position:absolute; top:0; width:26px; height:26px; border-radius:8px; transform:translateX(-50%); animation:gpWeave 2.6s ease-in-out infinite; }
+  @keyframes gpWeave{ 0%,100%{ left:50%; } 22%{ left:18%; } 50%{ left:68%; } 76%{ left:36%; } }
+  .gp-player{ background:linear-gradient(135deg, var(--cyan), #baffff); box-shadow:0 0 20px var(--cyan), 0 0 40px rgba(0,240,255,0.55); z-index:3; }
+  .gp-trail{ background:var(--cyan); }
+  .gp-trail.t1{ opacity:0.3; filter:blur(1.5px); animation-delay:-0.12s; z-index:2; }
+  .gp-trail.t2{ opacity:0.14; filter:blur(3px); animation-delay:-0.24s; z-index:1; }
+
+  .gp-flash{
+    position:absolute; z-index:23; font-family:'Share Tech Mono',monospace; font-size:0.68rem; letter-spacing:0.15em;
+    color:var(--gold); text-shadow:0 0 12px rgba(255,184,77,0.8); opacity:0; text-transform:uppercase;
+    animation:gpFlash 3.8s ease-in-out infinite;
+  }
+  @keyframes gpFlash{ 0%,78%{ opacity:0; transform:translateY(6px); } 84%{ opacity:1; transform:translateY(0); } 94%{ opacity:1; } 100%{ opacity:0; transform:translateY(-6px); } }
+
+  .gp-vignette{ position:absolute; inset:0; z-index:15; pointer-events:none; box-shadow:inset 0 0 70px 20px rgba(8,4,15,0.85); }
+
+  /* ---------- FEATURES ---------- */
+  .features{ background:var(--void-2); }
+  .feature-grid{ max-width:1180px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:26px; }
+  .card{
+    position:relative; padding:30px 26px; border-radius:14px; background:var(--void-3);
+    border:1px solid rgba(238,240,255,0.08);
+    transform-style:preserve-3d; transition:transform .35s ease, border-color .35s;
+    overflow:hidden;
+  }
+  .card::before{
+    content:''; position:absolute; inset:-2px; border-radius:14px; padding:2px;
+    background:conic-gradient(from var(--ang,0deg), var(--cyan), var(--violet), var(--magenta), var(--cyan));
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+    opacity:0; transition:opacity .35s; animation:spin 5s linear infinite paused;
+  }
+  .card:hover::before{ opacity:1; animation-play-state:running; }
+  .card:hover{ transform:translateY(-6px) rotateX(3deg); border-color:transparent; }
+  @property --ang{ syntax:'<angle>'; inherits:false; initial-value:0deg; }
+  @keyframes spin{ to{ --ang:360deg; } }
+  .card .icon{
+    width:46px; height:46px; border-radius:10px; margin-bottom:18px; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg, rgba(0,240,255,0.15), rgba(255,46,136,0.15)); color:var(--cyan); font-size:1.4rem;
+  }
+  .card h3{ font-size:1.15rem; margin-bottom:10px; letter-spacing:0.01em; }
+  .card p{ color:var(--ice-dim); font-size:0.98rem; }
+
+  /* ---------- PREVIEW / PHONE MOCKUPS ---------- */
+  .preview{ background:linear-gradient(180deg, var(--void-2), var(--void)); }
+  .phones{ max-width:1140px; margin:0 auto; display:flex; gap:34px; justify-content:center; flex-wrap:wrap; perspective:1400px; }
+  .phone{
+    width:230px; height:470px; border-radius:32px; border:8px solid #0e0619; position:relative; overflow:hidden;
+    background:#08040f;
+    box-shadow:0 30px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,240,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.03);
+    transition:transform .5s ease, box-shadow .5s ease; transform:rotateY(var(--ry,0deg)) rotateX(4deg);
+  }
+  .phone:nth-child(1){ --ry:14deg; margin-top:40px; }
+  .phone:nth-child(3){ --ry:-14deg; margin-top:40px; }
+  .phone:hover{ --ry:0deg; transform:translateY(-10px) rotateY(0deg) rotateX(0deg); box-shadow:0 40px 80px rgba(0,0,0,0.7), 0 0 40px rgba(0,240,255,0.2); }
+  .phone .notch{ position:absolute; top:6px; left:50%; transform:translateX(-50%); width:56px; height:5px; border-radius:3px; background:#000; z-index:20; opacity:0.6; }
+  .phone .screen{ position:absolute; inset:0; overflow:hidden; }
+  .phone .p-label{
+    position:absolute; top:10px; left:0; right:0; text-align:center; z-index:15;
+    font-family:'Share Tech Mono',monospace; font-size:0.6rem; color:var(--ice-dim); letter-spacing:0.2em; text-transform:uppercase;
+  }
+
+  /* -- gameplay screen -- */
+  .p-gameplay{ background:linear-gradient(180deg,#170a2c 0%, #2a0f45 35%, #12081f 100%); }
+  .p-gameplay .g-sun{ position:absolute; top:20%; left:50%; width:130px; height:130px; border-radius:50%; transform:translateX(-50%);
+    background:linear-gradient(#ffe94d,#ff8a3d 40%,#ff2e88 75%,#8b3bff); box-shadow:0 0 50px rgba(255,110,150,0.55); opacity:0.85; }
+  .p-gameplay .g-floor{ position:absolute; left:-40%; right:-40%; bottom:0; height:56%; perspective:180px; perspective-origin:50% 0%; overflow:hidden; }
+  .p-gameplay .g-floor::before{ content:''; position:absolute; inset:-40% -40% 0; background-image:
+      repeating-linear-gradient(90deg, rgba(0,240,255,0.35) 0 1.5px, transparent 1.5px 34px),
+      repeating-linear-gradient(0deg, rgba(0,240,255,0.35) 0 1.5px, transparent 1.5px 24px);
+    transform:rotateX(82deg); transform-origin:50% 0%; animation:pgrid 0.9s linear infinite; }
+  @keyframes pgrid{ from{ background-position:0 0,0 0; } to{ background-position:0 0,0 24px; } }
+  .p-gameplay .g-hud{ position:absolute; top:24px; left:14px; right:14px; z-index:12; display:flex; justify-content:space-between; align-items:center; }
+  .p-gameplay .g-score{ font-family:'Share Tech Mono',monospace; font-size:0.85rem; color:var(--ice); text-shadow:0 0 8px rgba(0,240,255,0.6); }
+  .p-gameplay .g-score b{ color:var(--cyan); }
+  .p-gameplay .g-lives{ display:flex; gap:4px; }
+  .p-gameplay .g-lives i{ width:8px; height:8px; border-radius:2px; background:var(--magenta); box-shadow:0 0 6px var(--magenta); display:block; }
+  .p-gameplay .g-lane{ position:absolute; bottom:0; width:1px; height:52%; background:linear-gradient(to top, rgba(0,240,255,0.35), transparent); }
+  .p-gameplay .g-obstacle{
+    position:absolute; width:26px; height:26px; border-radius:6px; z-index:8;
+    background:linear-gradient(135deg, var(--magenta), var(--violet)); box-shadow:0 0 16px rgba(255,46,136,0.7);
+    animation:approach 1.6s linear infinite;
+  }
+  @keyframes approach{ 0%{ top:26%; transform:scale(0.3); opacity:0; } 15%{ opacity:1; } 100%{ top:74%; transform:scale(1.3); opacity:0; } }
+  .p-gameplay .g-player{
+    position:absolute; bottom:16%; left:50%; width:22px; height:22px; border-radius:7px; transform:translateX(-50%);
+    background:linear-gradient(135deg, var(--cyan), #7ff9ff); box-shadow:0 0 18px var(--cyan), 0 0 34px rgba(0,240,255,0.5); z-index:10;
+    animation:playerWeave 2.4s ease-in-out infinite;
+  }
+  @keyframes playerWeave{ 0%,100%{ margin-left:0; } 25%{ margin-left:-34px; } 50%{ margin-left:10px; } 75%{ margin-left:-14px; } }
+
+  /* -- world map screen -- */
+  .p-worldmap{ background:linear-gradient(180deg,#12081f 0%, #1b0e2c 100%); }
+  .p-worldmap svg{ position:absolute; inset:0; width:100%; height:100%; }
+  .p-worldmap .path{ fill:none; stroke:rgba(0,240,255,0.3); stroke-width:3; stroke-dasharray:2 10; stroke-linecap:round; }
+  .p-worldmap .node{ position:absolute; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-family:'Share Tech Mono',monospace; font-size:0.7rem; transform:translate(-50%,-50%); }
+  .p-worldmap .node.done{ background:radial-gradient(circle, #1b0e2c, #12081f); border:2px solid var(--cyan); color:var(--cyan); box-shadow:0 0 14px rgba(0,240,255,0.5); }
+  .p-worldmap .node.current{ background:radial-gradient(circle, var(--magenta), var(--violet)); color:#fff; box-shadow:0 0 0 4px rgba(255,46,136,0.2), 0 0 22px rgba(255,46,136,0.7); animation:nodePulse 1.6s ease-in-out infinite; }
+  @keyframes nodePulse{ 0%,100%{ box-shadow:0 0 0 4px rgba(255,46,136,0.2), 0 0 22px rgba(255,46,136,0.7); } 50%{ box-shadow:0 0 0 8px rgba(255,46,136,0.08), 0 0 30px rgba(255,46,136,0.9); } }
+  .p-worldmap .node.locked{ background:#181025; border:2px solid rgba(238,240,255,0.15); color:var(--ice-dim); }
+
+  /* -- leaderboard screen -- */
+  .p-leaderboard{ background:linear-gradient(180deg,#12081f 0%, #1b0e2c 100%); padding-top:52px; }
+  .p-leaderboard .lb-title{ text-align:center; font-family:'Orbitron',sans-serif; font-size:0.85rem; letter-spacing:0.12em; color:var(--ice); margin-bottom:14px; }
+  .p-leaderboard .lb-row{
+    display:flex; align-items:center; gap:10px; margin:0 14px 8px; padding:8px 10px; border-radius:8px;
+    background:rgba(238,240,255,0.03); border:1px solid rgba(238,240,255,0.06); font-family:'Share Tech Mono',monospace; font-size:0.68rem;
+  }
+  .p-leaderboard .lb-row.you{ background:rgba(0,240,255,0.08); border-color:rgba(0,240,255,0.4); }
+  .p-leaderboard .lb-rank{ width:18px; height:18px; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:0.6rem; flex-shrink:0; }
+  .p-leaderboard .lb-row:nth-child(2) .lb-rank{ background:var(--gold); color:#1b0e2c; box-shadow:0 0 10px rgba(255,184,77,0.7); }
+  .p-leaderboard .lb-row:nth-child(3) .lb-rank{ background:#c9c9d6; color:#1b0e2c; }
+  .p-leaderboard .lb-row:nth-child(4) .lb-rank{ background:#b0713f; color:#1b0e2c; }
+  .p-leaderboard .lb-row:not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)) .lb-rank{ background:rgba(238,240,255,0.1); color:var(--ice-dim); }
+  .p-leaderboard .lb-name{ flex:1; color:var(--ice-dim); }
+  .p-leaderboard .lb-row.you .lb-name{ color:var(--cyan); }
+  .p-leaderboard .lb-score{ color:var(--ice); }
+
+  /* ---------- STATS STRIP ---------- */
+  .stats{ background:var(--void); border-top:1px solid rgba(238,240,255,0.08); border-bottom:1px solid rgba(238,240,255,0.08); padding:44px 24px; }
+  .stats-inner{ max-width:900px; margin:0 auto; display:flex; justify-content:space-around; flex-wrap:wrap; gap:30px; text-align:center; }
+  .stat b{ display:block; font-family:'Orbitron',sans-serif; font-size:2.1rem; color:var(--cyan); text-shadow:0 0 18px rgba(0,240,255,0.5); }
+  .stat span{ font-family:'Share Tech Mono',monospace; font-size:0.75rem; letter-spacing:0.15em; color:var(--ice-dim); text-transform:uppercase; }
+
+  /* ---------- CTA BANNER ---------- */
+  .cta-band{
+    position:relative; text-align:center; overflow:hidden;
+    background:linear-gradient(120deg, #170a2c, #2a0f45 50%, #170a2c);
+  }
+  .cta-band::before{
+    content:''; position:absolute; inset:0; background:radial-gradient(circle at 50% 120%, rgba(255,46,136,0.25), transparent 60%);
+  }
+  .cta-band h2{ position:relative; font-size:clamp(1.8rem,4vw,2.6rem); }
+  .cta-band p{ position:relative; color:var(--ice-dim); max-width:520px; margin:16px auto 30px; }
+  .status-pill{
+    position:relative; display:inline-flex; align-items:center; gap:8px; margin-bottom:20px;
+    font-family:'Share Tech Mono',monospace; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase;
+    color:var(--gold); border:1px solid rgba(255,184,77,0.4); padding:8px 16px; border-radius:20px;
+  }
+  .status-pill .ping{ width:8px; height:8px; border-radius:50%; background:var(--gold); box-shadow:0 0 10px var(--gold); animation:ping 1.4s ease-in-out infinite; }
+  @keyframes ping{ 0%,100%{ opacity:1; } 50%{ opacity:0.3; } }
+
+  /* ---------- FOOTER ---------- */
+  footer{ background:var(--void); padding:50px clamp(20px,6vw,64px) 34px; border-top:1px solid rgba(238,240,255,0.08); }
+  .footer-grid{ max-width:1180px; margin:0 auto; display:flex; justify-content:space-between; gap:30px; flex-wrap:wrap; }
+  .footer-links{ display:flex; gap:28px; font-family:'Share Tech Mono',monospace; font-size:0.85rem; letter-spacing:0.05em; }
+  .footer-links a{ color:var(--ice-dim); transition:color .2s; }
+  .footer-links a:hover{ color:var(--cyan); }
+  .footer-bottom{ max-width:1180px; margin:34px auto 0; padding-top:22px; border-top:1px solid rgba(238,240,255,0.06); color:var(--ice-dim); font-size:0.82rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  @media (max-width:760px){
+    .navlinks{ display:none; }
+    .about-grid{ grid-template-columns:1fr; }
+    .phone:nth-child(1), .phone:nth-child(3){ --ry:0deg; margin-top:0; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand"><span class="dot"></span>NEON DODGE</div>
+  <div class="navlinks">
+    <a href="index.html">Home</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="contact.html">Contact</a>
+    <a href="contact.html" class="nav-cta">Contact</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="stars" id="stars"></div>
+  <div class="sun"></div>
+  <div class="horizon-line"></div>
+  <div class="grid-wrap"><div class="grid-floor"></div></div>
+  <div class="hero-inner">
+    <div class="eyebrow">Synthwave arcade dodger · Android</div>
+    <h1>NEON DODGE</h1>
+    <p class="tagline">Weave through a glowing gauntlet, clear the world map, and chase your best run — one wrong move from the void.</p>
+    <div class="hero-ctas">
+      <!-- Play Store link disabled until the app is publicly live — re-enable when ready:
+      <a href="#" class="btn btn-primary">▸ Get on Google Play</a>
+      -->
+      <a href="#preview" class="btn btn-primary">▸ See It In Action</a>
+      <a href="#features" class="btn btn-ghost">See What's Inside</a>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>SCROLL</span><span class="bar"></span></div>
+</header>
+
+<section class="about">
+  <div class="about-grid">
+    <div class="about-copy reveal">
+      <div class="eyebrow" style="margin-bottom:14px;">The Game</div>
+      <h2 style="font-size:2rem; margin-bottom:18px;">One lane of focus. An entire world of neon.</h2>
+      <p>Neon Dodge drops you into an endless synthwave corridor where obstacles rush the screen and only sharp reflexes keep your streak alive. <strong>No timers, no pressure to grind</strong> — just you, the beat, and the next flag on the horizon.</p>
+      <p>Clear a run and it unlocks the next stop on the <strong>world map</strong>, each one a little faster and a little meaner than the last. Beat your own numbers on the <strong>on-device leaderboard</strong>, or just play for the glow.</p>
+    </div>
+    <div class="game-preview reveal">
+      <div class="gp-corner tl"></div><div class="gp-corner tr"></div><div class="gp-corner bl"></div><div class="gp-corner br"></div>
+      <div class="gp-sun"></div>
+      <div class="gp-horizon"></div>
+      <div class="gp-floor"></div>
+      <div class="gp-lane" style="left:20%;"></div>
+      <div class="gp-lane" style="left:50%;"></div>
+      <div class="gp-lane" style="left:80%;"></div>
+      <div class="gp-obstacle" style="left:22%; animation-delay:0s;"></div>
+      <div class="gp-obstacle" style="left:74%; animation-delay:0.5s;"></div>
+      <div class="gp-obstacle" style="left:46%; animation-delay:1s;"></div>
+      <div class="gp-obstacle" style="left:64%; animation-delay:1.5s;"></div>
+      <div class="gp-player-track">
+        <div class="gp-dot gp-trail t2"></div>
+        <div class="gp-dot gp-trail t1"></div>
+        <div class="gp-dot gp-player"></div>
+      </div>
+      <div class="gp-flash" style="top:30%; left:62%;">Near Miss</div>
+      <div class="gp-hud">
+        <div class="gp-score"><span>SCORE</span><span id="livePreviewScore">01,240</span></div>
+        <div class="gp-lives"><i></i><i></i><i></i></div>
+      </div>
+      <div class="gp-vignette"></div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="section-head reveal">
+    <div class="eyebrow">Features</div>
+    <h2>Built for one-thumb obsession</h2>
+    <p>Every system in Neon Dodge exists to keep your eyes on the road and your streak climbing.</p>
+  </div>
+  <div class="feature-grid">
+    <div class="card reveal">
+      <div class="icon">◈</div>
+      <h3>Infinite Dodge Runs</h3>
+      <p>Procedurally paced obstacle patterns mean no two runs feel identical — and no run feels unfair.</p>
+    </div>
+    <div class="card reveal">
+      <div class="icon">▲</div>
+      <h3>World Map &amp; Levels</h3>
+      <p>Clear a stage's finish flag to light up the next node on the map. Progress is visible, run by run.</p>
+    </div>
+    <div class="card reveal">
+      <div class="icon">◉</div>
+      <h3>On-Device Leaderboard</h3>
+      <p>Your best scores are tracked right on your phone — nothing to sign up for, nothing to lose.</p>
+    </div>
+    <div class="card reveal">
+      <div class="icon">✦</div>
+      <h3>Synthwave Presentation</h3>
+      <p>Chrome gradients, scanline suns, and a driving soundtrack tuned to every near-miss.</p>
+    </div>
+    <div class="card reveal">
+      <div class="icon">☺</div>
+      <h3>A Companion Along the Way</h3>
+      <p>A mascot avatar reacts to your runs — cheering comebacks, softening the losses.</p>
+    </div>
+    <div class="card reveal">
+      <div class="icon">⚙</div>
+      <h3>Tuned Difficulty</h3>
+      <p>Pacing adapts as you improve, so the challenge scales with you instead of against you.</p>
+    </div>
+  </div>
+</section>
+
+<section class="preview" id="preview">
+  <div class="section-head reveal">
+    <div class="eyebrow">Preview</div>
+    <h2>A glimpse of the grid</h2>
+    <p>A look at the run, the map, and the board you're chasing.</p>
+  </div>
+  <div class="phones">
+
+    <div class="phone reveal">
+      <div class="notch"></div>
+      <div class="p-label">Endless Run</div>
+      <div class="screen p-gameplay">
+        <div class="g-sun"></div>
+        <div class="g-hud">
+          <div class="g-score">SCORE <b>1,240</b></div>
+          <div class="g-lives"><i></i><i></i><i></i></div>
+        </div>
+        <div class="g-floor"></div>
+        <div class="g-lane" style="left:22%;"></div>
+        <div class="g-lane" style="left:50%;"></div>
+        <div class="g-lane" style="left:78%;"></div>
+        <div class="g-obstacle" style="left:24%; animation-delay:0s;"></div>
+        <div class="g-obstacle" style="left:72%; animation-delay:0.55s;"></div>
+        <div class="g-obstacle" style="left:48%; animation-delay:1.1s;"></div>
+        <div class="g-player"></div>
+      </div>
+    </div>
+
+    <div class="phone reveal">
+      <div class="notch"></div>
+      <div class="p-label">World Map</div>
+      <div class="screen p-worldmap">
+        <svg viewBox="0 0 230 470" preserveAspectRatio="none">
+          <path class="path" d="M 50 400 C 90 360, 30 320, 60 280 S 150 220, 120 180 S 40 120, 80 80"></path>
+        </svg>
+        <div class="node done" style="left:50px; top:400px;">✓</div>
+        <div class="node done" style="left:60px; top:280px;">✓</div>
+        <div class="node current" style="left:120px; top:180px;">3</div>
+        <div class="node locked" style="left:80px; top:80px;">🔒</div>
+      </div>
+    </div>
+
+    <div class="phone reveal">
+      <div class="notch"></div>
+      <div class="p-label">Leaderboard</div>
+      <div class="screen p-leaderboard">
+        <div class="lb-title">TOP RUNS</div>
+        <div class="lb-row"><span class="lb-rank">1</span><span class="lb-name">RUNNER_88</span><span class="lb-score">9,420</span></div>
+        <div class="lb-row"><span class="lb-rank">2</span><span class="lb-name">NEONFOX</span><span class="lb-score">8,115</span></div>
+        <div class="lb-row"><span class="lb-rank">3</span><span class="lb-name">VOIDSKATE</span><span class="lb-score">7,960</span></div>
+        <div class="lb-row you"><span class="lb-rank">4</span><span class="lb-name">YOU</span><span class="lb-score">6,530</span></div>
+        <div class="lb-row"><span class="lb-rank">5</span><span class="lb-name">DRIFT_ZX</span><span class="lb-score">5,910</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stat reveal"><b>1-Tap</b><span>Controls</span></div>
+    <div class="stat reveal"><b>0</b><span>Sign-ups required</span></div>
+    <div class="stat reveal"><b>∞</b><span>Runs to master</span></div>
+    <div class="stat reveal"><b>On-device</b><span>Score storage</span></div>
+  </div>
+</div>
+
+<section class="cta-band">
+  <div class="reveal" style="position:relative;">
+    <!-- Google Play status pill disabled until the app is publicly live — re-enable when ready:
+    <div class="status-pill"><span class="ping"></span>On Google Play</div>
+    -->
+    <h2>Ready when you are</h2>
+    <p>Neon Dodge is in the final stretch before launch. Questions, bug reports, or feedback are always welcome in the meantime.</p>
+    <a href="contact.html" class="btn btn-primary">▸ Contact Us</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="brand" style="font-size:1rem;"><span class="dot"></span>NEON DODGE</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Neon Dodge. All rights reserved.</span>
+    <span class="mono">Built with Kotlin &amp; Jetpack Compose</span>
+  </div>
+</footer>
+
+<script>
+  // live preview score ticker
+  const scoreEl = document.getElementById('livePreviewScore');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(scoreEl && !reduceMotion){
+    let score = 1240;
+    setInterval(()=>{
+      score += Math.floor(Math.random()*30)+15;
+      if(score > 99999) score = 1240;
+      scoreEl.textContent = String(score).padStart(6,'0').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }, 450);
+  }
+
+  // stars
+  const starField = document.getElementById('stars');
+  for(let i=0;i<80;i++){
+    const s = document.createElement('span');
+    s.style.left = Math.random()*100+'%';
+    s.style.top = Math.random()*50+'%';
+    s.style.animationDelay = (Math.random()*3.5)+'s';
+    s.style.width = s.style.height = (Math.random()<0.15? '3px':'1.5px');
+    starField.appendChild(s);
+  }
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold:0.15 });
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // card tilt
+  document.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('mousemove', (e)=>{
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left)/r.width - 0.5;
+      const y = (e.clientY - r.top)/r.height - 0.5;
+      card.style.transform = `translateY(-6px) rotateX(${(-y*10).toFixed(2)}deg) rotateY(${(x*10).toFixed(2)}deg)`;
+    });
+    card.addEventListener('mouseleave', ()=>{ card.style.transform=''; });
+  });
+</script>
+</body>
+</html>
