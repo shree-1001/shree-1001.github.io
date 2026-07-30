@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact — Neon Dodge</title>
-<meta name="description" content="Get in touch with the Neon Dodge team — testing access, bug reports, feedback.">
+<meta name="description" content="Get in touch with the Neon Dodge team — bug reports, feedback, and questions.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
@@ -32,20 +32,49 @@
   .navlinks a{ color:var(--ice-dim); text-decoration:none; }
   .navlinks a:hover{ color:var(--cyan); }
 
+  @keyframes fadeUp{ from{ opacity:0; transform:translateY(16px); } to{ opacity:1; transform:translateY(0); } }
+  @keyframes twinkle{ 0%,100%{ opacity:0.15; } 50%{ opacity:0.85; } }
+
   .header-band{
-    position:relative; padding:90px clamp(20px,6vw,64px) 70px; overflow:hidden; text-align:center;
-    background:radial-gradient(ellipse at 50% 0%, rgba(255,46,136,0.28), transparent 60%), linear-gradient(180deg,#170a2c,#08040f);
+    position:relative; padding:100px clamp(20px,6vw,64px) 96px; overflow:hidden; text-align:center;
+    background:linear-gradient(180deg, #08040f 0%, #170a2c 42%, #2a0f45 68%, #12081f 100%);
     border-bottom:1px solid rgba(0,240,255,0.15);
   }
-  .header-band::after{
-    content:''; position:absolute; left:0; right:0; bottom:0; height:110px;
-    background-image:repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 60px);
-    -webkit-mask-image:linear-gradient(to top, black, transparent); mask-image:linear-gradient(to top, black, transparent);
+  .header-band .stars{ position:absolute; inset:0; z-index:0; }
+  .header-band .stars span{ position:absolute; width:2px; height:2px; background:var(--ice); border-radius:50%; animation:twinkle 3.4s ease-in-out infinite; }
+
+  .h-floor{ position:absolute; left:-60%; right:-60%; bottom:0; height:150px; z-index:1; overflow:hidden;
+    perspective:200px; perspective-origin:50% 100%;
+    -webkit-mask-image:linear-gradient(to top, black, transparent); mask-image:linear-gradient(to top, black, transparent); }
+  .h-floor::before{ content:''; position:absolute; inset:-60% -60% 0; background-image:
+      repeating-linear-gradient(90deg, rgba(0,240,255,0.32) 0 1.5px, transparent 1.5px 50px),
+      repeating-linear-gradient(0deg, rgba(0,240,255,0.32) 0 1.5px, transparent 1.5px 34px);
+    transform:rotateX(82deg); transform-origin:50% 100%; animation:hFloorScroll 1s linear infinite; }
+  @keyframes hFloorScroll{ from{ background-position:0 0, 0 0; } to{ background-position:0 0, 0 -34px; } }
+
+  .beacon{ position:relative; width:64px; height:64px; margin:0 auto 22px; z-index:2; }
+  .beacon-core{ position:absolute; inset:24px; border-radius:50%; background:radial-gradient(circle, #fff, var(--cyan)); box-shadow:0 0 18px var(--cyan), 0 0 36px rgba(0,240,255,0.6); }
+  .beacon-ring{ position:absolute; inset:0; border-radius:50%; border:1.5px solid var(--cyan); opacity:0; animation:beaconPing 2.6s ease-out infinite; }
+  .beacon-ring.r2{ animation-delay:0.86s; }
+  .beacon-ring.r3{ animation-delay:1.72s; }
+  @keyframes beaconPing{ 0%{ transform:scale(0.25); opacity:0.85; } 100%{ transform:scale(2); opacity:0; } }
+
+  .signal-pill{
+    position:relative; z-index:2; display:inline-flex; align-items:center; gap:8px; margin-top:22px;
+    font-family:'Share Tech Mono',monospace; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase;
+    color:var(--gold); border:1px solid rgba(255,184,77,0.4); padding:7px 15px; border-radius:20px;
+    opacity:0; animation:fadeUp .8s ease .55s forwards;
   }
-  .eyebrow{ position:relative; font-family:'Share Tech Mono',monospace; letter-spacing:0.3em; text-transform:uppercase; font-size:0.75rem; color:var(--cyan); text-shadow:0 0 12px rgba(0,240,255,0.6); }
-  .header-band h1{ position:relative; font-size:clamp(2.2rem,5vw,3.4rem); margin-top:16px;
-    background:linear-gradient(180deg,#fff,var(--magenta)); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  .header-band p{ position:relative; margin:18px auto 0; color:var(--ice-dim); max-width:520px; font-size:1.05rem; }
+  .signal-pill .ping{ width:7px; height:7px; border-radius:50%; background:var(--gold); box-shadow:0 0 10px var(--gold); animation:sPing 1.4s ease-in-out infinite; }
+  @keyframes sPing{ 0%,100%{ opacity:1; } 50%{ opacity:0.3; } }
+
+  .eyebrow{ position:relative; z-index:2; font-family:'Share Tech Mono',monospace; letter-spacing:0.3em; text-transform:uppercase; font-size:0.75rem; color:var(--cyan); text-shadow:0 0 12px rgba(0,240,255,0.6);
+    opacity:0; animation:fadeUp .7s ease .05s forwards; }
+  .header-band h1{ position:relative; z-index:2; font-size:clamp(2.2rem,5vw,3.4rem); margin-top:16px;
+    background:linear-gradient(180deg,#fff,var(--magenta)); -webkit-background-clip:text; background-clip:text; color:transparent;
+    opacity:0; animation:fadeUp .8s ease .18s forwards; }
+  .header-band p{ position:relative; z-index:2; margin:18px auto 0; color:var(--ice-dim); max-width:520px; font-size:1.05rem;
+    opacity:0; animation:fadeUp .8s ease .34s forwards; }
 
   .layout{ max-width:1080px; margin:0 auto; padding:70px 20px 110px; display:grid; grid-template-columns:1.1fr 0.9fr; gap:50px; }
 
@@ -59,6 +88,9 @@
   }
   .panel h2{ font-size:1.3rem; margin-bottom:6px; }
   .panel .sub{ color:var(--ice-dim); font-size:0.95rem; margin-bottom:28px; }
+
+  .reveal{ opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
 
   .field{ margin-bottom:20px; }
   .field label{ display:block; font-family:'Share Tech Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--cyan); margin-bottom:8px; }
@@ -81,7 +113,21 @@
   .submit-btn:hover{ transform:translateY(-2px); box-shadow:0 10px 30px rgba(255,46,136,0.5); }
   .form-note{ margin-top:14px; font-size:0.85rem; color:var(--ice-dim); text-align:center; }
 
-  .side-card{ background:var(--void-2); border:1px solid rgba(238,240,255,0.08); border-radius:16px; padding:28px; margin-bottom:22px; }
+  .side-card{
+    background:var(--void-2); border:1px solid rgba(238,240,255,0.08); border-radius:16px; padding:28px; margin-bottom:22px;
+    position:relative; transition:transform .3s ease, border-color .3s ease;
+  }
+  .side-card::before{
+    content:''; position:absolute; inset:-1px; border-radius:16px; padding:1px;
+    background:conic-gradient(from var(--ang,0deg), var(--cyan), var(--violet), var(--magenta), var(--cyan));
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+    opacity:0; transition:opacity .35s; animation:spinAng 5s linear infinite paused; pointer-events:none;
+  }
+  @property --ang{ syntax:'<angle>'; inherits:false; initial-value:0deg; }
+  @keyframes spinAng{ to{ --ang:360deg; } }
+  .side-card:hover{ transform:translateY(-4px); border-color:transparent; }
+  .side-card:hover::before{ opacity:1; animation-play-state:running; }
   .side-card h3{ font-size:1.02rem; margin-bottom:10px; display:flex; align-items:center; gap:10px; }
   .side-card .glyph{ width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(0,240,255,0.15), rgba(255,46,136,0.15)); color:var(--cyan); }
   .side-card p{ color:var(--ice-dim); font-size:0.95rem; }
@@ -125,13 +171,22 @@
 </nav>
 
 <header class="header-band">
+  <div class="stars" id="stars"></div>
+  <div class="beacon">
+    <div class="beacon-ring"></div>
+    <div class="beacon-ring r2"></div>
+    <div class="beacon-ring r3"></div>
+    <div class="beacon-core"></div>
+  </div>
   <div class="eyebrow">Get in touch</div>
   <h1>Contact Us</h1>
-  <p>Testing access, a bug you've hit, or just feedback from the grid — this goes straight to the team behind Neon Dodge.</p>
+  <p>A bug you've hit, feedback from the grid, or a question about the game — this goes straight to the team behind Neon Dodge.</p>
+  <div class="signal-pill"><span class="ping"></span>Signal Open</div>
+  <div class="h-floor"></div>
 </header>
 
 <div class="layout">
-  <div class="panel">
+  <div class="panel reveal">
     <h2>Send a message</h2>
     <div class="sub">Fill this in and it'll open in your mail app, ready to send.</div>
     <form id="contactForm">
@@ -148,7 +203,7 @@
       <div class="field">
         <label for="reason">Reason for contact</label>
         <select id="reason">
-          <option>Closed testing access</option>
+          <option>Early access request</option>
           <option>Bug report</option>
           <option>Feedback / suggestion</option>
           <option>Privacy question</option>
@@ -159,26 +214,26 @@
         <label for="message">Message</label>
         <textarea id="message" placeholder="What's on your mind?" required></textarea>
       </div>
-      <button type="submit" class="submit-btn">▸ Open in Mail App</button>
+      <button type="submit" class="submit-btn" id="submitBtn">▸ Open in Mail App</button>
       <div class="form-note">Or email us directly at <a href="mailto:support@neondodgegame.com" style="text-decoration:none; border-bottom:1px solid rgba(0,240,255,0.4);">support@neondodgegame.com</a></div>
     </form>
   </div>
 
   <div>
-    <div class="side-card">
+    <div class="side-card reveal">
       <h3><span class="glyph">✉</span>Email</h3>
-      <p>For testing requests, bugs, or anything else — this reaches us directly.</p>
+      <p>For questions, bugs, or anything else — this reaches us directly.</p>
       <a class="email" href="mailto:support@neondodgegame.com">support@neondodgegame.com</a>
     </div>
-    <div class="side-card">
+    <div class="side-card reveal">
       <h3><span class="glyph">⏱</span>Response time</h3>
-      <p>We're a small team — expect a reply within a few business days, sooner during active testing rounds.</p>
+      <p>We're a small team — expect a reply within a few business days.</p>
     </div>
-    <div class="side-card faq">
+    <div class="side-card faq reveal">
       <h3 style="margin-bottom:4px;"><span class="glyph">?</span>Quick answers</h3>
       <div class="faq-item">
-        <button class="faq-q">How do I join closed testing?<span class="plus">+</span></button>
-        <div class="faq-a"><p>Send us a message with "Closed testing access" as the reason and the Google account email you'd like added as a tester.</p></div>
+        <button class="faq-q">How do I get early access?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Send us a message with "Early access request" as the reason and the Google account email you'd like added as a tester.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q">I found a bug — what should I include?<span class="plus">+</span></button>
@@ -199,6 +254,22 @@
 <div class="toast" id="toast">Opening your mail app…</div>
 
 <script>
+  // header starfield
+  const starField = document.getElementById('stars');
+  for(let i=0;i<40;i++){
+    const s = document.createElement('span');
+    s.style.left = Math.random()*100+'%';
+    s.style.top = Math.random()*55+'%';
+    s.style.animationDelay = (Math.random()*3.4)+'s';
+    starField.appendChild(s);
+  }
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold:0.12 });
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
   document.querySelectorAll('.faq-item').forEach(item=>{
     item.querySelector('.faq-q').addEventListener('click', ()=>{
       const wasOpen = item.classList.contains('open');
@@ -209,6 +280,7 @@
 
   const form = document.getElementById('contactForm');
   const toast = document.getElementById('toast');
+  const submitBtn = document.getElementById('submitBtn');
   form.addEventListener('submit', (e)=>{
     e.preventDefault();
     const name = document.getElementById('name').value;
@@ -217,10 +289,12 @@
     const message = document.getElementById('message').value;
     const subject = encodeURIComponent('Neon Dodge — ' + reason);
     const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nReason: ${reason}\n\n${message}`);
+    submitBtn.textContent = '▸ Opening Mail App…';
     window.location.href = `mailto:support@neondodgegame.com?subject=${subject}&body=${body}`;
     toast.classList.add('show');
-    setTimeout(()=> toast.classList.remove('show'), 3000);
+    setTimeout(()=>{ toast.classList.remove('show'); submitBtn.textContent = '▸ Open in Mail App'; }, 3000);
   });
 </script>
+
 </body>
 </html>
