@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Neon Dodge</title>
+<meta name="description" content="Get in touch with the Neon Dodge team — testing access, bug reports, feedback.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#08040f; --void-2:#12081f; --void-3:#1b0e2c;
+    --cyan:#00f0ff; --magenta:#ff2e88; --violet:#8b3bff; --gold:#ffb84d;
+    --ice:#eef0ff; --ice-dim:#a9a3c4; --line:rgba(0,240,255,0.15);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--void); color:var(--ice); font-family:'Rajdhani',sans-serif; font-size:17px; line-height:1.65; }
+  h1,h2,.logo{ font-family:'Orbitron',sans-serif; }
+  .mono{ font-family:'Share Tech Mono',monospace; }
+  a{ color:var(--cyan); }
+  ::selection{ background:var(--magenta); color:var(--void); }
+  @media (prefers-reduced-motion: reduce){ *{ animation-duration:0.001ms !important; } }
+
+  .nav{
+    position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between;
+    padding:18px clamp(20px,5vw,64px); background:rgba(8,4,15,0.85); backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(238,240,255,0.08);
+  }
+  .brand{ display:flex; align-items:center; gap:10px; font-weight:900; font-size:1.05rem; text-decoration:none; color:var(--ice); }
+  .brand .dot{ width:9px; height:9px; border-radius:50%; background:var(--cyan); box-shadow:0 0 10px var(--cyan); }
+  .navlinks{ display:flex; gap:clamp(14px,3vw,32px); font-family:'Share Tech Mono',monospace; font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase; }
+  .navlinks a{ color:var(--ice-dim); text-decoration:none; }
+  .navlinks a:hover{ color:var(--cyan); }
+
+  .header-band{
+    position:relative; padding:90px clamp(20px,6vw,64px) 70px; overflow:hidden; text-align:center;
+    background:radial-gradient(ellipse at 50% 0%, rgba(255,46,136,0.28), transparent 60%), linear-gradient(180deg,#170a2c,#08040f);
+    border-bottom:1px solid rgba(0,240,255,0.15);
+  }
+  .header-band::after{
+    content:''; position:absolute; left:0; right:0; bottom:0; height:110px;
+    background-image:repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 60px);
+    -webkit-mask-image:linear-gradient(to top, black, transparent); mask-image:linear-gradient(to top, black, transparent);
+  }
+  .eyebrow{ position:relative; font-family:'Share Tech Mono',monospace; letter-spacing:0.3em; text-transform:uppercase; font-size:0.75rem; color:var(--cyan); text-shadow:0 0 12px rgba(0,240,255,0.6); }
+  .header-band h1{ position:relative; font-size:clamp(2.2rem,5vw,3.4rem); margin-top:16px;
+    background:linear-gradient(180deg,#fff,var(--magenta)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .header-band p{ position:relative; margin:18px auto 0; color:var(--ice-dim); max-width:520px; font-size:1.05rem; }
+
+  .layout{ max-width:1080px; margin:0 auto; padding:70px 20px 110px; display:grid; grid-template-columns:1.1fr 0.9fr; gap:50px; }
+
+  .panel{
+    background:var(--void-2); border:1px solid rgba(238,240,255,0.08); border-radius:16px; padding:36px;
+    position:relative; overflow:hidden;
+  }
+  .panel::before{
+    content:''; position:absolute; top:-1px; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, transparent, var(--cyan), var(--magenta), transparent);
+  }
+  .panel h2{ font-size:1.3rem; margin-bottom:6px; }
+  .panel .sub{ color:var(--ice-dim); font-size:0.95rem; margin-bottom:28px; }
+
+  .field{ margin-bottom:20px; }
+  .field label{ display:block; font-family:'Share Tech Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--cyan); margin-bottom:8px; }
+  .field input, .field select, .field textarea{
+    width:100%; background:var(--void-3); border:1px solid rgba(238,240,255,0.15); border-radius:8px;
+    padding:12px 14px; color:var(--ice); font-family:'Rajdhani',sans-serif; font-size:1rem; transition:border-color .2s, box-shadow .2s;
+  }
+  .field textarea{ resize:vertical; min-height:120px; }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:none; border-color:var(--cyan); box-shadow:0 0 0 3px rgba(0,240,255,0.15);
+  }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+  .submit-btn{
+    width:100%; margin-top:6px; font-family:'Share Tech Mono',monospace; text-transform:uppercase; letter-spacing:0.1em;
+    font-size:0.88rem; padding:15px; border-radius:8px; border:none; cursor:pointer;
+    background:linear-gradient(90deg, var(--magenta), var(--violet)); color:#fff;
+    box-shadow:0 6px 24px rgba(255,46,136,0.3); transition:transform .2s, box-shadow .2s;
+  }
+  .submit-btn:hover{ transform:translateY(-2px); box-shadow:0 10px 30px rgba(255,46,136,0.5); }
+  .form-note{ margin-top:14px; font-size:0.85rem; color:var(--ice-dim); text-align:center; }
+
+  .side-card{ background:var(--void-2); border:1px solid rgba(238,240,255,0.08); border-radius:16px; padding:28px; margin-bottom:22px; }
+  .side-card h3{ font-size:1.02rem; margin-bottom:10px; display:flex; align-items:center; gap:10px; }
+  .side-card .glyph{ width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(0,240,255,0.15), rgba(255,46,136,0.15)); color:var(--cyan); }
+  .side-card p{ color:var(--ice-dim); font-size:0.95rem; }
+  .side-card a.email{ display:inline-block; margin-top:10px; font-family:'Share Tech Mono',monospace; color:var(--cyan); text-decoration:none; border-bottom:1px solid rgba(0,240,255,0.4); }
+  .side-card a.email:hover{ text-shadow:0 0 10px rgba(0,240,255,0.6); }
+
+  .faq{ background:var(--void-3); }
+  .faq-item{ border-bottom:1px solid rgba(238,240,255,0.08); }
+  .faq-item:last-child{ border-bottom:none; }
+  .faq-q{ width:100%; text-align:left; background:none; border:none; color:var(--ice); font-family:'Rajdhani',sans-serif; font-size:1rem; font-weight:600; padding:16px 4px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .faq-q .plus{ font-family:'Share Tech Mono',monospace; color:var(--cyan); transition:transform .25s; flex-shrink:0; }
+  .faq-item.open .plus{ transform:rotate(45deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .faq-item.open .faq-a{ max-height:200px; }
+  .faq-a p{ color:var(--ice-dim); font-size:0.92rem; padding:0 4px 16px; }
+
+  footer{ background:var(--void); padding:40px clamp(20px,6vw,64px); border-top:1px solid rgba(238,240,255,0.08); text-align:center; color:var(--ice-dim); font-size:0.85rem; }
+  footer a{ color:var(--ice-dim); text-decoration:none; }
+  footer a:hover{ color:var(--cyan); }
+
+  .toast{
+    position:fixed; bottom:26px; left:50%; transform:translate(-50%,20px); z-index:200;
+    background:var(--void-3); border:1px solid var(--cyan); color:var(--ice); padding:14px 22px; border-radius:10px;
+    font-family:'Share Tech Mono',monospace; font-size:0.85rem; opacity:0; pointer-events:none; transition:opacity .3s, transform .3s;
+    box-shadow:0 0 24px rgba(0,240,255,0.3);
+  }
+  .toast.show{ opacity:1; transform:translate(-50%,0); }
+
+  @media (max-width:840px){ .layout{ grid-template-columns:1fr; } .row2{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="brand"><span class="dot"></span>NEON DODGE</a>
+  <div class="navlinks">
+    <a href="index.html">Home</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<header class="header-band">
+  <div class="eyebrow">Get in touch</div>
+  <h1>Contact Us</h1>
+  <p>Testing access, a bug you've hit, or just feedback from the grid — this goes straight to the team behind Neon Dodge.</p>
+</header>
+
+<div class="layout">
+  <div class="panel">
+    <h2>Send a message</h2>
+    <div class="sub">Fill this in and it'll open in your mail app, ready to send.</div>
+    <form id="contactForm">
+      <div class="row2">
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" type="text" placeholder="Your name" required>
+        </div>
+        <div class="field">
+          <label for="email">Your email</label>
+          <input id="email" type="email" placeholder="you@example.com" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="reason">Reason for contact</label>
+        <select id="reason">
+          <option>Closed testing access</option>
+          <option>Bug report</option>
+          <option>Feedback / suggestion</option>
+          <option>Privacy question</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="What's on your mind?" required></textarea>
+      </div>
+      <button type="submit" class="submit-btn">▸ Open in Mail App</button>
+      <div class="form-note">Or email us directly at <a href="mailto:support@neondodgegame.com" style="text-decoration:none; border-bottom:1px solid rgba(0,240,255,0.4);">support@neondodgegame.com</a></div>
+    </form>
+  </div>
+
+  <div>
+    <div class="side-card">
+      <h3><span class="glyph">✉</span>Email</h3>
+      <p>For testing requests, bugs, or anything else — this reaches us directly.</p>
+      <a class="email" href="mailto:support@neondodgegame.com">support@neondodgegame.com</a>
+    </div>
+    <div class="side-card">
+      <h3><span class="glyph">⏱</span>Response time</h3>
+      <p>We're a small team — expect a reply within a few business days, sooner during active testing rounds.</p>
+    </div>
+    <div class="side-card faq">
+      <h3 style="margin-bottom:4px;"><span class="glyph">?</span>Quick answers</h3>
+      <div class="faq-item">
+        <button class="faq-q">How do I join closed testing?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Send us a message with "Closed testing access" as the reason and the Google account email you'd like added as a tester.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">I found a bug — what should I include?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Your device model, Android version, and the steps that led to it help us track it down fastest.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How do I clear my local game data?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Uninstall the app, or clear its storage from your device's Settings → Apps → Neon Dodge. See our <a href="privacy.html">Privacy Policy</a> for details.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Neon Dodge · <a href="index.html">Home</a> · <a href="privacy.html">Privacy Policy</a></p>
+</footer>
+
+<div class="toast" id="toast">Opening your mail app…</div>
+
+<script>
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    item.querySelector('.faq-q').addEventListener('click', ()=>{
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+
+  const form = document.getElementById('contactForm');
+  const toast = document.getElementById('toast');
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const reason = document.getElementById('reason').value;
+    const message = document.getElementById('message').value;
+    const subject = encodeURIComponent('Neon Dodge — ' + reason);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nReason: ${reason}\n\n${message}`);
+    window.location.href = `mailto:support@neondodgegame.com?subject=${subject}&body=${body}`;
+    toast.classList.add('show');
+    setTimeout(()=> toast.classList.remove('show'), 3000);
+  });
+</script>
+</body>
+</html>
