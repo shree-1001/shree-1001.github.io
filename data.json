@@ -1,0 +1,37 @@
+{
+  "studio": {
+    "name": "Shree Games & Apps",
+    "tagline": "Crafting worlds worth playing in. One game at a time.",
+    "email": "shreegamesapps@gmail.com",
+    "phone": "+91 8528361935",
+    "website": "shree-1001.github.io"
+  },
+  "apps": [
+    {
+      "id": "neon-breakout",
+      "name": "Neon Breakout",
+      "genre": "Arcade · Brick Breaker",
+      "icon": "🎮",
+      "status": "live",
+      "desc": "Break glowing neon bricks in this fast-paced arcade classic. Smooth paddle controls, stunning neon visuals, and an endless high-score chase — all offline.",
+      "tags": ["Free", "Offline", "Android", "Arcade"],
+      "website": "",
+      "playstore": "",
+      "indus": "",
+      "logo": ""
+    },
+    {
+      "id": "chaturanga",
+      "name": "Chaturanga",
+      "genre": "Strategy · Historical Chess",
+      "icon": "♛",
+      "status": "coming-soon",
+      "desc": "The ancient game of kings, reimagined for Android. Experience chess as it was played in the courts of ancient India — with a full economy, leagues, and multiplayer.",
+      "tags": ["Strategy", "Historical", "Multiplayer", "Android"],
+      "website": "",
+      "playstore": "",
+      "indus": "",
+      "logo": ""
+    }
+  ]
+}
