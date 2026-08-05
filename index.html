@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shree Games & Apps</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600&family=Cinzel+Decorative:wght@400;700;900&display=swap');
+
+:root {
+  --gold: #C9A84C;
+  --gold-light: #F0D080;
+  --gold-bright: #FFE066;
+  --gold-dark: #8B6914;
+  --black: #050505;
+  --black2: #0A0A0A;
+  --black3: #111108;
+  --surface: #0F0F0A;
+  --surface2: #161610;
+  --text: #E8DDB5;
+  --text-dim: #7A6A3A;
+  --border: #2A2410;
+  --glow: 0 0 30px #C9A84C44, 0 0 80px #C9A84C22;
+  --glow-strong: 0 0 20px #C9A84C88, 0 0 60px #C9A84C44;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, width 0.2s, height 0.2s, opacity 0.2s;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  position: fixed;
+  width: 40px; height: 40px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: transform 0.15s ease-out, width 0.3s, height 0.3s, opacity 0.3s;
+  opacity: 0.5;
+}
+
+/* ── CANVAS ── */
+#bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+/* ── LAYOUT ── */
+.page { position: relative; z-index: 1; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 60px;
+  background: linear-gradient(to bottom, #050505ee, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid #C9A84C11;
+}
+.nav-logo {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 15px; font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 3px;
+  text-shadow: var(--glow);
+}
+.nav-links { display: flex; gap: 36px; }
+.nav-links a {
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--text-dim); text-decoration: none;
+  transition: color 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.nav-links a:hover { color: var(--gold); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 140px 24px 100px;
+  position: relative;
+}
+
+.hero-crown {
+  font-size: 11px; letter-spacing: 8px; text-transform: uppercase;
+  color: var(--gold); font-family: 'Cinzel', serif;
+  margin-bottom: 32px; opacity: 0.8;
+  animation: fadeUp 1s ease both;
+}
+
+.hero-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 900; line-height: 1;
+  animation: fadeUp 1s ease 0.1s both;
+  margin-bottom: 8px;
+}
+.hero-title .shree {
+  display: block;
+  font-size: clamp(48px, 9vw, 120px);
+  color: var(--gold-light);
+  text-shadow: 0 0 60px #C9A84C66, 0 0 120px #C9A84C33;
+  letter-spacing: 8px;
+}
+.hero-title .games {
+  display: block;
+  font-size: clamp(22px, 4vw, 52px);
+  color: var(--text-dim);
+  letter-spacing: 16px;
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+.hero-line {
+  width: 120px; height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  margin: 32px auto;
+  animation: fadeUp 1s ease 0.2s both;
+}
+
+.hero-tagline {
+  font-size: 14px; color: #6A5A2A; letter-spacing: 4px;
+  text-transform: uppercase; font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  animation: fadeUp 1s ease 0.25s both;
+  max-width: 480px;
+  line-height: 2;
+}
+
+.hero-scroll {
+  position: center; bottom: 20px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: fadeUp 1s ease 0.5s both;
+}
+.hero-scroll span {
+  font-size: 10px; letter-spacing: 4px; color: var(--text-dim);
+  text-transform: uppercase; font-family: 'Cinzel', serif;
+}
+.scroll-line {
+  width: 1px; height: 50px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%,100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.2); }
+}
+
+/* ── SECTION BASE ── */
+section { padding: 100px 60px; max-width: 1200px; margin: 0 auto; }
+.s-eyebrow {
+  font-family: 'Cinzel', serif; font-size: 10px;
+  letter-spacing: 6px; text-transform: uppercase;
+  color: var(--gold); opacity: 0.7; margin-bottom: 16px;
+  text-align: center;
+}
+.s-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(26px, 4vw, 48px); font-weight: 700;
+  color: var(--gold-light); text-align: center; margin-bottom: 16px;
+  text-shadow: 0 0 40px #C9A84C33;
+}
+.s-sub {
+  font-size: 14px; color: var(--text-dim); text-align: center;
+  max-width: 540px; margin: 0 auto 64px; line-height: 1.9;
+  letter-spacing: 0.5px;
+}
+.gold-rule {
+  width: 60px; height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  margin: 20px auto 60px;
+}
+
+/* ── STATS ── */
+.stats-wrap {
+  background: var(--surface);
+  border-top: 1px solid #C9A84C22;
+  border-bottom: 1px solid #C9A84C22;
+  padding: 5px;
+  overflow-x: scroll;
+}
+.stats-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 0;
+}
+.stat-item {
+  text-align: center; padding: 20px;
+  border-right: 1px solid #C9A84C11;
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Cinzel', serif; font-size: 48px; font-weight: 700;
+  color: var(--gold); display: block;
+  text-shadow: var(--glow-strong);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--text-dim); margin-top: 10px; display: block;
+  font-family: 'Cinzel', serif;
+}
+
+/* ── ABOUT ── */
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+  align-items: center;
+}
+.about-badge {
+  display: inline-block;
+  border: 1px solid #C9A84C33;
+  background: #C9A84C08;
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 10px; letter-spacing: 4px;
+  padding: 8px 20px; border-radius: 2px;
+  margin-bottom: 28px;
+}
+.about-heading {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(24px, 3vw, 40px); font-weight: 700;
+  color: var(--gold-light); line-height: 1.3; margin-bottom: 24px;
+}
+.about-body {
+  font-size: 14px; color: #6A5A2A; line-height: 2;
+  margin-bottom: 20px;
+}
+.about-values {
+  display: flex; flex-direction: column; gap: 16px; margin-top: 32px;
+}
+.value-item {
+  display: flex; align-items: flex-start; gap: 16px;
+}
+.value-icon {
+  width: 32px; height: 32px; border: 1px solid #C9A84C33;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0; color: var(--gold);
+}
+.value-text h4 {
+  font-family: 'Cinzel', serif; font-size: 12px;
+  letter-spacing: 2px; color: var(--gold-light); margin-bottom: 4px;
+}
+.value-text p { font-size: 13px; color: #5A4A2A; line-height: 1.7; }
+
+/* About right — ornamental frame */
+.about-frame {
+  position: relative; aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+}
+.frame-border {
+  position: absolute; inset: 0;
+  border: 1px solid #C9A84C22;
+}
+.frame-corner {
+  position: absolute; width: 20px; height: 20px;
+  border-color: var(--gold); border-style: solid;
+}
+.fc-tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+.fc-tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+.fc-bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+.fc-br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+.frame-inner {
+  width: 80%; height: 80%; background: var(--surface2);
+  border: 1px solid #C9A84C11;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px;
+  text-align: center; padding: 40px;
+}
+.frame-emblem {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 60px; color: var(--gold);
+  text-shadow: var(--glow-strong);
+  line-height: 1;
+}
+.frame-motto {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; letter-spacing: 4px;
+  color: var(--text-dim); text-transform: uppercase;
+  line-height: 2;
+}
+
+/* ── GAMES ── */
+.games-section { background: var(--surface); padding: 100px 0; }
+.games-inner { max-width: 1200px; margin: 0 auto; padding: 0 60px; }
+.games-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2px; margin-top: 60px;
+  border: 1px solid #C9A84C11;
+}
+.game-card {
+  background: var(--black2);
+  padding: 48px 40px;
+  position: relative; overflow: hidden;
+  transition: background 0.4s;
+  border-right: 1px solid #C9A84C11;
+  cursor: none;
+}
+.game-card:last-child { border-right: none; }
+.game-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 30% 20%, #C9A84C0A, transparent 60%);
+  opacity: 0; transition: opacity 0.4s;
+}
+.game-card:hover { background: #0D0D08; }
+.game-card:hover::before { opacity: 1; }
+a.game-card {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  cursor: pointer;
+}
+a.game-card:hover {
+  background: #0D0D08;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 40px #C9A84C11;
+  border-color: #C9A84C22;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.game-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  display: block;
+  filter: drop-shadow(0 0 10px #C9A84C44);
+}
+.visit-hint {
+  position: absolute;
+  top: 16px;
+  right: 48px;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #C9A84C44;
+  text-transform: uppercase;
+}
+.game-links-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.game-status {
+  display: inline-block;
+  font-family: 'Cinzel', serif; font-size: 9px;
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 2px; margin-bottom: 24px;
+}
+.status-live {
+  background: #C9A84C22; color: var(--gold);
+  border: 1px solid #C9A84C33;
+}
+.status-soon {
+  background: #2A2410; color: #5A4A2A;
+  border: 1px solid #2A2410;
+}
+.game-icon {
+  font-size: 48px; margin-bottom: 20px; display: block;
+  filter: drop-shadow(0 0 12px #C9A84C66);
+}
+.game-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--gold-light); margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+.game-genre {
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 16px;
+  font-family: 'Cinzel', serif;
+}
+.game-desc {
+  font-size: 13px; color: #4A3A1A; line-height: 1.8; margin-bottom: 28px;
+}
+.game-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.tag {
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  border: 1px solid #2A2410; color: #4A3A1A;
+  padding: 4px 10px; font-family: 'Cinzel', serif;
+}
+.game-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Cinzel', serif; font-size: 11px;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); text-decoration: none;
+  border-bottom: 1px solid #C9A84C33; padding-bottom: 4px;
+  transition: border-color 0.2s, color 0.2s;
+}
+.game-btn:hover { border-color: var(--gold); color: var(--gold-bright); }
+.game-btn-disabled {
+  color: #3A2A10; border-color: #2A1A08; cursor: default;
+}
+.game-number {
+  position: absolute; top: 24px; right: 28px;
+  font-family: 'Cinzel', serif; font-size: 64px; font-weight: 700;
+  color: #C9A84C08; line-height: 1; user-select: none;
+}
+
+/* ── PHILOSOPHY ── */
+.philosophy-wrap { max-width: 900px; margin: 0 auto; }
+.phil-items { display: flex; flex-direction: column; gap: 0; }
+.phil-item {
+  display: grid; grid-template-columns: 80px 1fr;
+  gap: 40px; padding: 40px 0;
+  border-bottom: 1px solid #C9A84C0A;
+  align-items: start;
+}
+.phil-num {
+  font-family: 'Cinzel', serif; font-size: 36px; font-weight: 700;
+  color: #C9A84C22; line-height: 1; padding-top: 4px;
+}
+.phil-content h3 {
+  font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+}
+.phil-content p { font-size: 14px; color: #5A4A2A; line-height: 1.9; }
+
+/* ── CONTACT ── */
+.contact-section {
+  background: var(--surface);
+  border-top: 1px solid #C9A84C11;
+  border-bottom: 1px solid #C9A84C11;
+}
+.contact-inner {
+  max-width: 700px; margin: 0 auto;
+  padding: 100px 60px; text-align: center;
+}
+.contact-items {
+  display: flex; flex-direction: column; gap: 24px;
+  margin-top: 48px;
+}
+.contact-item {
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; padding: 20px 32px;
+  border: 1px solid #C9A84C11;
+  background: #C9A84C04;
+  transition: border-color 0.3s, background 0.3s;
+}
+.contact-item:hover {
+  border-color: #C9A84C33; background: #C9A84C08;
+}
+.contact-icon { font-size: 18px; }
+.contact-text { text-align: left; }
+.contact-label {
+  font-family: 'Cinzel', serif; font-size: 10px;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim);
+}
+.contact-value {
+  font-size: 14px; color: var(--gold-light); margin-top: 2px;
+}
+.contact-value a { color: inherit; text-decoration: none; }
+
+/* ── FOOTER ── */
+footer {
+  padding: 60px; text-align: center;
+  border-top: 1px solid #C9A84C0A;
+}
+.footer-logo {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 22px; font-weight: 700; color: var(--gold);
+  text-shadow: var(--glow); letter-spacing: 4px; margin-bottom: 20px;
+}
+.footer-links {
+  display: flex; gap: 32px; justify-content: center; margin: 20px 0;
+}
+.footer-links a {
+  font-family: 'Cinzel', serif; font-size: 10px;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--text-dim); text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold); }
+.footer-copy {
+  font-size: 12px; color: #2A1A08; letter-spacing: 2px;
+  font-family: 'Cinzel', serif; text-transform: uppercase;
+}
+
+/* ── DIVIDERS ── */
+.ornament {
+  text-align: center; margin: 0 auto;
+  font-family: 'Cinzel', serif; color: var(--gold);
+  opacity: 0.4; font-size: 18px; letter-spacing: 12px;
+}
+
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  nav { padding: 18px 24px; }
+  .nav-links { display: none; }
+  section { padding: 80px 24px; }
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .about-frame { display: none; }
+  .stats-inner { grid-template-columns: repeat(2,1fr); }
+  .stat-item { border-right: none; border-bottom: 1px solid #C9A84C11; }
+  footer { padding: 48px 24px; }
+  .games-inner { padding: 0 24px; }
+  .contact-inner { padding: 80px 24px; }
+  .phil-item { grid-template-columns: 48px 1fr; gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+<canvas id="bg"></canvas>
+
+<div class="page">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Shree</div>
+  <div class="nav-links">
+    <a href="#about">Studio</a>
+    <a href="#games">Games</a>
+    <a href="#philosophy">Philosophy</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-crown">✦ Est. 2026 · Independent Game Studio ✦</div>
+  <h1 class="hero-title">
+    <span class="shree">SHREE</span>
+    <span class="games">GAMES & APPS</span>
+  </h1>
+  <div class="hero-line"></div>
+  <p class="hero-tagline">Crafting worlds worth playing in.<br>One game at a time.</p>
+<br>
+<br>
+<br>
+  <div class="hero-scroll">
+    <span>Explore</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-wrap reveal">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <span class="stat-num">2+</span>
+      <span class="stat-label">Games Published</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">Android</span>
+      <span class="stat-label">Platform</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">100%</span>
+      <span class="stat-label">Independent</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">Free</span>
+      <span class="stat-label">To Play</span>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div>
+      <div class="about-badge reveal">✦ Our Studio</div>
+      <h2 class="about-heading reveal">Built with passion.<br>Played with joy.</h2>
+      <p class="about-body reveal">Shree Games & Apps is an independent Android game studio dedicated to crafting engaging, polished mobile experiences. Every game we ship is built with care — from the first line of code to the final pixel.</p>
+      <p class="about-body reveal">We believe great games don't need a giant team. They need a clear vision, relentless iteration, and a genuine love for the craft.</p>
+
+      <div class="about-values">
+        <div class="value-item reveal">
+          <div class="value-icon">◈</div>
+          <div class="value-text">
+            <h4>Quality First</h4>
+            <p>Every release is polished and tested before it reaches players.</p>
+          </div>
+        </div>
+        <div class="value-item reveal">
+          <div class="value-icon">◈</div>
+          <div class="value-text">
+            <h4>Player Focused</h4>
+            <p>Smooth controls, clean UI, and gameplay that respects your time.</p>
+          </div>
+        </div>
+        <div class="value-item reveal">
+          <div class="value-icon">◈</div>
+          <div class="value-text">
+            <h4>Always Free</h4>
+            <p>Our games are free to download and play — no barriers, ever.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-frame reveal">
+      <div class="frame-border"></div>
+      <div class="frame-corner fc-tl"></div>
+      <div class="frame-corner fc-tr"></div>
+      <div class="frame-corner fc-bl"></div>
+      <div class="frame-corner fc-br"></div>
+      <div class="frame-inner">
+        <div class="frame-emblem">श्री</div>
+        <div class="frame-motto">
+          Shree Games & Apps<br>
+          ✦ Independent Studio ✦<br>
+          Android · 2025
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GAMES -->
+<div class="games-section" id="games">
+  <div class="games-inner">
+    <div class="s-eyebrow reveal">Our Portfolio</div>
+    <h2 class="s-title reveal">Games & Apps</h2>
+    <div class="gold-rule reveal"></div>
+
+    <div class="games-grid" id="games-grid-dynamic">
+
+      <!-- Neon Breakout -->
+      <div class="game-card reveal">
+        <div class="game-number">01</div>
+        <span class="game-status status-live">✦ Live</span>
+        <span class="game-icon">🎮</span>
+        <div class="game-name">Neon Breakout</div>
+        <div class="game-genre">Arcade · Brick Breaker</div>
+        <p class="game-desc">Break glowing neon bricks in this fast-paced arcade classic. Smooth paddle controls, stunning neon visuals, and an endless high-score chase — all offline.</p>
+        <div class="game-tags">
+          <span class="tag">Free</span>
+          <span class="tag">Offline</span>
+          <span class="tag">Android</span>
+          <span class="tag">Arcade</span>
+        </div>
+        <a href="#" class="game-btn">
+          Download on Indus →
+        </a>
+      </div>
+
+      <!-- Chaturanga -->
+      <div class="game-card reveal">
+        <div class="game-number">02</div>
+        <span class="game-status status-soon">⏳ Coming Soon</span>
+        <span class="game-icon">♛</span>
+        <div class="game-name">Chaturanga</div>
+        <div class="game-genre">Strategy · Historical Chess</div>
+        <p class="game-desc">The ancient game of kings, reimagined for Android. Experience chess as it was played in the courts of ancient India — with a full economy, leagues, and multiplayer.</p>
+        <div class="game-tags">
+          <span class="tag">Strategy</span>
+          <span class="tag">Historical</span>
+          <span class="tag">Multiplayer</span>
+          <span class="tag">Android</span>
+        </div>
+        <span class="game-btn game-btn-disabled">Coming Soon →</span>
+      </div>
+
+      <!-- Future -->
+      <div class="game-card reveal">
+        <div class="game-number">03</div>
+        <span class="game-status status-soon">✦ In Dev</span>
+        <span class="game-icon">🔮</span>
+        <div class="game-name">Next Title</div>
+        <div class="game-genre">To Be Revealed</div>
+        <p class="game-desc">Something new is being forged in the studio. We're designing an experience that pushes the limits of what a small team can build. Stay tuned.</p>
+        <div class="game-tags">
+          <span class="tag">Mystery</span>
+          <span class="tag">Android</span>
+        </div>
+        <span class="game-btn game-btn-disabled">Stay Tuned →</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PHILOSOPHY -->
+<section id="philosophy">
+  <div class="s-eyebrow reveal">How We Work</div>
+  <h2 class="s-title reveal">Our Philosophy</h2>
+  <div class="gold-rule reveal"></div>
+
+  <div class="philosophy-wrap">
+    <div class="phil-items">
+      <div class="phil-item reveal">
+        <div class="phil-num">I</div>
+        <div class="phil-content">
+          <h3>Start with the player</h3>
+          <p>Before writing a single line of code, we ask: what makes this fun? Every mechanic, every screen, every button exists to serve the player's experience — not the developer's convenience.</p>
+        </div>
+      </div>
+      <div class="phil-item reveal">
+        <div class="phil-num">II</div>
+        <div class="phil-content">
+          <h3>Ship, then improve</h3>
+          <p>A good game in players' hands beats a perfect game on a hard drive. We release early, listen carefully, and iterate constantly based on real feedback from real players.</p>
+        </div>
+      </div>
+      <div class="phil-item reveal">
+        <div class="phil-num">III</div>
+        <div class="phil-content">
+          <h3>Respect the device</h3>
+          <p>Our games run fast, stay offline-first, and never drain your battery. Mobile players deserve experiences built for mobile — not PC ports crammed onto a small screen.</p>
+        </div>
+      </div>
+      <div class="phil-item reveal">
+        <div class="phil-num">IV</div>
+        <div class="phil-content">
+          <h3>Earn the player's trust</h3>
+          <p>No dark patterns. No pay-to-win. No forced ads. If we monetize, it's optional and fair. Players who trust us come back — and that matters more than a quick cash grab.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="s-eyebrow reveal">Get In Touch</div>
+    <h2 class="s-title reveal">Contact the Studio</h2>
+    <div class="gold-rule reveal"></div>
+    <p class="s-sub reveal">Whether you're a player, a collaborator, or just curious about what we're building — we'd love to hear from you.</p>
+
+    <div class="contact-items">
+      <div class="contact-item reveal">
+        <div class="contact-icon">✉</div>
+        <div class="contact-text">
+          <div class="contact-label">Email</div>
+          <div class="contact-value"><a href="mailto:your@email.com">your@email.com</a></div>
+        </div>
+      </div>
+      <div class="contact-item reveal">
+        <div class="contact-icon">🌐</div>
+        <div class="contact-text">
+          <div class="contact-label">Website</div>
+          <div class="contact-value"><a href="#">shree-1001.github.io</a></div>
+        </div>
+      </div>
+      <div class="contact-item reveal">
+        <div class="contact-icon">📱</div>
+        <div class="contact-text">
+          <div class="contact-label">Platform</div>
+          <div class="contact-value">Google Play · Indus Appstore</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Shree Games & Apps</div>
+  <div class="ornament reveal">✦ ◈ ✦</div>
+  <div class="footer-links reveal">
+    <a href="./neon-breakout/privacy-policy.html">Privacy Policy</a>
+    <a href="#games">Games</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <p class="footer-copy reveal">© 2025 Shree Games & Apps · All Rights Reserved</p>
+</footer>
+
+</div>
+
+<script>
+// ── CUSTOM CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+document.querySelectorAll('a, button, .game-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '20px'; cursor.style.height = '20px';
+    ring.style.width = '60px'; ring.style.height = '60px'; ring.style.opacity = '0.8';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '12px'; cursor.style.height = '12px';
+    ring.style.width = '40px'; ring.style.height = '40px'; ring.style.opacity = '0.5';
+  });
+});
+
+// ── PARTICLE BACKGROUND ──
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+resize(); window.addEventListener('resize', resize);
+
+const particles = Array.from({length: 80}, () => ({
+  x: Math.random() * innerWidth,
+  y: Math.random() * innerHeight,
+  vx: (Math.random() - 0.5) * 0.3,
+  vy: (Math.random() - 0.5) * 0.3,
+  r: Math.random() * 1.2 + 0.3,
+  alpha: Math.random() * 0.4 + 0.05,
+  gold: Math.random() > 0.3
+}));
+
+// Shooting stars
+const stars = [];
+function spawnStar() {
+  stars.push({
+    x: Math.random() * innerWidth,
+    y: Math.random() * innerHeight * 0.5,
+    vx: 2 + Math.random() * 3,
+    vy: 1 + Math.random() * 2,
+    len: 60 + Math.random() * 80,
+    alpha: 1, life: 1
+  });
+}
+setInterval(spawnStar, 3000);
+
+function drawBg() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#050505';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // subtle horizontal scan line
+  const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  grad.addColorStop(0, '#C9A84C00');
+  grad.addColorStop(0.4, '#C9A84C04');
+  grad.addColorStop(1, '#C9A84C00');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // particles
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = canvas.width;
+    if (p.x > canvas.width) p.x = 0;
+    if (p.y < 0) p.y = canvas.height;
+    if (p.y > canvas.height) p.y = 0;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    ctx.fillStyle = p.gold ? `rgba(201,168,76,${p.alpha})` : `rgba(139,105,20,${p.alpha * 0.5})`;
+    ctx.fill();
+  });
+
+  // shooting stars
+  for (let i = stars.length-1; i >= 0; i--) {
+    const s = stars[i];
+    s.x += s.vx; s.y += s.vy; s.life -= 0.018;
+    if (s.life <= 0) { stars.splice(i,1); continue; }
+    const sg = ctx.createLinearGradient(s.x - s.vx*s.len/s.vx, s.y - s.vy*s.len/s.vx, s.x, s.y);
+    sg.addColorStop(0, `rgba(201,168,76,0)`);
+    sg.addColorStop(1, `rgba(240,208,128,${s.life * 0.8})`);
+    ctx.beginPath();
+    ctx.moveTo(s.x - s.vx*(s.len/s.vx), s.y - s.vy*(s.len/s.vx));
+    ctx.lineTo(s.x, s.y);
+    ctx.strokeStyle = sg; ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+// ── SCROLL REVEAL ──
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => obs.observe(el));
+
+// ── NAV ACTIVE HIGHLIGHT ──
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  nav.style.borderBottomColor = scrollY > 80 ? '#C9A84C22' : '#C9A84C11';
+});
+
+// ══════════════════════════════════════════════════════════════
+// ── GITHUB data.json CONNECT ──
+// Fetches data.json from GitHub Pages.
+// Renders app cards dynamically with logo, click, store links.
+// Falls back to static HTML if fetch fails.
+// ══════════════════════════════════════════════════════════════
+(function() {
+
+  // ── BUILD ONE CARD ──
+  function buildCard(a, i) {
+    // Store link buttons
+    const links = [];
+    if (a.status === 'live') {
+      if (a.indus)
+        links.push(`<a href="${a.indus}" target="_blank" class="game-btn" onclick="event.stopPropagation()">Indus →</a>`);
+      if (a.playstore)
+        links.push(`<a href="${a.playstore}" target="_blank" class="game-btn" onclick="event.stopPropagation()">Play Store →</a>`);
+      if (!a.indus && !a.playstore)
+        links.push(`<span class="game-btn game-btn-disabled">Coming to stores →</span>`);
+    } else if (a.status === 'coming-soon') {
+      links.push(`<span class="game-btn game-btn-disabled">Coming Soon →</span>`);
+    } else {
+      links.push(`<span class="game-btn game-btn-disabled">Stay Tuned →</span>`);
+    }
+
+    // Logo image or emoji icon
+    const mediaHtml = a.logo
+      ? `<img
+           src="${a.logo}"
+           class="game-logo"
+           alt="${a.name} logo"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
+         /><span class="game-icon" style="display:none">${a.icon || '🎮'}</span>`
+      : `<span class="game-icon">${a.icon || '🎮'}</span>`;
+
+    // Status badge
+    const statusClass = a.status === 'live' ? 'status-live' : 'status-soon';
+    const statusText  = a.status === 'live'
+      ? '✦ Live'
+      : a.status === 'coming-soon'
+      ? '⏳ Coming Soon'
+      : '🔮 In Dev';
+
+    // Tags
+    const tagsHtml = (a.tags || [])
+      .map(t => `<span class="tag">${t}</span>`)
+      .join('');
+
+    // Visit hint — only if card is clickable
+    const visitHint = a.website
+      ? `<div class="visit-hint">Visit ↗</div>`
+      : '';
+
+    // Wrap entire card in <a> if website set, else plain <div>
+    const tag   = a.website ? 'a' : 'div';
+    const attrs = a.website
+      ? `href="${a.website}" target="_blank" title="Visit ${a.name} website"`
+      : '';
+
+    return `
+      <${tag} class="game-card reveal visible" ${attrs}>
+        ${visitHint}
+        <div class="game-number">0${i + 1}</div>
+        <span class="game-status ${statusClass}">${statusText}</span>
+        ${mediaHtml}
+        <div class="game-name">${a.name}</div>
+        <div class="game-genre">${a.genre || ''}</div>
+        <p class="game-desc">${a.desc || ''}</p>
+        <div class="game-tags">${tagsHtml}</div>
+        <div class="game-links-row">${links.join('')}</div>
+      </${tag}>`;
+  }
+
+  // ── APPLY STUDIO INFO ──
+  function applyStudio(studio) {
+    if (!studio) return;
+    // Update any mailto links
+    if (studio.email) {
+      document.querySelectorAll('a[href^="mailto:"]').forEach(el => {
+        el.href = 'mailto:' + studio.email;
+        el.textContent = studio.email;
+      });
+    }
+    // Update website link in contact section
+    if (studio.website) {
+      document.querySelectorAll('.contact-value a').forEach(el => {
+        if (el.textContent.includes('github') || el.textContent.includes('shree-1001')) {
+          el.href = 'https://' + studio.website;
+          el.textContent = studio.website;
+          el.target = '_blank';
+        }
+      });
+    }
+  }
+
+  // ── APPLY APPS ──
+  function applyApps(apps) {
+    if (!apps || !apps.length) return;
+    const grid = document.getElementById('games-grid-dynamic');
+    if (!grid) return;
+    grid.innerHTML = apps.map((a, i) => buildCard(a, i)).join('');
+  }
+
+  // ── FETCH data.json ──
+  // Replace YOUR_GITHUB_USERNAME with your actual username
+  const DATA_URL = 'https://shree-1001.github.io/data.json';
+
+  fetch(DATA_URL + '?v=' + Date.now()) // cache-bust
+    .then(res => {
+      if (!res.ok) throw new Error('data.json not found');
+      return res.json();
+    })
+    .then(data => {
+      applyStudio(data.studio);
+      applyApps(data.apps);
+    })
+    .catch(() => {
+      // Silently fail — static HTML cards remain visible
+      console.log('Using static fallback cards');
+    });
+
+})();
+
+</script>
+</body>
+</html>
