@@ -15,10 +15,10 @@
       "status": "live",
       "desc": "Break glowing neon bricks in this fast-paced arcade classic. Smooth paddle controls, stunning neon visuals, and an endless high-score chase — all offline.",
       "tags": ["Free", "Offline", "Android", "Arcade"],
-      "website": "",
-      "playstore": "",
-      "indus": "",
-      "logo": ""
+      "website": "https://shree-1001.github.io/neon-breakout/home.html",
+      "playstore": "https://play.google.com/store/apps/details?id=com.adarsh.neonbreakout",
+      "indus": "https://indusapp.store/pvl130ss",
+      "logo": "https://shree-1001.github.io/neon-breakout/Neon-Breakout-512_512-logo.png"
     },
     {
       "id": "chaturanga",
