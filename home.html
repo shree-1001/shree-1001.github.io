@@ -1077,11 +1077,17 @@ const attrs = a.website
 
   // Make the whole card clickable (except buttons)
   document.querySelectorAll('.game-card[data-url]').forEach(card => {
-    card.addEventListener('click', function (e) {
-      if (e.target.closest('a')) return;
-      window.open(this.dataset.url, '_blank');
-    });
+  card.addEventListener('click', function (e) {
+
+    // If a button/link inside the card was clicked,
+    // let it work normally and don't open the website.
+    if (e.target.closest('.game-btn')) {
+      return;
+    }
+
+    window.open(this.dataset.url, '_blank');
   });
+});
 }
 
   // ── FETCH data.json ──
