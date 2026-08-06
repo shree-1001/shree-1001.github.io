@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — Shree Games & Apps</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500&family=Cinzel+Decorative:wght@700;900&display=swap');
+:root{--gold:#D4A843;--gold-l:#FFE566;--gold-b:#FFF0A0;--black:#050505;--s1:#0A0A08;--s2:#0F0F0A;--text:#FFF8E7;--dim:#C8A84A;--border:#1E1A0A;--glow:0 0 30px #C9A84C44,0 0 80px #C9A84C22}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.page{position:relative;z-index:1}
+nav{background:#050505ee;border-bottom:1px solid #C9A84C11;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.nav-logo{font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:var(--gold);letter-spacing:2px}
+.nav-links{display:flex;gap:24px}
+.nav-links a{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-family:'Cinzel',serif;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.hero{padding:120px 5% 72px;text-align:center}
+.eye{font-family:'Cinzel',serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:16px}
+.htitle{font-family:'Cinzel Decorative',serif;font-size:clamp(28px,6vw,68px);font-weight:900;color:var(--gold-l);text-shadow:0 0 60px #C9A84C44;margin-bottom:8px}
+.hsub{font-size:14px;color:var(--dim);max-width:440px;margin:0 auto;line-height:2}
+.rule{width:50px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:24px auto}
+
+/* CONTACT GRID */
+.contact-wrap{max-width:1100px;margin:0 auto;padding:0 5% 80px;display:grid;grid-template-columns:1fr 1.4fr;gap:52px;align-items:start}
+@media(max-width:768px){.contact-wrap{grid-template-columns:1fr;gap:40px}}
+
+/* INFO SIDE */
+.info-title{font-family:'Cinzel',serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+.ci{display:flex;align-items:flex-start;gap:16px;padding:20px 0;border-bottom:1px solid #C9A84C06}
+.ci:last-child{border-bottom:none}
+.ci-wrap{display:flex;flex-direction:column;gap:0}
+.ci-icon{width:40px;height:40px;border:1px solid #C9A84C18;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:2px}
+.ci-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#806020;margin-bottom:4px}
+.ci-val{font-size:14px;color:var(--gold-l)}
+.ci-val a{color:var(--gold-l);transition:color .2s}
+.ci-val a:hover{color:var(--gold)}
+.ci-hint{font-size:11px;color:#A07830;margin-top:3px}
+
+/* SOCIAL */
+.social-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin:32px 0 16px}
+.social-links{display:flex;flex-direction:column;gap:10px}
+.sl{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid #C9A84C08;background:#C9A84C03;transition:border-color .3s}
+.sl:hover{border-color:#C9A84C22}
+.sl-icon{font-size:16px;width:24px;text-align:center}
+.sl-text{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--dim)}
+.sl:hover .sl-text{color:var(--gold)}
+
+/* RESPONSE TIME BOX */
+.resp-box{background:var(--s1);border:1px solid #C9A84C0A;padding:20px;margin-top:24px}
+.resp-box-title{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.resp-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #C9A84C06;font-size:12px}
+.resp-item:last-child{border-bottom:none}
+.resp-item span:first-child{color:#A07830}
+.resp-item span:last-child{color:var(--gold-l);font-family:'Cinzel',serif;font-size:11px}
+
+/* FORM SIDE */
+.form-card{background:var(--s1);border:1px solid #C9A84C0A;padding:36px}
+.form-title{font-family:'Cinzel',serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid #C9A84C08}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:500px){.form-row{grid-template-columns:1fr}}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.form-group label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--dim)}
+.form-group input,.form-group textarea,.form-group select{background:#0A0A08;border:1px solid #C9A84C11;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;padding:11px 14px;outline:none;transition:border-color .2s;width:100%}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#C9A84C33}
+.form-group textarea{resize:vertical;min-height:120px}
+.form-group select option{background:#0A0A08}
+.char-hint{font-size:11px;color:#806020;text-align:right}
+.submit-btn{width:100%;background:none;border:1px solid #C9A84C33;color:var(--gold);font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:14px;cursor:pointer;transition:all .2s;margin-top:4px}
+.submit-btn:hover{background:#C9A84C11;border-color:#C9A84C66}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.form-success{display:none;background:#4CAF5011;border:1px solid #4CAF5022;padding:16px;text-align:center;margin-top:16px}
+.form-success p{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--green)}
+
+/* FAQ */
+.faq-wrap{max-width:800px;margin:0 auto;padding:0 5% 80px}
+.faq-title{font-family:'Cinzel Decorative',serif;font-size:clamp(22px,3vw,36px);font-weight:700;color:var(--gold-l);text-align:center;margin-bottom:8px}
+.faq-list{display:flex;flex-direction:column;gap:2px;margin-top:40px}
+.faq-item{background:var(--s1);border:1px solid #C9A84C08}
+.faq-q{width:100%;background:none;border:none;color:var(--text);font-family:'Cinzel',serif;font-size:12px;letter-spacing:2px;text-align:left;padding:18px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:color .2s}
+.faq-q:hover{color:var(--gold)}
+.faq-q span{color:var(--gold);font-size:16px;transition:transform .3s}
+.faq-q.open span{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s}
+.faq-a.open{max-height:200px;padding:0 20px 18px}
+.faq-a p{font-size:13px;color:#C8A040;line-height:1.9}
+
+footer{background:var(--s1);border-top:1px solid #C9A84C08;padding:40px 5%;text-align:center}
+.fl{font-family:'Cinzel',serif;font-size:16px;color:var(--gold);letter-spacing:3px;margin-bottom:14px}
+.flinks{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+.flinks a{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);transition:color .2s}
+.flinks a:hover{color:var(--gold)}
+.fcopy{font-size:11px;color:#705820;letter-spacing:2px;font-family:'Cinzel',serif}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+.rv.on{opacity:1;transform:translateY(0)}
+@media(max-width:640px){.nav-links{display:none}.form-card{padding:24px}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div class="page">
+<nav>
+  <a href="index.html" class="nav-logo">Shree Games & Apps</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="index.html#games">Games</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="eye rv">We're Here</div>
+  <h1 class="htitle rv">Contact Us</h1>
+  <div class="rule"></div>
+  <p class="hsub rv">Have a question, found a bug, or just want to say hi? We'd love to hear from you.</p>
+</div>
+
+<div class="contact-wrap">
+  <!-- INFO -->
+  <div>
+    <div class="info-title rv">Studio Contact Details</div>
+    <div class="ci-wrap">
+      <div class="ci rv">
+        <div class="ci-icon">✉</div>
+        <div>
+          <div class="ci-label">Primary Email</div>
+          <div class="ci-val"><a href="mailto:shreegamesapps@gmail.com">shreegamesapps@gmail.com</a></div>
+          <div class="ci-hint">Best for general inquiries, partnerships</div>
+        </div>
+      </div>
+      <div class="ci rv">
+        <div class="ci-icon">🐛</div>
+        <div>
+          <div class="ci-label">Bug Reports</div>
+          <div class="ci-val"><a href="mailto:shreegamesapps@gmail.com?subject=Bug Report">shreegamesapps@gmail.com</a></div>
+          <div class="ci-hint">Include app name, device, and Android version</div>
+        </div>
+      </div>
+      <div class="ci rv">
+        <div class="ci-icon">📱</div>
+        <div>
+          <div class="ci-label">Phone / WhatsApp</div>
+          <div class="ci-val">+91 XXXXX XXXXX</div>
+          <div class="ci-hint">Available Mon–Sat, 10 AM – 7 PM IST</div>
+        </div>
+      </div>
+      <div class="ci rv">
+        <div class="ci-icon">📍</div>
+        <div>
+          <div class="ci-label">Location</div>
+          <div class="ci-val">India</div>
+          <div class="ci-hint">Time zone: IST (UTC+5:30)</div>
+        </div>
+      </div>
+      <div class="ci rv">
+        <div class="ci-icon">🌐</div>
+        <div>
+          <div class="ci-label">Website</div>
+          <div class="ci-val"><a href="https://shree-1001.github.io" target="_blank">shree-1001.github.io</a></div>
+          <div class="ci-hint">Games, privacy policy, updates</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="social-title rv">Find Us Online</div>
+    <div class="social-links rv">
+      <a class="sl" href="https://github.com/shree-1001" target="_blank">
+        <span class="sl-icon">⌨</span><span class="sl-text">GitHub — shree-1001</span>
+      </a>
+      <a class="sl" href="https://shree-1001.github.io" target="_blank">
+        <span class="sl-icon">🌐</span><span class="sl-text">Website — shree-1001.github.io</span>
+      </a>
+      <a class="sl" href="https://play.google.com/store" target="_blank">
+        <span class="sl-icon">▶</span><span class="sl-text">Google Play — Coming Soon</span>
+      </a>
+      <a class="sl" href="#" target="_blank">
+        <span class="sl-icon">📱</span><span class="sl-text">Indus Appstore — Neon Breakout</span>
+      </a>
+    </div>
+
+    <div class="resp-box rv">
+      <div class="resp-box-title">Response Times</div>
+      <div class="resp-item"><span>General Inquiry</span><span>Within 24–48 hrs</span></div>
+      <div class="resp-item"><span>Bug Report</span><span>Within 24 hrs</span></div>
+      <div class="resp-item"><span>Partnership</span><span>Within 72 hrs</span></div>
+      <div class="resp-item"><span>Privacy Request</span><span>Within 48 hrs</span></div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-card rv">
+    <div class="form-title">Send a Message</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Your Name *</label>
+        <input type="text" id="f-name" placeholder="Your name" maxlength="60"/>
+      </div>
+      <div class="form-group">
+        <label>Email Address *</label>
+        <input type="email" id="f-email" placeholder="your@email.com"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Subject *</label>
+      <select id="f-subject">
+        <option value="">Select a topic...</option>
+        <option value="general">General Inquiry</option>
+        <option value="bug">Bug Report</option>
+        <option value="feedback">Game Feedback</option>
+        <option value="partnership">Partnership / Collaboration</option>
+        <option value="privacy">Privacy Request</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>App / Game (if applicable)</label>
+      <select id="f-app">
+        <option value="">Not app-specific</option>
+        <option value="neon-breakout">Neon Breakout</option>
+        <option value="chaturanga">Chaturanga: Legacy of Kings</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Message *</label>
+      <textarea id="f-msg" placeholder="Describe your question, feedback, or bug report in detail..." maxlength="2000"></textarea>
+      <div class="char-hint"><span id="char-count">0</span> / 2000</div>
+    </div>
+    <div class="form-group">
+      <label>Device (for bug reports)</label>
+      <input type="text" id="f-device" placeholder="e.g. Samsung Galaxy A54, Android 14"/>
+    </div>
+    <button class="submit-btn" id="submit-btn" onclick="submitForm()">✦ Send Message</button>
+    <div class="form-success" id="form-success">
+      <p>✓ Message sent! We'll get back to you within 48 hours.</p>
+    </div>
+    <p style="font-size:11px;color:#806020;margin-top:16px;line-height:1.7">By submitting this form, your message will be prepared as an email to our studio. Your information is used only to respond to your inquiry.</p>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div style="background:var(--s1);border-top:1px solid #C9A84C08;border-bottom:1px solid #C9A84C08;padding:80px 5%">
+  <div class="faq-wrap" style="padding:0">
+    <div class="eye rv" style="text-align:center">Common Questions</div>
+    <div class="faq-title rv">FAQ</div>
+    <div class="rule rv"></div>
+    <div class="faq-list rv">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Are your games really free? <span>+</span></button>
+        <div class="faq-a"><p>Yes, all our games are completely free to download and play. We monetize optionally through rewarded ads (you choose to watch) and non-intrusive banner ads. There are no paywalls or pay-to-win mechanics.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Do your games work offline? <span>+</span></button>
+        <div class="faq-a"><p>Yes! Games like Neon Breakout are fully offline. An internet connection is only needed to load optional advertisements. Core gameplay always works without internet.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I report a bug? <span>+</span></button>
+        <div class="faq-a"><p>Use the contact form above and select "Bug Report". Please include your device model, Android version, and a description of the issue. Screenshots help a lot! We aim to fix critical bugs within 24–48 hours.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How is my data handled? <span>+</span></button>
+        <div class="faq-a"><p>We collect minimal data. Game progress (scores, levels) is stored only on your device. Advertising data is handled by Google AdMob under their privacy policy. We never sell your personal data. See our full Privacy Policy for details.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Can I collaborate or partner with Shree Games? <span>+</span></button>
+        <div class="faq-a"><p>Absolutely! We're open to collaborations, content partnerships, and feedback from other indie developers. Reach out via email with your proposal and we'll get back to you within 72 hours.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fl">Shree Games & Apps</div>
+  <div class="flinks">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+  <p class="fcopy">© 2025 Shree Games & Apps · All Rights Reserved</p>
+</footer>
+</div>
+
+<script>
+// BG
+const cv=document.getElementById('bg'),cx=cv.getContext('2d');
+function rsz(){cv.width=innerWidth;cv.height=innerHeight;}rsz();window.addEventListener('resize',rsz);
+const pts=Array.from({length:60},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2,r:Math.random()*.8+.3,a:Math.random()*.25+.05}));
+function draw(){cx.clearRect(0,0,cv.width,cv.height);cx.fillStyle='#050505';cx.fillRect(0,0,cv.width,cv.height);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=cv.width;if(p.x>cv.width)p.x=0;if(p.y<0)p.y=cv.height;if(p.y>cv.height)p.y=0;cx.beginPath();cx.arc(p.x,p.y,p.r,0,Math.PI*2);cx.fillStyle=`rgba(201,168,76,${p.a})`;cx.fill();});requestAnimationFrame(draw);}
+draw();
+
+// REVEAL
+const rvs=document.querySelectorAll('.rv');
+const ob=new IntersectionObserver(es=>{es.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),i*50);ob.unobserve(e.target);}});},{threshold:.08});
+rvs.forEach(el=>ob.observe(el));
+
+// CHAR COUNT
+document.getElementById('f-msg').addEventListener('input',function(){
+  document.getElementById('char-count').textContent=this.value.length;
+});
+
+// FORM SUBMIT — opens mailto
+function submitForm(){
+  const name=document.getElementById('f-name').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const subject=document.getElementById('f-subject').value;
+  const msg=document.getElementById('f-msg').value.trim();
+  if(!name||!email||!subject||!msg){alert('Please fill in all required fields.');return;}
+  const app=document.getElementById('f-app').value;
+  const device=document.getElementById('f-device').value.trim();
+  const body=`Name: ${name}\nEmail: ${email}\nApp: ${app||'N/A'}\nDevice: ${device||'N/A'}\n\nMessage:\n${msg}`;
+  const subjectLine=`[${subject.toUpperCase()}] ${app?`[${app}] `:''}Message from ${name}`;
+  window.location.href=`mailto:shreegamesapps@gmail.com?subject=${encodeURIComponent(subjectLine)}&body=${encodeURIComponent(body)}`;
+  document.getElementById('form-success').style.display='block';
+  setTimeout(()=>document.getElementById('form-success').style.display='none',5000);
+}
+
+// FAQ
+function toggleFaq(btn){
+  const ans=btn.nextElementSibling;
+  const isOpen=ans.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(a=>a.classList.remove('open'));
+  document.querySelectorAll('.faq-q').forEach(q=>q.classList.remove('open'));
+  if(!isOpen){ans.classList.add('open');btn.classList.add('open');}
+}
+</script>
+</body>
+</html>
