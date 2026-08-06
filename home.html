@@ -299,22 +299,20 @@ section { padding: 100px 60px; max-width: 1200px; margin: 0 auto; }
 .games-section { background: var(--surface); padding: 100px 0; }
 .games-inner { max-width: 1200px; margin: 0 auto; padding: 0 60px; }
 .games-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2px;
-    align-items: stretch;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2px; margin-top: 60px;
+  border: 1px solid #C9A84C11;
+  align-items: stretch;
 }
 .game-card {
   background: var(--black2);
   padding: 40px 32px;
-  position: relative;
-  overflow: hidden;
+  position: relative; overflow: hidden;
   transition: background 0.4s;
   border-right: 1px solid #C9A84C11;
   cursor: none;
   display: flex;
   flex-direction: column;
-  height: 100%;          /* ADD THIS */
 }
 .game-card:last-child { border-right: none; }
 .game-card::before {
@@ -326,12 +324,10 @@ section { padding: 100px 60px; max-width: 1200px; margin: 0 auto; }
 .game-card:hover { background: #0D0D08; }
 .game-card:hover::before { opacity: 1; }
 a.game-card {
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    height: 100%;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  cursor: pointer;
 }
 a.game-card:hover {
   background: #0D0D08;
@@ -407,9 +403,9 @@ a.game-card:hover {
   flex-direction: column;
   gap: 8px;
   margin-top: auto;
-  width: 100%;
   padding-top: 16px;
   border-top: 1px solid #C9A84C18;
+  width: 100%;
 }
 .game-btn {
   display: flex;
@@ -470,25 +466,6 @@ a.game-card:hover {
   position: absolute; top: 24px; right: 28px;
   font-family: 'Cinzel', serif; font-size: 64px; font-weight: 700;
   color: #C9A84C08; line-height: 1; user-select: none;
-}
-
-.game-title-link{
-    color: inherit;
-    text-decoration: none;
-    transition: .25s;
-}
-
-.game-title-link:hover{
-    color: var(--gold-light);
-}
-
-.game-logo{
-    cursor:pointer;
-}
-
-.game-logo:hover{
-    transform: scale(1.05);
-    transition: .25s;
 }
 
 /* ── PHILOSOPHY ── */
@@ -996,173 +973,81 @@ window.addEventListener('scroll', () => {
 
   // ── BUILD ONE CARD ──
   function buildCard(a, i) {
-
-  // Store buttons
-  const links = [];
-
-  if (a.status === "live") {
-
-    if (a.indus) {
-      links.push(`
-        <a href="${a.indus}"
-           target="_blank"
-           class="game-btn">
-           Indus Appstore →
-        </a>
-      `);
+    // Store link buttons
+    const links = [];
+    if (a.status === 'live') {
+      if (a.indus)
+        links.push(`<a href="${a.indus}" target="_blank" class="game-btn" onclick="event.stopPropagation()">Indus →</a>`);
+      if (a.playstore)
+        links.push(`<a href="${a.playstore}" target="_blank" class="game-btn" onclick="event.stopPropagation()">Play Store →</a>`);
+      if (!a.indus && !a.playstore)
+        links.push(`<span class="game-btn game-btn-disabled">Coming to stores →</span>`);
+    } else if (a.status === 'coming-soon') {
+      links.push(`<span class="game-btn game-btn-disabled">Coming Soon →</span>`);
+    } else {
+      links.push(`<span class="game-btn game-btn-disabled">Stay Tuned →</span>`);
     }
 
-    if (a.playstore) {
-      links.push(`
-        <a href="${a.playstore}"
-           target="_blank"
-           class="game-btn">
-           Play Store →
-        </a>
-      `);
-    }
+    // Logo image or emoji icon
+    const mediaHtml = a.logo
+      ? `<img
+           src="${a.logo}"
+           class="game-logo"
+           alt="${a.name} logo"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
+         /><span class="game-icon" style="display:none">${a.icon || '🎮'}</span>`
+      : `<span class="game-icon">${a.icon || '🎮'}</span>`;
 
-    if (!a.indus && !a.playstore) {
-      links.push(`
-        <span class="game-btn game-btn-disabled">
-          Coming to Stores →
-        </span>
-      `);
-    }
+    // Status badge
+    const statusClass = a.status === 'live' ? 'status-live' : 'status-soon';
+    const statusText  = a.status === 'live'
+      ? '✦ Live'
+      : a.status === 'coming-soon'
+      ? '⏳ Coming Soon'
+      : '🔮 In Dev';
 
-  } else if (a.status === "coming-soon") {
-
-    links.push(`
-      <span class="game-btn game-btn-disabled">
-        Coming Soon →
-      </span>
-    `);
-
-  } else {
-
-    links.push(`
-      <span class="game-btn game-btn-disabled">
-        Stay Tuned →
-      </span>
-    `);
-
-  }
-
-
-  // Status
-
-  const statusClass =
-      a.status === "live"
-          ? "status-live"
-          : "status-soon";
-
-  const statusText =
-      a.status === "live"
-          ? "✦ Live"
-          : a.status === "coming-soon"
-          ? "⏳ Coming Soon"
-          : "🔮 In Dev";
-
-
-  // Tags
-
-  const tagsHtml = (a.tags || [])
+    // Tags
+    const tagsHtml = (a.tags || [])
       .map(t => `<span class="tag">${t}</span>`)
-      .join("");
+      .join('');
 
+    // Visit hint — only if card is clickable
+    const visitHint = a.website
+      ? `<div class="visit-hint">Visit ↗</div>`
+      : '';
 
-  // Logo
-
-  const logoHtml = a.logo
-      ? `
-      <a href="${a.website}" target="_blank">
-          <img
-              src="${a.logo}"
-              class="game-logo"
-              alt="${a.name} logo"
-              onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
-          >
-          <span class="game-icon" style="display:none;">
-              ${a.icon || "🎮"}
-          </span>
-      </a>
-      `
-      : `
-      <a href="${a.website}" target="_blank">
-          <span class="game-icon">
-              ${a.icon || "🎮"}
-          </span>
-      </a>
-      `;
-
-
-  // Game Name
-
-  const titleHtml = a.website
-      ? `
-      <div class="game-name">
-          <a href="${a.website}"
-             target="_blank"
-             class="game-title-link">
-             ${a.name}
-          </a>
-      </div>
-      `
-      : `
-      <div class="game-name">
-          ${a.name}
-      </div>
-      `;
-
-
-  return `
-
+    // Wrap entire card in <a> if website set, else plain <div>
+    return `
 <div class="game-card reveal visible">
-
-    <div class="game-number">
-        ${String(i + 1).padStart(2, "0")}
-    </div>
-
-    <span class="game-status ${statusClass}">
-        ${statusText}
-    </span>
-
-    ${logoHtml}
-
-    ${titleHtml}
-
-    <div class="game-genre">
-        ${a.genre || ""}
-    </div>
-
-    <p class="game-desc">
-        ${a.desc || ""}
-    </p>
-
-    <div class="game-tags">
-        ${tagsHtml}
-    </div>
-
-    <div class="game-links">
-        ${links.join("")}
-
+        ${visitHint}
+        <div class="game-number">0${i + 1}</div>
+        <span class="game-status ${statusClass}">${statusText}</span>
         ${
-            a.website
-                ? `
-                <a href="${a.website}"
-                   target="_blank"
-                   class="game-btn game-btn-outline">
-                    ✦ Learn More About This App
-                </a>
-                `
-                : ""
-        }
-    </div>
-
-</div>
-
-`;
+a.website
+? `<a href="${a.website}" target="_blank">
+     ${mediaHtml}
+   </a>`
+: mediaHtml
 }
+        <div class="game-name">
+  ${
+  a.website
+  ? `<a href="${a.website}" target="_blank"
+       style="color:inherit;text-decoration:none;">
+       ${a.name}
+     </a>`
+  : a.name
+  }
+</div>
+        <div class="game-genre">${a.genre || ''}</div>
+        <p class="game-desc">${a.desc || ''}</p>
+        <div class="game-tags">${tagsHtml}</div>
+        <div class="game-links">
+          ${links.join('')}
+          ${a.website ? `<a href="${a.website}" target="_blank" class="game-btn game-btn-outline">✦ Learn More About This App</a>` : ''}
+        </div>
+      </div>`;
+  }
 
   // ── APPLY STUDIO INFO ──
   function applyStudio(studio) {
@@ -1188,27 +1073,11 @@ window.addEventListener('scroll', () => {
 
   // ── APPLY APPS ──
   function applyApps(apps) {
-  if (!apps || !apps.length) return;
-
-  const grid = document.getElementById('games-grid-dynamic');
-  if (!grid) return;
-
-  grid.innerHTML = apps.map((a, i) => buildCard(a, i)).join('');
-
-  // Make the whole card clickable (except buttons)
-  document.querySelectorAll('.game-card[data-url]').forEach(card => {
-  card.addEventListener('click', function (e) {
-
-    // If a button/link inside the card was clicked,
-    // let it work normally and don't open the website.
-    if (e.target.closest('.game-btn')) {
-      return;
-    }
-
-    window.open(this.dataset.url, '_blank');
-  });
-});
-}
+    if (!apps || !apps.length) return;
+    const grid = document.getElementById('games-grid-dynamic');
+    if (!grid) return;
+    grid.innerHTML = apps.map((a, i) => buildCard(a, i)).join('');
+  }
 
   // ── FETCH data.json ──
   // Replace YOUR_GITHUB_USERNAME with your actual username
