@@ -326,10 +326,12 @@ section { padding: 100px 60px; max-width: 1200px; margin: 0 auto; }
 .game-card:hover { background: #0D0D08; }
 .game-card:hover::before { opacity: 1; }
 a.game-card {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-  cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    height: 100%;
 }
 a.game-card:hover {
   background: #0D0D08;
