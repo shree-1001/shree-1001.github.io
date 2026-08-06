@@ -127,7 +127,7 @@ footer{background:var(--s1);border-top:1px solid #C9A84C08;padding:40px 5%;text-
         <div class="ci-icon">✉</div>
         <div>
           <div class="ci-label">Primary Email</div>
-          <div class="ci-val"><a href="mailto:shreegamesapps@gmail.com">shreegamesapps@gmail.com</a></div>
+          <div class="ci-val"><a href="mailto: adstv351@gmail.com">adstv351@gmail.com</a></div>
           <div class="ci-hint">Best for general inquiries, partnerships</div>
         </div>
       </div>
@@ -135,16 +135,8 @@ footer{background:var(--s1);border-top:1px solid #C9A84C08;padding:40px 5%;text-
         <div class="ci-icon">🐛</div>
         <div>
           <div class="ci-label">Bug Reports</div>
-          <div class="ci-val"><a href="mailto:shreegamesapps@gmail.com?subject=Bug Report">shreegamesapps@gmail.com</a></div>
+          <div class="ci-val"><a href="mailto:adstv351@gmail.com?subject=Bug Report">adstv351@gmail.com</a></div>
           <div class="ci-hint">Include app name, device, and Android version</div>
-        </div>
-      </div>
-      <div class="ci rv">
-        <div class="ci-icon">📱</div>
-        <div>
-          <div class="ci-label">Phone / WhatsApp</div>
-          <div class="ci-val">+91 XXXXX XXXXX</div>
-          <div class="ci-hint">Available Mon–Sat, 10 AM – 7 PM IST</div>
         </div>
       </div>
       <div class="ci rv">
@@ -172,12 +164,6 @@ footer{background:var(--s1);border-top:1px solid #C9A84C08;padding:40px 5%;text-
       </a>
       <a class="sl" href="https://shree-1001.github.io" target="_blank">
         <span class="sl-icon">🌐</span><span class="sl-text">Website — shree-1001.github.io</span>
-      </a>
-      <a class="sl" href="https://play.google.com/store" target="_blank">
-        <span class="sl-icon">▶</span><span class="sl-text">Google Play — Coming Soon</span>
-      </a>
-      <a class="sl" href="#" target="_blank">
-        <span class="sl-icon">📱</span><span class="sl-text">Indus Appstore — Neon Breakout</span>
       </a>
     </div>
 
@@ -313,7 +299,7 @@ function submitForm(){
   const device=document.getElementById('f-device').value.trim();
   const body=`Name: ${name}\nEmail: ${email}\nApp: ${app||'N/A'}\nDevice: ${device||'N/A'}\n\nMessage:\n${msg}`;
   const subjectLine=`[${subject.toUpperCase()}] ${app?`[${app}] `:''}Message from ${name}`;
-  window.location.href=`mailto:shreegamesapps@gmail.com?subject=${encodeURIComponent(subjectLine)}&body=${encodeURIComponent(body)}`;
+  window.location.href=`mailto:adstv351@gmail.com?subject=${encodeURIComponent(subjectLine)}&body=${encodeURIComponent(body)}`;
   document.getElementById('form-success').style.display='block';
   setTimeout(()=>document.getElementById('form-success').style.display='none',5000);
 }
