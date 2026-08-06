@@ -298,20 +298,15 @@ section { padding: 100px 60px; max-width: 1200px; margin: 0 auto; }
 /* ── GAMES ── */
 .games-section { background: var(--surface); padding: 100px 0; }
 .games-inner { max-width: 1200px; margin: 0 auto; padding: 0 60px; }
-.games-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2px; margin-top: 60px;
-  align-items: stretch;
-}
-@media (max-width:768px){
-    .games-grid{
-        grid-template-columns:1fr;
-    }
+.games-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+    gap:24px;
 }
 .game-card {
   background: var(--black2);
   padding: 40px 32px;
-  position: relative; overflow: hidden;
+  position: relative;
   transition: background 0.4s;
   cursor: none;
   display: flex;
