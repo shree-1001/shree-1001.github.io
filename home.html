@@ -1021,13 +1021,13 @@ window.addEventListener('scroll', () => {
       : '';
 
     // Wrap entire card in <a> if website set, else plain <div>
-    const tag   = a.website ? 'a' : 'div';
+    const tag  = 'div';
     const attrs = a.website
-      ? `href="${a.website}" target="_blank" title="Visit ${a.name} website"`
-      : '';
+  ? `onclick="window.open('${a.website}','_blank')"`
+  : '';
 
     return `
-      <${tag} class="game-card reveal visible" ${attrs}>
+  <div class="game-card reveal visible" ${attrs}>
         ${visitHint}
         <div class="game-number">0${i + 1}</div>
         <span class="game-status ${statusClass}">${statusText}</span>
@@ -1040,7 +1040,7 @@ window.addEventListener('scroll', () => {
           ${links.join('')}
           ${a.website ? `<a href="${a.website}" target="_blank" class="game-btn game-btn-outline" onclick="event.stopPropagation()">✦ Learn More About This App</a>` : ''}
         </div>
-      </${tag}>`;
+      </div>`;
   }
 
   // ── APPLY STUDIO INFO ──
