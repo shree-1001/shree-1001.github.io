@@ -9,7 +9,7 @@
   "apps": [
     {
       "id": "neon-breakout",
-      "name": "Neon Breakout",
+      "name": "Neon Breakout: Cyber Bricks",
       "genre": "Arcade · Brick Breaker",
       "icon": "🎮",
       "status": "live",
@@ -22,7 +22,7 @@
     },
     {
       "id": "neon-dodge",
-      "name": "Neon Dodge",
+      "name": "Neon Dodge: Hyperflux",
       "genre": "Arcade · Casual Runner Game",
       "icon": "🎮",
       "status": "coming-soon",
