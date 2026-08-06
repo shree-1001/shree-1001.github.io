@@ -21,17 +21,30 @@
       "logo": "https://shree-1001.github.io/neon-breakout/Neon-Breakout-512_512-logo.png"
     },
     {
-      "id": "neon-dodge",
-      "name": "Neon Dodge: Hyperflux",
-      "genre": "Arcade · Casual Runner Game",
+      "id": "burst-the-bubble",
+      "name": "Burst The Bubble",
+      "genre": "Shooter · Casual Shooter Game",
       "icon": "🎮",
       "status": "coming-soon",
-      "desc": "Dodge neon obstacles, survive longer, and master the endless challenge! in this fast-paced arcade classic. Smooth controls, stunning neon visuals, and an endless high-score chase — all offline.",
-      "tags": ["Free", "Offline", "Android", "Arcade"],
-      "website": "https://shree-1001.github.io/neon-dodge/",
+      "desc": "Every level in Burst the Bubble is generated fresh — new shapes, new hazards, gradually rising difficulty, forever. Aim, chain color combos, dodge moving obstacles, and take down bubble bosses, all with a mascot who's never short of a comment. — all offline.",
+      "tags": ["Free", "Offline", "Android", "Shooter"],
+      "website": "https://shree-1001.github.io/burst-the-bubble/index.html",
       "playstore": "",
       "indus": "",
-      "logo": "https://shree-1001.github.io/neon-dodge/Neon-Dodge-logo.png"
+      "logo": "https://shree-1001.github.io/burst-the-bubble/Burst-The-Bubble-logo.png"
+    },
+    {
+      "id": "neon-breakout",
+      "name": "Neon Breakout: Cyber Bricks",
+      "genre": "Arcade · Brick Breaker",
+      "icon": "🎮",
+      "status": "live",
+      "desc": "Break glowing neon bricks in this fast-paced arcade classic. Smooth paddle controls, stunning neon visuals, and an endless high-score chase — all offline.",
+      "tags": ["Free", "Offline", "Android", "Arcade"],
+      "website": "https://shree-1001.github.io/neon-breakout/home.html",
+      "playstore": "https://play.google.com/store/apps/details?id=com.adarsh.neonbreakout",
+      "indus": "https://indusapp.store/pvl130ss",
+      "logo": "https://shree-1001.github.io/neon-breakout/Neon-Breakout-512_512-logo.png"
     },
     {
       "id": "chaturanga",
