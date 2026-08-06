@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Burst the Bubble</title>
+<meta name="description" content="Privacy Policy for the Burst the Bubble mobile game.">
+<style>
+/* =========================================================================
+   Burst the Bubble — shared design system
+   Palette:  #0A0818 void / #0F0C29 deep space / #00E5FF cyan / #FF2D95 pink
+             #9333EA violet / #FFD700 gold / #34E89E mint (success)
+   Display face: Baloo 2 (rounded, bubbly, playful — matches the bubble motif)
+   Body face:    Manrope (clean, geometric, quiet next to the display face)
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --void: #0a0818;
+  --deep: #0f0c29;
+  --deep-2: #161331;
+  --panel: #18143a;
+  --cyan: #00e5ff;
+  --pink: #ff2d95;
+  --violet: #9333ea;
+  --gold: #ffd700;
+  --mint: #34e89e;
+  --ink-0: #ffffff;
+  --ink-1: rgba(255, 255, 255, 0.78);
+  --ink-2: rgba(255, 255, 255, 0.52);
+  --ink-3: rgba(255, 255, 255, 0.3);
+  --line: rgba(255, 255, 255, 0.1);
+  --glass: rgba(24, 20, 58, 0.6);
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
+  --shadow-float: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: 'Manrope', system-ui, sans-serif;
+  color: var(--ink-0);
+  background:
+    radial-gradient(ellipse 900px 600px at 15% -10%, rgba(255, 45, 149, 0.16), transparent 60%),
+    radial-gradient(ellipse 900px 700px at 85% 10%, rgba(0, 229, 255, 0.14), transparent 60%),
+    radial-gradient(ellipse 1200px 900px at 50% 100%, rgba(147, 51, 234, 0.14), transparent 60%),
+    var(--void);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ambient starfield, sits behind everything */
+.starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1.5px 1.5px at 70% 65%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 45% 15%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 85% 40%, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1.5px 1.5px at 10% 80%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 60% 90%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1.5px 1.5px at 92% 85%, rgba(255,255,255,0.45), transparent);
+  background-size: 100% 100%;
+  opacity: 0.8;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Baloo 2', 'Manrope', sans-serif;
+  font-weight: 700;
+  line-height: 1.08;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 12.5px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.eyebrow::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 12px 2px var(--cyan);
+}
+
+/* ---------------------------------------------------------------------
+   Layout shell
+   --------------------------------------------------------------------- */
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(16px);
+  background: rgba(10, 8, 24, 0.55);
+  border-bottom: 1px solid var(--line);
+}
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+}
+.brand .dot-cluster { display: flex; gap: 3px; }
+.brand .dot {
+  width: 9px; height: 9px; border-radius: 50%;
+}
+.brand .dot:nth-child(1) { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+.brand .dot:nth-child(2) { background: var(--pink); box-shadow: 0 0 8px var(--pink); margin-top: 5px;}
+.brand .dot:nth-child(3) { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--ink-1);
+}
+.nav-links a { transition: color 0.2s ease; }
+.nav-links a:hover, .nav-links a.active { color: var(--cyan); }
+
+.nav-toggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--line);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.nav-toggle span, .nav-toggle::before, .nav-toggle::after {
+  content: '';
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--ink-0);
+  border-radius: 2px;
+  position: relative;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+.nav-toggle::before { position: absolute; transform: translateY(-6px); }
+.nav-toggle::after { position: absolute; transform: translateY(6px); }
+.nav-toggle.open span { opacity: 0; }
+.nav-toggle.open::before { transform: rotate(45deg); }
+.nav-toggle.open::after { transform: rotate(-45deg); }
+
+.mobile-menu {
+  display: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  border-top: 1px solid var(--line);
+}
+.mobile-menu.open { max-height: 260px; }
+.mobile-menu .wrap {
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  gap: 4px;
+}
+.mobile-menu a {
+  padding: 12px 8px;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink-1);
+  border-radius: 10px;
+}
+.mobile-menu a:hover, .mobile-menu a.active { color: var(--cyan); background: rgba(0,229,255,0.06); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 14.5px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease-pop), box-shadow 0.25s ease, filter 0.2s ease;
+  white-space: nowrap;
+}
+.btn:active { transform: scale(0.96); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--pink), var(--violet));
+  color: #fff;
+  box-shadow: 0 10px 30px -8px rgba(255, 45, 149, 0.55);
+}
+.btn-primary:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ink-0);
+  border: 1px solid var(--line);
+}
+.btn-ghost:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+.btn-sm { padding: 9px 18px; font-size: 13px; }
+
+/* ---------------------------------------------------------------------
+   3D Glass bubble (real component, used everywhere: hero, cards, badges)
+   --------------------------------------------------------------------- */
+.bubble-sphere {
+  --c1: #6be3ff;
+  --c2: #00b3d6;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95), rgba(255,255,255,0) 32%),
+    radial-gradient(circle at 68% 72%, rgba(255,255,255,0.12), transparent 40%),
+    radial-gradient(circle at 40% 45%, var(--c1), var(--c2) 75%);
+  box-shadow:
+    inset -6px -10px 18px rgba(0,0,0,0.25),
+    inset 6px 8px 14px rgba(255,255,255,0.25),
+    0 12px 26px -6px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+/* ---------------------------------------------------------------------
+   Scroll reveal
+   --------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s var(--ease-pop);
+}
+.reveal.in-view { opacity: 1; transform: translateY(0); }
+
+/* ---------------------------------------------------------------------
+   Glass card / tilt card
+   --------------------------------------------------------------------- */
+.glass-card {
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-float);
+}
+
+.tilt-card {
+  transform-style: preserve-3d;
+  perspective: 800px;
+  transition: transform 0.15s ease;
+  will-change: transform;
+}
+
+/* ---------------------------------------------------------------------
+   Footer
+   --------------------------------------------------------------------- */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 48px 0 32px;
+  margin-top: 80px;
+  position: relative;
+  z-index: 1;
+}
+.footer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+.footer-links {
+  display: flex;
+  gap: 26px;
+  flex-wrap: wrap;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink-1);
+}
+.footer-links a:hover { color: var(--cyan); }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+/* ---------------------------------------------------------------------
+   Utility
+   --------------------------------------------------------------------- */
+.text-gradient {
+  background: linear-gradient(100deg, var(--cyan), var(--pink) 55%, var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.section { padding: 100px 0; position: relative; z-index: 1; }
+.section-head { max-width: 620px; margin-bottom: 56px; }
+.section-head h2 { font-size: clamp(28px, 4vw, 42px); margin-top: 14px; }
+.section-head p { margin-top: 16px; color: var(--ink-2); font-size: 16.5px; line-height: 1.6; }
+
+@media (max-width: 720px) {
+  .nav-links { display: none; }
+  .header-cta { display: none; }
+  .nav-toggle { display: flex; }
+  .mobile-menu { display: block; }
+  .section { padding: 64px 0; }
+}
+
+</style>
+<style>
+  .policy-hero {
+    padding: 72px 0 40px;
+    position: relative;
+  }
+  .policy-hero .float-bubble {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.5;
+    filter: blur(0.5px);
+  }
+  .policy-shell {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 48px;
+    align-items: start;
+    padding-bottom: 100px;
+  }
+  .policy-toc {
+    position: sticky;
+    top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .policy-toc a {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink-2);
+    padding: 8px 12px;
+    border-radius: 10px;
+    border-left: 2px solid transparent;
+    transition: all 0.2s ease;
+  }
+  .policy-toc a:hover, .policy-toc a.active {
+    color: var(--cyan);
+    background: rgba(0, 229, 255, 0.06);
+    border-left-color: var(--cyan);
+  }
+  .policy-body {
+    background: var(--glass);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 48px clamp(24px, 5vw, 56px);
+  }
+  .policy-body h2 {
+    font-size: 22px;
+    margin-top: 44px;
+    scroll-margin-top: 100px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .policy-body h2:first-child { margin-top: 0; }
+  .policy-body h3 {
+    font-size: 16px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    margin-top: 26px;
+    color: var(--ink-0);
+  }
+  .policy-body p, .policy-body li {
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: var(--ink-1);
+  }
+  .policy-body p { margin-top: 14px; }
+  .policy-body ul { margin-top: 14px; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
+  .policy-body a.inline-link { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+  .policy-body strong { color: var(--ink-0); }
+  .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .info-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(52, 232, 158, 0.1);
+    border: 1px solid rgba(52, 232, 158, 0.3);
+    color: var(--mint);
+  }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 18px;
+    font-size: 14.5px;
+  }
+  .data-table th, .data-table td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-1);
+  }
+  .data-table th {
+    color: var(--ink-0);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+  .callout {
+    margin-top: 22px;
+    padding: 18px 20px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 215, 0, 0.07);
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-1);
+  }
+  .callout strong { color: var(--gold); }
+  .placeholder { color: var(--pink); font-weight: 700; }
+
+  @media (max-width: 860px) {
+    .policy-shell { grid-template-columns: 1fr; }
+    .policy-toc { position: static; flex-direction: row; flex-wrap: wrap; top: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="starfield"></div>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="brand">
+      <span class="dot-cluster"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+      Burst the Bubble
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a href="contact.html" class="btn btn-ghost btn-sm header-cta">Contact Us</a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span></button>
+  </div>
+  <div class="mobile-menu">
+    <div class="wrap">
+      <a href="index.html">Home</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="policy-hero">
+    <div class="wrap">
+      <span class="eyebrow">Legal</span>
+      <h1 style="font-size:clamp(32px,5vw,48px); margin-top:14px;">Privacy Policy</h1>
+      <p style="margin-top:14px; color:var(--ink-2); font-size:16px; max-width:600px;">
+        Last updated: <span class="placeholder">[Month DD, YYYY]</span> — plain-language summary up front, full detail below.
+      </p>
+      <div class="badge-row">
+        <span class="info-badge">✓ No account or sign-up required</span>
+        <span class="info-badge">✓ Game progress stays on your device</span>
+        <span class="info-badge">✓ No chat or user-generated content</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap policy-shell">
+    <aside class="policy-toc" aria-label="Table of contents">
+      <a href="#overview">Overview</a>
+      <a href="#data-we-collect">Data We Collect</a>
+      <a href="#local-data">Data Stored On Your Device</a>
+      <a href="#advertising">Advertising &amp; AdMob</a>
+      <a href="#permissions">App Permissions</a>
+      <a href="#children">Children's Privacy</a>
+      <a href="#retention">Data Retention &amp; Deletion</a>
+      <a href="#security">Security</a>
+      <a href="#choices">Your Choices</a>
+      <a href="#changes">Changes to This Policy</a>
+      <a href="#contact">Contact Us</a>
+    </aside>
+
+    <div class="policy-body">
+      <h2 id="overview">📋 Overview</h2>
+      <p>
+        <span class="placeholder">[Developer / Company Name]</span> ("we," "us," or "our") built Burst the Bubble
+        (the "App") as a free, single-player bubble-shooter game. This policy explains what data the App
+        interacts with, why, and what choices you have. We wrote it to reflect exactly what the App does —
+        no more, no less.
+      </p>
+      <p>
+        In short: Burst the Bubble does not require an account, does not collect your name, email, or any
+        personal profile, and does not let you chat with other players. Your game progress (level, coins,
+        achievements, settings) is stored locally on your own device. The only outside party the App talks to
+        is Google's advertising network, which serves the optional ads that support the free game.
+      </p>
+
+      <h2 id="data-we-collect">🗂️ Data We Collect</h2>
+      <p>We (the developer) do not operate our own servers or accounts for this App, so we do not collect or receive:</p>
+      <ul>
+        <li>Your name, email address, or phone number</li>
+        <li>Passwords or account credentials</li>
+        <li>Precise or approximate location</li>
+        <li>Photos, contacts, or files from your device</li>
+        <li>Payment card details (any in-app purchases are handled entirely by Google Play's own billing system, which has its own privacy policy)</li>
+      </ul>
+      <p>The App also has no chat, messaging, or user-generated content features, so there's nothing for other players to see about you.</p>
+
+      <h2 id="local-data">💾 Data Stored On Your Device</h2>
+      <p>To make the game work, the App stores the following <strong>only on your device</strong>, using Android's local app storage — this data is never transmitted to us or any third party:</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>What's stored</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Level progress &amp; unlocked levels</td><td>So you can pick up where you left off</td></tr>
+          <tr><td>Coin balance &amp; owned power-ups</td><td>Your in-game currency and inventory</td></tr>
+          <tr><td>Statistics (combo, accuracy, time played, etc.)</td><td>Shown on your Statistics screen; you can reset these anytime</td></tr>
+          <tr><td>Achievement &amp; daily reward progress</td><td>Tracks what you've unlocked and claimed</td></tr>
+          <tr><td>Sound, music, vibration &amp; notification preferences</td><td>Remembers your Settings choices</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <strong>What this means for you:</strong> if you uninstall the App, or clear its storage from Android's
+        Settings, this data is permanently deleted — we have no copy of it, because we never received one.
+      </div>
+
+      <h2 id="advertising">📺 Advertising &amp; AdMob</h2>
+      <p>
+        Burst the Bubble shows ads through <strong>Google AdMob</strong> to keep the game free — specifically,
+        rewarded video ads (for bonus coins or a second chance) and interstitial ads shown between levels.
+      </p>
+      <p>To serve and measure these ads, Google AdMob's SDK may collect and process:</p>
+      <ul>
+        <li>Your device's advertising ID (which you can reset or opt out of in your device settings)</li>
+        <li>General device information (device type, OS version, language, general region)</li>
+        <li>Ad interaction data (which ads were shown, clicked, or completed)</li>
+      </ul>
+      <p>
+        This data is collected and processed by Google under Google's own privacy and advertising policies, not
+        by us. You can review how Google handles this data, and manage your ad personalization settings, here:
+      </p>
+      <ul>
+        <li><a class="inline-link" href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
+        <li><a class="inline-link" href="https://support.google.com/ads/answer/2662922" target="_blank" rel="noopener">How Google uses advertising data</a></li>
+        <li><a class="inline-link" href="https://adssettings.google.com" target="_blank" rel="noopener">Google Ads Settings</a> — manage or opt out of personalized ads</li>
+      </ul>
+
+      <h2 id="permissions">🔐 App Permissions</h2>
+      <p>Burst the Bubble requests the minimum permissions needed to run and show ads:</p>
+      <table class="data-table">
+        <thead><tr><th>Permission</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>Internet access</td><td>Loading ads and, if enabled, checking for app updates</td></tr>
+          <tr><td>Network state</td><td>Checking connectivity before attempting to load an ad</td></tr>
+        </tbody>
+      </table>
+      <p>The App does not request access to your camera, microphone, contacts, storage, or location.</p>
+
+      <h2 id="children">🧒 Children's Privacy</h2>
+      <p>
+        Burst the Bubble is designed as a general-audience casual game and is not directed specifically at
+        children under 13. We do not knowingly collect personal information from anyone, regardless of age —
+        which is straightforward here, since the App doesn't collect personal information from any user in the
+        first place.
+      </p>
+      <div class="callout">
+        <strong>Note for the developer:</strong> if you intend to enroll this App in Google Play's Designed for
+        Families program or otherwise market it to children, you must additionally comply with COPPA, Google
+        Play Families Policy, and configure AdMob for child-directed treatment (non-personalized ads only).
+        Update this section to reflect that configuration before doing so.
+      </div>
+
+      <h2 id="retention">🗑️ Data Retention &amp; Deletion</h2>
+      <p>
+        Because all gameplay data lives locally on your device, you are always in control of it:
+      </p>
+      <ul>
+        <li><strong>Reset your stats:</strong> use the "Reset Stats" option on the in-app Statistics screen at any time.</li>
+        <li><strong>Delete everything:</strong> uninstall the App, or clear its storage via Android Settings → Apps → Burst the Bubble → Storage → Clear Data.</li>
+        <li><strong>Advertising data:</strong> managed entirely by Google — see the Advertising section above for how to reset your advertising ID or opt out of personalization.</li>
+      </ul>
+
+      <h2 id="security">🛡️ Security</h2>
+      <p>
+        Since gameplay data is stored locally in the App's private, sandboxed storage area (standard Android
+        app-storage protection, not accessible to other apps), it's protected by your device's own security —
+        the same protection covering every other app on your phone. We recommend keeping your device's OS
+        up to date and using a screen lock for the best protection of all data on your device.
+      </p>
+
+      <h2 id="choices">✅ Your Choices</h2>
+      <ul>
+        <li><strong>Ad personalization:</strong> opt out or manage ad topics anytime at <a class="inline-link" href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>, or reset your device's advertising ID in your device's privacy settings.</li>
+        <li><strong>Notifications:</strong> toggle in-app notification preferences off anytime from the App's Settings screen, or disable notification permission entirely from Android Settings.</li>
+        <li><strong>Sound &amp; vibration:</strong> fully adjustable from the App's Settings screen.</li>
+      </ul>
+
+      <h2 id="changes">🔄 Changes to This Policy</h2>
+      <p>
+        If we make material changes to this policy, we'll update the "Last updated" date at the top of this
+        page. We encourage checking back periodically. Continuing to use the App after an update means you
+        accept the revised policy.
+      </p>
+
+      <h2 id="contact">✉️ Contact Us</h2>
+      <p>
+        Questions about this policy or how the App handles data? Reach us at
+        <a class="inline-link" href="mailto:support@example.com">support@example.com</a>
+        <span class="placeholder">[replace with your real support email]</span> or through our
+        <a class="inline-link" href="contact.html">Contact page</a>.
+      </p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <a href="index.html" class="brand">
+        <span class="dot-cluster"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+        Burst the Bubble
+      </a>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Burst the Bubble. All rights reserved.</span>
+      <span>Made with 🫧 for people who like popping things.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Burst the Bubble — shared site interactions
+// Scroll reveal + 3D tilt cards. No dependencies.
+
+(function () {
+  // Scroll-reveal
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && revealEls.length) {
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    );
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in-view'); });
+  }
+
+  // 3D tilt cards — perspective tracks the pointer, springs back on leave
+  var tiltEls = document.querySelectorAll('.tilt-card');
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReducedMotion) {
+    tiltEls.forEach(function (card) {
+      card.addEventListener('pointermove', function (e) {
+        var rect = card.getBoundingClientRect();
+        var px = (e.clientX - rect.left) / rect.width - 0.5;
+        var py = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform =
+          'perspective(800px) rotateY(' + (px * 14) + 'deg) rotateX(' + (py * -14) + 'deg) translateY(-4px)';
+      });
+      card.addEventListener('pointerleave', function () {
+        card.style.transform = 'perspective(800px) rotateY(0) rotateX(0) translateY(0)';
+      });
+    });
+  }
+
+  // Sticky header active-link highlight
+  var here = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(function (a) {
+    if (a.getAttribute('href') === here) a.classList.add('active');
+  });
+
+  // Mobile menu toggle
+  var toggle = document.querySelector('.nav-toggle');
+  var menu = document.querySelector('.mobile-menu');
+  if (toggle && menu) {
+    toggle.addEventListener('click', function () {
+      toggle.classList.toggle('open');
+      menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', menu.classList.contains('open') ? 'true' : 'false');
+    });
+    menu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        toggle.classList.remove('open');
+        menu.classList.remove('open');
+      });
+    });
+  }
+
+  // Footer year
+  var yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+})();
+
+</script>
+<script>
+  // Highlight active TOC section on scroll
+  (function () {
+    var sections = document.querySelectorAll('.policy-body h2[id]');
+    var links = document.querySelectorAll('.policy-toc a');
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          links.forEach(function (l) { l.classList.remove('active'); });
+          var match = document.querySelector('.policy-toc a[href="#' + entry.target.id + '"]');
+          if (match) match.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -50% 0px' });
+    sections.forEach(function (s) { io.observe(s); });
+  })();
+</script>
+</body>
+</html>
