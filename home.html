@@ -977,72 +977,173 @@ window.addEventListener('scroll', () => {
 
   // ── BUILD ONE CARD ──
   function buildCard(a, i) {
-    // Store link buttons
-    const links = [];
-    if (a.status === 'live') {
-      if (a.indus)
-        links.push(`<a href="${a.indus}" target="_blank" class="game-btn" onclick="event.stopPropagation()">Indus →</a>`);
-      if (a.playstore)
-        links.push(`<a href="${a.playstore}" target="_blank" class="game-btn" onclick="event.stopPropagation()">Play Store →</a>`);
-      if (!a.indus && !a.playstore)
-        links.push(`<span class="game-btn game-btn-disabled">Coming to stores →</span>`);
-    } else if (a.status === 'coming-soon') {
-      links.push(`<span class="game-btn game-btn-disabled">Coming Soon →</span>`);
-    } else {
-      links.push(`<span class="game-btn game-btn-disabled">Stay Tuned →</span>`);
+
+  // Store buttons
+  const links = [];
+
+  if (a.status === "live") {
+
+    if (a.indus) {
+      links.push(`
+        <a href="${a.indus}"
+           target="_blank"
+           class="game-btn">
+           Indus Appstore →
+        </a>
+      `);
     }
 
-    // Logo image or emoji icon
-    const mediaHtml = a.logo
-      ? `<img
-           src="${a.logo}"
-           class="game-logo"
-           alt="${a.name} logo"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
-         /><span class="game-icon" style="display:none">${a.icon || '🎮'}</span>`
-      : `<span class="game-icon">${a.icon || '🎮'}</span>`;
+    if (a.playstore) {
+      links.push(`
+        <a href="${a.playstore}"
+           target="_blank"
+           class="game-btn">
+           Play Store →
+        </a>
+      `);
+    }
 
-    // Status badge
-    const statusClass = a.status === 'live' ? 'status-live' : 'status-soon';
-    const statusText  = a.status === 'live'
-      ? '✦ Live'
-      : a.status === 'coming-soon'
-      ? '⏳ Coming Soon'
-      : '🔮 In Dev';
+    if (!a.indus && !a.playstore) {
+      links.push(`
+        <span class="game-btn game-btn-disabled">
+          Coming to Stores →
+        </span>
+      `);
+    }
 
-    // Tags
-    const tagsHtml = (a.tags || [])
-      .map(t => `<span class="tag">${t}</span>`)
-      .join('');
+  } else if (a.status === "coming-soon") {
 
-    // Visit hint — only if card is clickable
-    const visitHint = a.website
-      ? `<div class="visit-hint">Visit ↗</div>`
-      : '';
+    links.push(`
+      <span class="game-btn game-btn-disabled">
+        Coming Soon →
+      </span>
+    `);
 
-    // Wrap entire card in <a> if website set, else plain <div>
-    const tag = 'div';
+  } else {
 
-const attrs = a.website
-  ? `data-url="${a.website}"`
-  : '';
+    links.push(`
+      <span class="game-btn game-btn-disabled">
+        Stay Tuned →
+      </span>
+    `);
 
-    return `
-  <div class="game-card reveal visible" ${attrs}>
-        ${visitHint}
-        <div class="game-number">0${i + 1}</div>
-        <span class="game-status ${statusClass}">${statusText}</span>
-        ${mediaHtml}
-        <div class="game-name">${a.name}</div>
-        <div class="game-genre">${a.genre || ''}</div>
-        <p class="game-desc">${a.desc || ''}</p>
-        <div class="game-tags">${tagsHtml}</div>
-        <div class="game-links">
-          ${links.join('')}
-          ${a.website ? `<a href="${a.website}" target="_blank" class="game-btn game-btn-outline" onclick="event.stopPropagation()">✦ Learn More About This App</a>` : ''}
-        </div>
-      </div>`;
   }
+
+
+  // Status
+
+  const statusClass =
+      a.status === "live"
+          ? "status-live"
+          : "status-soon";
+
+  const statusText =
+      a.status === "live"
+          ? "✦ Live"
+          : a.status === "coming-soon"
+          ? "⏳ Coming Soon"
+          : "🔮 In Dev";
+
+
+  // Tags
+
+  const tagsHtml = (a.tags || [])
+      .map(t => `<span class="tag">${t}</span>`)
+      .join("");
+
+
+  // Logo
+
+  const logoHtml = a.logo
+      ? `
+      <a href="${a.website}" target="_blank">
+          <img
+              src="${a.logo}"
+              class="game-logo"
+              alt="${a.name} logo"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
+          >
+          <span class="game-icon" style="display:none;">
+              ${a.icon || "🎮"}
+          </span>
+      </a>
+      `
+      : `
+      <a href="${a.website}" target="_blank">
+          <span class="game-icon">
+              ${a.icon || "🎮"}
+          </span>
+      </a>
+      `;
+
+
+  // Game Name
+
+  const titleHtml = a.website
+      ? `
+      <div class="game-name">
+          <a href="${a.website}"
+             target="_blank"
+             class="game-title-link">
+             ${a.name}
+          </a>
+      </div>
+      `
+      : `
+      <div class="game-name">
+          ${a.name}
+      </div>
+      `;
+
+
+  return `
+
+<div class="game-card reveal visible">
+
+    <div class="game-number">
+        ${String(i + 1).padStart(2, "0")}
+    </div>
+
+    <span class="game-status ${statusClass}">
+        ${statusText}
+    </span>
+
+    ${logoHtml}
+
+    ${titleHtml}
+
+    <div class="game-genre">
+        ${a.genre || ""}
+    </div>
+
+    <p class="game-desc">
+        ${a.desc || ""}
+    </p>
+
+    <div class="game-tags">
+        ${tagsHtml}
+    </div>
+
+    <div class="game-links">
+        ${links.join("")}
+
+        ${
+            a.website
+                ? `
+                <a href="${a.website}"
+                   target="_blank"
+                   class="game-btn game-btn-outline">
+                    ✦ Learn More About This App
+                </a>
+                `
+                : ""
+        }
+    </div>
+
+</div>
+
+`;
+}
 
   // ── APPLY STUDIO INFO ──
   function applyStudio(studio) {
