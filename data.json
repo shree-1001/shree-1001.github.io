@@ -21,6 +21,19 @@
       "logo": "https://shree-1001.github.io/neon-breakout/Neon-Breakout-512_512-logo.png"
     },
     {
+      "id": "neon-dodge",
+      "name": "Neon Dodge",
+      "genre": "Arcade · Casual Runner Game",
+      "icon": "🎮",
+      "status": "coming-soon",
+      "desc": "Dodge neon obstacles, survive longer, and master the endless challenge! in this fast-paced arcade classic. Smooth controls, stunning neon visuals, and an endless high-score chase — all offline.",
+      "tags": ["Free", "Offline", "Android", "Arcade"],
+      "website": "https://shree-1001.github.io/neon-dodge/",
+      "playstore": "",
+      "indus": "",
+      "logo": "https://shree-1001.github.io/neon-dodge/Neon-Dodge-logo.png"
+    },
+    {
       "id": "chaturanga",
       "name": "Chaturanga",
       "genre": "Strategy · Historical Chess",
@@ -31,7 +44,7 @@
       "website": "",
       "playstore": "",
       "indus": "",
-      "logo": ""
+      "logo": "https://shree-1001.github.io/neon-dodge/Chaturanga-logo.png"
     }
   ]
 }
