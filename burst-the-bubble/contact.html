@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Burst the Bubble</title>
+<meta name="description" content="Get in touch about Burst the Bubble — support, bug reports, and feedback.">
+<style>
+/* =========================================================================
+   Burst the Bubble — shared design system
+   Palette:  #0A0818 void / #0F0C29 deep space / #00E5FF cyan / #FF2D95 pink
+             #9333EA violet / #FFD700 gold / #34E89E mint (success)
+   Display face: Baloo 2 (rounded, bubbly, playful — matches the bubble motif)
+   Body face:    Manrope (clean, geometric, quiet next to the display face)
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --void: #0a0818;
+  --deep: #0f0c29;
+  --deep-2: #161331;
+  --panel: #18143a;
+  --cyan: #00e5ff;
+  --pink: #ff2d95;
+  --violet: #9333ea;
+  --gold: #ffd700;
+  --mint: #34e89e;
+  --ink-0: #ffffff;
+  --ink-1: rgba(255, 255, 255, 0.78);
+  --ink-2: rgba(255, 255, 255, 0.52);
+  --ink-3: rgba(255, 255, 255, 0.3);
+  --line: rgba(255, 255, 255, 0.1);
+  --glass: rgba(24, 20, 58, 0.6);
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
+  --shadow-float: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: 'Manrope', system-ui, sans-serif;
+  color: var(--ink-0);
+  background:
+    radial-gradient(ellipse 900px 600px at 15% -10%, rgba(255, 45, 149, 0.16), transparent 60%),
+    radial-gradient(ellipse 900px 700px at 85% 10%, rgba(0, 229, 255, 0.14), transparent 60%),
+    radial-gradient(ellipse 1200px 900px at 50% 100%, rgba(147, 51, 234, 0.14), transparent 60%),
+    var(--void);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ambient starfield, sits behind everything */
+.starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1.5px 1.5px at 70% 65%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 45% 15%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 85% 40%, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1.5px 1.5px at 10% 80%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 60% 90%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1.5px 1.5px at 92% 85%, rgba(255,255,255,0.45), transparent);
+  background-size: 100% 100%;
+  opacity: 0.8;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Baloo 2', 'Manrope', sans-serif;
+  font-weight: 700;
+  line-height: 1.08;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 12.5px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.eyebrow::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 12px 2px var(--cyan);
+}
+
+/* ---------------------------------------------------------------------
+   Layout shell
+   --------------------------------------------------------------------- */
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(16px);
+  background: rgba(10, 8, 24, 0.55);
+  border-bottom: 1px solid var(--line);
+}
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+}
+.brand .dot-cluster { display: flex; gap: 3px; }
+.brand .dot {
+  width: 9px; height: 9px; border-radius: 50%;
+}
+.brand .dot:nth-child(1) { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+.brand .dot:nth-child(2) { background: var(--pink); box-shadow: 0 0 8px var(--pink); margin-top: 5px;}
+.brand .dot:nth-child(3) { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--ink-1);
+}
+.nav-links a { transition: color 0.2s ease; }
+.nav-links a:hover, .nav-links a.active { color: var(--cyan); }
+
+.nav-toggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--line);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.nav-toggle span, .nav-toggle::before, .nav-toggle::after {
+  content: '';
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--ink-0);
+  border-radius: 2px;
+  position: relative;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+.nav-toggle::before { position: absolute; transform: translateY(-6px); }
+.nav-toggle::after { position: absolute; transform: translateY(6px); }
+.nav-toggle.open span { opacity: 0; }
+.nav-toggle.open::before { transform: rotate(45deg); }
+.nav-toggle.open::after { transform: rotate(-45deg); }
+
+.mobile-menu {
+  display: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  border-top: 1px solid var(--line);
+}
+.mobile-menu.open { max-height: 260px; }
+.mobile-menu .wrap {
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  gap: 4px;
+}
+.mobile-menu a {
+  padding: 12px 8px;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink-1);
+  border-radius: 10px;
+}
+.mobile-menu a:hover, .mobile-menu a.active { color: var(--cyan); background: rgba(0,229,255,0.06); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 14.5px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease-pop), box-shadow 0.25s ease, filter 0.2s ease;
+  white-space: nowrap;
+}
+.btn:active { transform: scale(0.96); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--pink), var(--violet));
+  color: #fff;
+  box-shadow: 0 10px 30px -8px rgba(255, 45, 149, 0.55);
+}
+.btn-primary:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ink-0);
+  border: 1px solid var(--line);
+}
+.btn-ghost:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+.btn-sm { padding: 9px 18px; font-size: 13px; }
+
+/* ---------------------------------------------------------------------
+   3D Glass bubble (real component, used everywhere: hero, cards, badges)
+   --------------------------------------------------------------------- */
+.bubble-sphere {
+  --c1: #6be3ff;
+  --c2: #00b3d6;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95), rgba(255,255,255,0) 32%),
+    radial-gradient(circle at 68% 72%, rgba(255,255,255,0.12), transparent 40%),
+    radial-gradient(circle at 40% 45%, var(--c1), var(--c2) 75%);
+  box-shadow:
+    inset -6px -10px 18px rgba(0,0,0,0.25),
+    inset 6px 8px 14px rgba(255,255,255,0.25),
+    0 12px 26px -6px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+/* ---------------------------------------------------------------------
+   Scroll reveal
+   --------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s var(--ease-pop);
+}
+.reveal.in-view { opacity: 1; transform: translateY(0); }
+
+/* ---------------------------------------------------------------------
+   Glass card / tilt card
+   --------------------------------------------------------------------- */
+.glass-card {
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-float);
+}
+
+.tilt-card {
+  transform-style: preserve-3d;
+  perspective: 800px;
+  transition: transform 0.15s ease;
+  will-change: transform;
+}
+
+/* ---------------------------------------------------------------------
+   Footer
+   --------------------------------------------------------------------- */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 48px 0 32px;
+  margin-top: 80px;
+  position: relative;
+  z-index: 1;
+}
+.footer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+.footer-links {
+  display: flex;
+  gap: 26px;
+  flex-wrap: wrap;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink-1);
+}
+.footer-links a:hover { color: var(--cyan); }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+/* ---------------------------------------------------------------------
+   Utility
+   --------------------------------------------------------------------- */
+.text-gradient {
+  background: linear-gradient(100deg, var(--cyan), var(--pink) 55%, var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.section { padding: 100px 0; position: relative; z-index: 1; }
+.section-head { max-width: 620px; margin-bottom: 56px; }
+.section-head h2 { font-size: clamp(28px, 4vw, 42px); margin-top: 14px; }
+.section-head p { margin-top: 16px; color: var(--ink-2); font-size: 16.5px; line-height: 1.6; }
+
+@media (max-width: 720px) {
+  .nav-links { display: none; }
+  .header-cta { display: none; }
+  .nav-toggle { display: flex; }
+  .mobile-menu { display: block; }
+  .section { padding: 64px 0; }
+}
+
+</style>
+<style>
+  .contact-hero { padding: 76px 0 20px; text-align: center; }
+  .contact-hero h1 { font-size: clamp(34px, 5vw, 50px); margin-top: 16px; }
+  .contact-hero p { max-width: 520px; margin: 16px auto 0; color: var(--ink-2); font-size: 16.5px; line-height: 1.6; }
+
+  .contact-shell {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding: 48px 0 90px;
+    align-items: start;
+  }
+
+  .contact-form {
+    padding: 40px;
+  }
+  .contact-form h2 { font-size: 21px; }
+  .form-row { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .form-row label { font-size: 13px; font-weight: 700; color: var(--ink-1); }
+  .form-row input, .form-row select, .form-row textarea {
+    font-family: 'Manrope', sans-serif;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 13px 15px;
+    color: var(--ink-0);
+    font-size: 14.5px;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+    border-color: var(--cyan);
+    background: rgba(0,229,255,0.06);
+  }
+  .form-row textarea { resize: vertical; min-height: 120px; font-family: 'Manrope', sans-serif; }
+  .form-submit {
+    margin-top: 26px;
+    width: 100%;
+  }
+  .form-note { margin-top: 14px; font-size: 12.5px; color: var(--ink-3); line-height: 1.6; }
+
+  .contact-cards { display: flex; flex-direction: column; gap: 20px; }
+  .contact-card {
+    padding: 26px 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .contact-card .ic {
+    width: 46px; height: 46px; flex: none;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 21px;
+    background: linear-gradient(135deg, rgba(0,229,255,0.18), rgba(255,45,149,0.18));
+    border: 1px solid var(--line);
+  }
+  .contact-card h3 { font-size: 16px; }
+  .contact-card p { color: var(--ink-2); font-size: 14px; margin-top: 5px; line-height: 1.6; }
+  .contact-card a.inline-link { color: var(--cyan); font-weight: 700; }
+
+  .faq-section { padding-bottom: 100px; }
+  .faq-item {
+    border-bottom: 1px solid var(--line);
+    padding: 22px 4px;
+    cursor: pointer;
+  }
+  .faq-item:first-child { border-top: 1px solid var(--line); }
+  .faq-q {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .faq-q .chev { transition: transform 0.3s var(--ease-pop); color: var(--cyan); flex: none; }
+  .faq-item.open .faq-q .chev { transform: rotate(135deg); }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.3s ease;
+    opacity: 0;
+    color: var(--ink-2);
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+  .faq-item.open .faq-a { max-height: 260px; opacity: 1; margin-top: 12px; }
+
+  @media (max-width: 860px) {
+    .contact-shell { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="starfield"></div>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="brand">
+      <span class="dot-cluster"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+      Burst the Bubble
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a href="index.html#download" class="btn btn-primary btn-sm header-cta">Get it on Google Play</a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span></button>
+  </div>
+  <div class="mobile-menu">
+    <div class="wrap">
+      <a href="index.html">Home</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="contact-hero reveal in-view">
+    <div class="wrap">
+      <span class="eyebrow" style="justify-content:center;">We're listening</span>
+      <h1>Found a bug? Have an idea? <span class="text-gradient">Say hello.</span></h1>
+      <p>Whether it's a level that felt unfair, a typo from the mascot, or just a nice word — this goes straight to the people building the game.</p>
+    </div>
+  </section>
+
+  <div class="wrap contact-shell">
+    <form class="glass-card contact-form reveal" id="contactForm" action="mailto:support@example.com" method="post" enctype="text/plain">
+      <h2>Send us a message</h2>
+
+      <div class="form-row">
+        <label for="name">Your name</label>
+        <input type="text" id="name" name="name" placeholder="What should we call you?" required>
+      </div>
+
+      <div class="form-row">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+      </div>
+
+      <div class="form-row">
+        <label for="topic">What's this about?</label>
+        <select id="topic" name="topic">
+          <option>Bug report</option>
+          <option>Gameplay feedback</option>
+          <option>Billing or purchases</option>
+          <option>Privacy / data question</option>
+          <option>Something else</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Tell us what happened, or what's on your mind — the more detail, the faster we can help." required></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary form-submit">Send Message</button>
+      <p class="form-note">Sending opens your email app with this filled in — we read every message and read them in the order they arrive. For bug reports, mentioning your device model and the level number helps a lot.</p>
+    </form>
+
+    <div class="contact-cards reveal">
+      <div class="glass-card contact-card">
+        <div class="ic">✉️</div>
+        <div>
+          <h3>Email support</h3>
+          <p>For bugs, billing questions, or anything else.</p>
+          <a class="inline-link" href="mailto:support@example.com">support@example.com</a>
+          <p style="color:var(--pink); font-weight:700; margin-top:4px;">[replace with your real support email]</p>
+        </div>
+      </div>
+      <div class="glass-card contact-card">
+        <div class="ic">🔒</div>
+        <div>
+          <h3>Privacy questions</h3>
+          <p>Anything about data or our Privacy Policy.</p>
+          <a class="inline-link" href="privacy.html">Read the Privacy Policy →</a>
+        </div>
+      </div>
+      <div class="glass-card contact-card">
+        <div class="ic">⏱️</div>
+        <div>
+          <h3>Response time</h3>
+          <p>We aim to reply to every message within <strong style="color:var(--ink-1);">[X business days]</strong>. Bug reports with device details get prioritized.</p>
+        </div>
+      </div>
+      <div class="glass-card contact-card">
+        <div class="ic">🏢</div>
+        <div>
+          <h3>Developer</h3>
+          <p><span class="placeholder" style="color:var(--pink); font-weight:700;">[Developer / Studio name and address, if required for your Play Console listing]</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="faq-section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Before you write in</span>
+        <h2>Quick answers</h2>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q">I lost my progress after reinstalling. Can I get it back? <span class="chev">✕</span></div>
+        <div class="faq-a">Burst the Bubble stores your progress locally on your device rather than in a cloud account, so uninstalling (or clearing app storage) removes it the same way it would for any locally-saved app. We don't have a copy to restore, since we never receive one — see our <a class="inline-link" href="privacy.html">Privacy Policy</a> for details.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">How do I turn off notifications or sound? <span class="chev">✕</span></div>
+        <div class="faq-a">Open the in-game Settings screen (gear icon on the Main Menu) — Sound Effects, Background Music, Vibration, and Notifications each have their own toggle, and your choice is remembered.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Can I reset just my stats without losing my level progress? <span class="chev">✕</span></div>
+        <div class="faq-a">Yes — the Statistics screen has a "Reset Stats" button that clears combo, accuracy, coins-earned, time played, and streak stats specifically, while leaving your level progress, coins, and owned power-ups untouched.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">A level feels impossible — is that a bug? <span class="chev">✕</span></div>
+        <div class="faq-a">Levels are procedurally generated and get harder as you climb, but they shouldn't ever feel unfair. If one genuinely seems broken (or you're stuck with no way to finish it), tell us the level number and what happened — that's exactly the kind of report that helps us tune difficulty.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Do you offer refunds for in-app purchases? <span class="chev">✕</span></div>
+        <div class="faq-a">All purchases are processed by Google Play, so refunds go through Google Play's own refund policy and process, not through us directly. We're still happy to help if something went wrong — reach out and we'll point you in the right direction.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <a href="index.html" class="brand">
+        <span class="dot-cluster"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+        Burst the Bubble
+      </a>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Burst the Bubble. All rights reserved.</span>
+      <span>Made with 🫧 for people who like popping things.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Burst the Bubble — shared site interactions
+// Scroll reveal + 3D tilt cards. No dependencies.
+
+(function () {
+  // Scroll-reveal
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && revealEls.length) {
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    );
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in-view'); });
+  }
+
+  // 3D tilt cards — perspective tracks the pointer, springs back on leave
+  var tiltEls = document.querySelectorAll('.tilt-card');
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReducedMotion) {
+    tiltEls.forEach(function (card) {
+      card.addEventListener('pointermove', function (e) {
+        var rect = card.getBoundingClientRect();
+        var px = (e.clientX - rect.left) / rect.width - 0.5;
+        var py = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform =
+          'perspective(800px) rotateY(' + (px * 14) + 'deg) rotateX(' + (py * -14) + 'deg) translateY(-4px)';
+      });
+      card.addEventListener('pointerleave', function () {
+        card.style.transform = 'perspective(800px) rotateY(0) rotateX(0) translateY(0)';
+      });
+    });
+  }
+
+  // Sticky header active-link highlight
+  var here = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(function (a) {
+    if (a.getAttribute('href') === here) a.classList.add('active');
+  });
+
+  // Mobile menu toggle
+  var toggle = document.querySelector('.nav-toggle');
+  var menu = document.querySelector('.mobile-menu');
+  if (toggle && menu) {
+    toggle.addEventListener('click', function () {
+      toggle.classList.toggle('open');
+      menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', menu.classList.contains('open') ? 'true' : 'false');
+    });
+    menu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        toggle.classList.remove('open');
+        menu.classList.remove('open');
+      });
+    });
+  }
+
+  // Footer year
+  var yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+})();
+
+</script>
+<script>
+  document.querySelectorAll('.faq-item').forEach(function (item) {
+    item.querySelector('.faq-q').addEventListener('click', function () {
+      var wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function (i) { i.classList.remove('open'); });
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>
