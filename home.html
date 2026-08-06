@@ -1021,9 +1021,10 @@ window.addEventListener('scroll', () => {
       : '';
 
     // Wrap entire card in <a> if website set, else plain <div>
-    const tag  = 'div';
-    const attrs = a.website
-  ? `onclick="window.open('${a.website}','_blank')"`
+    const tag = 'div';
+
+const attrs = a.website
+  ? `data-url="${a.website}"`
   : '';
 
     return `
@@ -1067,11 +1068,21 @@ window.addEventListener('scroll', () => {
 
   // ── APPLY APPS ──
   function applyApps(apps) {
-    if (!apps || !apps.length) return;
-    const grid = document.getElementById('games-grid-dynamic');
-    if (!grid) return;
-    grid.innerHTML = apps.map((a, i) => buildCard(a, i)).join('');
-  }
+  if (!apps || !apps.length) return;
+
+  const grid = document.getElementById('games-grid-dynamic');
+  if (!grid) return;
+
+  grid.innerHTML = apps.map((a, i) => buildCard(a, i)).join('');
+
+  // Make the whole card clickable (except buttons)
+  document.querySelectorAll('.game-card[data-url]').forEach(card => {
+    card.addEventListener('click', function (e) {
+      if (e.target.closest('a')) return;
+      window.open(this.dataset.url, '_blank');
+    });
+  });
+}
 
   // ── FETCH data.json ──
   // Replace YOUR_GITHUB_USERNAME with your actual username
