@@ -1044,7 +1044,7 @@ a.website
         <div class="game-tags">${tagsHtml}</div>
         <div class="game-links">
           ${links.join('')}
-          ${a.website ? `<a href="${a.website}" target="_blank" class="game-btn game-btn-outline">✦ Learn More About This App</a>` : ''}
+          ${a.website ? `<a href="${a.website}" target="_blank" class="game-btn game-btn-outline" onclick="event.stopPropagation()">✦ Learn More About This App</a>` : ''}
         </div>
       </div>`;
   }
