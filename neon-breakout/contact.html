@@ -41,7 +41,7 @@
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
-    z-index: 100;
+    z-index: 200;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -58,7 +58,7 @@
     letter-spacing: 3px;
     text-decoration: none;
   }
-  .nav-links { display: flex; gap: 32px; }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
   .nav-links a {
     font-size: 13px;
     letter-spacing: 2px;
@@ -68,6 +68,41 @@
     transition: color 0.2s;
   }
   .nav-links a:hover { color: var(--cyan); }
+
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 201;
+    padding: 8px;
+  }
+  .nav-toggle span {
+    width: 24px;
+    height: 2px;
+    background: var(--cyan);
+    box-shadow: var(--glow-cyan);
+    transition: transform 0.3s, opacity 0.3s;
+    display: block;
+  }
+  .nav-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle.active span:nth-child(2) { opacity: 0; }
+  .nav-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .nav-overlay {
+    position: fixed;
+    inset: 0;
+    background: #000000aa;
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 150;
+  }
+  .nav-overlay.open { opacity: 1; pointer-events: auto; }
 
   /* HERO */
   .hero {
@@ -432,7 +467,27 @@
 
   @media (max-width: 640px) {
     nav { padding: 16px 20px; }
-    .nav-links { display: none; }
+    .nav-toggle { display: flex; }
+    .nav-links {
+      position: fixed;
+      top: 0; right: -100%;
+      width: 72%;
+      max-width: 300px;
+      height: 100vh;
+      background: #04040fee;
+      backdrop-filter: blur(10px);
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 100px 32px;
+      gap: 28px;
+      border-left: 1px solid #00f5ff22;
+      box-shadow: -10px 0 40px #00000088;
+      transition: right 0.35s ease;
+      z-index: 200;
+    }
+    .nav-links.open { right: 0; }
+    .nav-links a { font-size: 15px; letter-spacing: 2px; }
   }
 </style>
 </head>
@@ -442,14 +497,17 @@
 
 <div class="page">
 
+  <div class="nav-overlay" id="nav-overlay"></div>
   <nav>
     <a href="home.html" class="nav-logo">NEON BREAKOUT</a>
-    <div class="nav-links">
+    <div class="nav-links" id="nav-links">
       <a href="home.html">Home</a>
-      <a href="home.html#features">Features</a>
       <a href="privacy-policy.html">Privacy</a>
       <a href="contact.html">Contact</a>
     </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 
   <!-- HERO -->
@@ -501,8 +559,7 @@
     <div class="neon-divider reveal"></div>
 
     <div class="form-card reveal">
-      <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+      <form id="contact-form">
         <div class="form-row form-two-col">
           <div>
             <label for="cf-name">Name</label>
@@ -530,9 +587,9 @@
           <textarea id="cf-message" name="message" placeholder="Tell us what's on your mind..." required></textarea>
         </div>
 
-        <button type="submit" class="form-submit" id="cf-submit">Send Message</button>
+        <button type="submit" class="form-submit">Send Message</button>
         <p class="form-status" id="cf-status"></p>
-        <p class="form-note">Sent directly to adstv351@gmail.com — no email app needed</p>
+        <p class="form-note">Submitting opens your email app with the message pre-filled, sent to adstv351@gmail.com</p>
       </form>
     </div>
   </section>
@@ -652,54 +709,49 @@ function drawBg() {
 }
 drawBg();
 
-// Contact form — submits directly via Formspree (no email app needed)
+// Contact form — opens the user's mail client with a pre-filled message
 const cfForm = document.getElementById('contact-form');
 const cfStatus = document.getElementById('cf-status');
-const cfSubmit = document.getElementById('cf-submit');
 
-cfForm.addEventListener('submit', async function (e) {
+cfForm.addEventListener('submit', function (e) {
   e.preventDefault();
 
-  const endpoint = cfForm.getAttribute('action');
-  if (!endpoint || endpoint.includes('YOUR_FORM_ID')) {
-    cfStatus.style.color = '#ff2d78';
-    cfStatus.textContent = 'FORM NOT CONNECTED YET — SEE SETUP NOTE';
-    return;
-  }
-
-  cfSubmit.disabled = true;
-  cfSubmit.style.opacity = '0.6';
-  cfStatus.style.color = 'var(--cyan)';
-  cfStatus.textContent = 'SENDING...';
-
+  const name = document.getElementById('cf-name').value.trim();
+  const email = document.getElementById('cf-email').value.trim();
   const topic = document.getElementById('cf-topic').value;
-  const formData = new FormData(cfForm);
-  formData.set('_subject', `[Neon Breakout] ${topic}`);
+  const message = document.getElementById('cf-message').value.trim();
 
-  try {
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      body: formData,
-      headers: { 'Accept': 'application/json' }
-    });
+  const subject = `[Neon Breakout] ${topic} — from ${name}`;
+  const body =
+    `Name: ${name}\n` +
+    `Email: ${email}\n` +
+    `Topic: ${topic}\n\n` +
+    `Message:\n${message}`;
 
-    if (response.ok) {
-      cfStatus.style.color = 'var(--cyan)';
-      cfStatus.textContent = 'MESSAGE SENT — THANKS!';
-      cfForm.reset();
-    } else {
-      cfStatus.style.color = '#ff2d78';
-      cfStatus.textContent = 'SOMETHING WENT WRONG — TRY AGAIN';
-    }
-  } catch (err) {
-    cfStatus.style.color = '#ff2d78';
-    cfStatus.textContent = 'NETWORK ERROR — TRY AGAIN';
-  } finally {
-    cfSubmit.disabled = false;
-    cfSubmit.style.opacity = '1';
-    setTimeout(() => { cfStatus.textContent = ''; }, 5000);
-  }
+  const mailto = `mailto:adstv351@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
+
+  cfStatus.textContent = 'OPENING YOUR EMAIL APP...';
+  setTimeout(() => { cfStatus.textContent = ''; }, 4000);
 });
+
+// Mobile nav
+const navToggle = document.getElementById('nav-toggle');
+const navLinks = document.getElementById('nav-links');
+const navOverlay = document.getElementById('nav-overlay');
+
+function closeNav() {
+  navToggle.classList.remove('active');
+  navLinks.classList.remove('open');
+  navOverlay.classList.remove('open');
+}
+navToggle.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  navToggle.classList.toggle('active', isOpen);
+  navOverlay.classList.toggle('open', isOpen);
+});
+navOverlay.addEventListener('click', closeNav);
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
 
 // Scroll reveal
 const reveals = document.querySelectorAll('.reveal');
