@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Neon Breakout</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500&display=swap');
+
+  :root {
+    --cyan: #00f5ff;
+    --pink: #ff2d78;
+    --purple: #9b30ff;
+    --dark: #04040f;
+    --dark2: #080818;
+    --glow-cyan: 0 0 20px #00f5ff88, 0 0 60px #00f5ff44;
+    --glow-pink: 0 0 20px #ff2d7888, 0 0 60px #ff2d7844;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: #e2e8f0;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  #bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .page { position: relative; z-index: 1; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 40px;
+    background: linear-gradient(to bottom, #04040fcc, transparent);
+    backdrop-filter: blur(4px);
+  }
+  .nav-logo {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 18px;
+    color: var(--cyan);
+    text-shadow: var(--glow-cyan);
+    letter-spacing: 3px;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+
+  /* HERO */
+  .hero {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 24px 60px;
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 24px;
+    font-family: 'Orbitron', monospace;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: clamp(42px, 8vw, 80px);
+    color: #fff;
+    text-shadow: 0 0 40px #ffffff33;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+  .hero-title .accent { color: var(--cyan); text-shadow: var(--glow-cyan); }
+  .hero-sub {
+    font-size: 16px;
+    color: #64748b;
+    max-width: 480px;
+    line-height: 1.7;
+    margin: 24px auto 0;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+
+  .neon-divider {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(to right, var(--cyan), var(--pink));
+    margin: 0 auto 60px;
+    box-shadow: var(--glow-cyan);
+  }
+
+  .section-eyebrow {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--pink);
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(24px, 4vw, 40px);
+    font-weight: 900;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 60px;
+  }
+
+  /* CONTACT CARDS */
+  .contact-section {
+    padding: 40px 24px 80px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .contact-card {
+    background: #080818;
+    border: 1px solid #ffffff0a;
+    border-radius: 16px;
+    padding: 36px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+    text-decoration: none;
+    display: block;
+  }
+  .contact-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, var(--glow-col, #00f5ff11), transparent 65%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .contact-card:hover { transform: translateY(-6px); border-color: var(--border-col, #00f5ff33); }
+  .contact-card:hover::before { opacity: 1; }
+
+  .contact-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: var(--dark2);
+    border: 1px solid var(--border-col, #00f5ff33);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 0 20px var(--icon-glow, #00f5ff44);
+  }
+  .contact-card-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .contact-card-desc {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .contact-card-value {
+    font-family: 'Orbitron', monospace;
+    font-size: 13px;
+    color: var(--val-col, var(--cyan));
+    letter-spacing: 0.5px;
+    word-break: break-word;
+  }
+
+  /* CONTACT FORM */
+  .form-section {
+    padding: 20px 24px 80px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .form-card {
+    background: #080818;
+    border: 1px solid #ffffff0a;
+    border-radius: 20px;
+    padding: 40px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .form-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 0%, #00f5ff0c, transparent 60%);
+    pointer-events: none;
+  }
+  .form-row { margin-bottom: 22px; position: relative; }
+  .form-row label {
+    display: block;
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-bottom: 10px;
+  }
+  .form-row input,
+  .form-row select,
+  .form-row textarea {
+    width: 100%;
+    background: #05050f;
+    border: 1px solid #ffffff14;
+    border-radius: 8px;
+    padding: 14px 16px;
+    color: #e2e8f0;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-row select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300f5ff' stroke-width='2' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    cursor: pointer;
+  }
+  .form-row select option { background: #05050f; color: #e2e8f0; }
+  .form-row input:focus,
+  .form-row select:focus,
+  .form-row textarea:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px #00f5ff1a, 0 0 20px #00f5ff22;
+  }
+  .form-row textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+  .form-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .form-submit {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--cyan);
+    color: #04040f;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: var(--glow-cyan);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .form-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 40px #00f5ffaa, 0 0 80px #00f5ff55;
+  }
+  .form-note {
+    text-align: center;
+    font-size: 12px;
+    color: #475569;
+    margin-top: 16px;
+  }
+  .form-status {
+    text-align: center;
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--cyan);
+    margin-top: 16px;
+    min-height: 16px;
+  }
+  @media (max-width: 560px) {
+    .form-two-col { grid-template-columns: 1fr; }
+    .form-card { padding: 32px 22px; }
+  }
+
+  /* FAQ / TOPICS */
+  .topics-section {
+    padding: 40px 24px 80px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .topic-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px 0;
+    border-bottom: 1px solid #ffffff08;
+  }
+  .topic-tag {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+  .tag-bug { background: #ff2d7818; color: var(--pink); border: 1px solid #ff2d7844; }
+  .tag-feat { background: #00f5ff18; color: var(--cyan); border: 1px solid #00f5ff44; }
+  .tag-score { background: #9b30ff18; color: #c084fc; border: 1px solid #9b30ff44; }
+  .tag-other { background: #ffffff0d; color: #94a3b8; border: 1px solid #ffffff22; }
+  .topic-text h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .topic-text p { font-size: 14px; color: #64748b; line-height: 1.7; }
+
+  /* CTA */
+  .cta-section {
+    padding: 100px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, #00f5ff15, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(26px, 4.5vw, 48px);
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .cta-sub {
+    font-size: 15px;
+    color: #64748b;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--cyan);
+    color: #04040f;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 16px 32px;
+    border-radius: 4px;
+    text-decoration: none;
+    box-shadow: var(--glow-cyan);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 40px #00f5ffaa, 0 0 80px #00f5ff55;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid #ffffff08;
+    padding: 40px 24px;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--cyan);
+    text-shadow: var(--glow-cyan);
+    letter-spacing: 4px;
+    margin-bottom: 12px;
+  }
+  footer p { font-size: 13px; color: #334155; }
+  .footer-links { display: flex; gap: 24px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: #475569; text-decoration: none; letter-spacing: 1px; }
+  .footer-links a:hover { color: var(--cyan); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 640px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="page">
+
+  <nav>
+    <a href="home.html" class="nav-logo">NEON BREAKOUT</a>
+    <div class="nav-links">
+      <a href="home.html">Home</a>
+      <a href="home.html#features">Features</a>
+      <a href="privacy-policy.html">Privacy</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">Get In Touch</div>
+    <h1 class="hero-title">LET'S <span class="accent">CONNECT</span></h1>
+    <p class="hero-sub">Found a bug? Have a feature idea? Just want to say hi? We'd love to hear from you.</p>
+  </section>
+
+  <!-- CONTACT CARDS -->
+  <section class="contact-section">
+    <div class="contact-grid">
+
+      <a href="mailto:adstv351@gmail.com" class="contact-card reveal" style="--border-col:#00f5ff33; --icon-glow:#00f5ff44; --glow-col:#00f5ff11; --val-col:#00f5ff;">
+        <div class="contact-icon">📧</div>
+        <div class="contact-card-title">Email Us</div>
+        <div class="contact-card-desc">The fastest way to reach the developer directly.</div>
+        <div class="contact-card-value">adstv351@gmail.com</div>
+      </a>
+
+      <a href="https://play.google.com/store/apps/details?id=com.adarsh.neonbreakout" class="contact-card reveal" style="--border-col:#ff2d7833; --icon-glow:#ff2d7844; --glow-col:#ff2d7811; --val-col:#ff2d78;">
+        <div class="contact-icon">⭐</div>
+        <div class="contact-card-title">Rate on Google Play</div>
+        <div class="contact-card-desc">Leave a review — it helps the game grow.</div>
+        <div class="contact-card-value">Google Play Store</div>
+      </a>
+
+      <a href="https://indusapp.store/pvl130ss" class="contact-card reveal" style="--border-col:#9b30ff33; --icon-glow:#9b30ff44; --glow-col:#9b30ff11; --val-col:#c084fc;">
+        <div class="contact-icon">📲</div>
+        <div class="contact-card-title">Indus Appstore</div>
+        <div class="contact-card-desc">Also available for download here.</div>
+        <div class="contact-card-value">Indus Appstore</div>
+      </a>
+
+      <a href="privacy-policy.html" class="contact-card reveal" style="--border-col:#00f5ff33; --icon-glow:#00f5ff44; --glow-col:#00f5ff11; --val-col:#00f5ff;">
+        <div class="contact-icon">🔒</div>
+        <div class="contact-card-title">Privacy Policy</div>
+        <div class="contact-card-desc">See how Neon Breakout handles your data.</div>
+        <div class="contact-card-value">Read Policy</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- CONTACT FORM -->
+  <section class="form-section">
+    <div class="section-eyebrow reveal">Send a message</div>
+    <h2 class="section-title reveal">Drop Us a Line</h2>
+    <div class="neon-divider reveal"></div>
+
+    <div class="form-card reveal">
+      <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+        <div class="form-row form-two-col">
+          <div>
+            <label for="cf-name">Name</label>
+            <input type="text" id="cf-name" name="name" placeholder="Your name" required>
+          </div>
+          <div>
+            <label for="cf-email">Email</label>
+            <input type="email" id="cf-email" name="email" placeholder="you@example.com" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="cf-topic">Topic</label>
+          <select id="cf-topic" name="topic">
+            <option value="Bug Report">Bug Report</option>
+            <option value="Feature Idea">Feature Idea</option>
+            <option value="High Score / Progress Issue">High Score / Progress Issue</option>
+            <option value="General Feedback">General Feedback</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" placeholder="Tell us what's on your mind..." required></textarea>
+        </div>
+
+        <button type="submit" class="form-submit" id="cf-submit">Send Message</button>
+        <p class="form-status" id="cf-status"></p>
+        <p class="form-note">Sent directly to adstv351@gmail.com — no email app needed</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- TOPICS -->
+  <section class="topics-section">
+    <div class="section-eyebrow reveal">What can we help with</div>
+    <h2 class="section-title reveal">Common Topics</h2>
+    <div class="neon-divider reveal"></div>
+
+    <div class="topic-row reveal">
+      <span class="topic-tag tag-bug">BUG REPORT</span>
+      <div class="topic-text">
+        <h3>Something's not working right</h3>
+        <p>Tell us your device model, Android version, and what happened. Screenshots help a lot.</p>
+      </div>
+    </div>
+
+    <div class="topic-row reveal">
+      <span class="topic-tag tag-feat">FEATURE IDEA</span>
+      <div class="topic-text">
+        <h3>Got a suggestion?</h3>
+        <p>New brick types, power-ups, themes — we're always looking for ideas from players.</p>
+      </div>
+    </div>
+
+    <div class="topic-row reveal">
+      <span class="topic-tag tag-score">HIGH SCORE</span>
+      <div class="topic-text">
+        <h3>Lost your progress?</h3>
+        <p>Scores are stored locally on your device, so reinstalling or clearing app data will reset them.</p>
+      </div>
+    </div>
+
+    <div class="topic-row reveal">
+      <span class="topic-tag tag-other">SOMETHING ELSE</span>
+      <div class="topic-text">
+        <h3>Anything else on your mind</h3>
+        <p>Business inquiries, press, or just want to chat about the game — email is always open.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-glow"></div>
+    <h2 class="cta-title reveal">Still Have Questions?</h2>
+    <p class="cta-sub reveal">Drop us an email and we'll get back to you as soon as we can.</p>
+    <a href="mailto:adstv351@gmail.com" class="btn-primary reveal">Email adstv351@gmail.com</a>
+  </section>
+
+  <footer>
+    <div class="footer-logo">NEON BREAKOUT</div>
+    <p>© 2026 Neon Breakout. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="home.html">Home</a>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="mailto:adstv351@gmail.com">Contact</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+// Animated particle background (matches home page)
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx = bgCanvas.getContext('2d');
+
+function resizeBg() {
+  bgCanvas.width = window.innerWidth;
+  bgCanvas.height = window.innerHeight;
+}
+resizeBg();
+window.addEventListener('resize', resizeBg);
+
+const particles = Array.from({ length: 60 }, () => ({
+  x: Math.random() * window.innerWidth,
+  y: Math.random() * window.innerHeight,
+  vx: (Math.random() - 0.5) * 0.4,
+  vy: (Math.random() - 0.5) * 0.4,
+  r: Math.random() * 1.5 + 0.5,
+  color: Math.random() > 0.5 ? '#00f5ff' : '#ff2d78',
+  alpha: Math.random() * 0.5 + 0.1,
+}));
+
+function drawBg() {
+  bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+  bgCtx.fillStyle = '#04040f';
+  bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+
+  bgCtx.strokeStyle = '#00f5ff08';
+  bgCtx.lineWidth = 1;
+  const gs = 60;
+  for (let x = 0; x < bgCanvas.width; x += gs) {
+    bgCtx.beginPath(); bgCtx.moveTo(x, 0); bgCtx.lineTo(x, bgCanvas.height); bgCtx.stroke();
+  }
+  for (let y = 0; y < bgCanvas.height; y += gs) {
+    bgCtx.beginPath(); bgCtx.moveTo(0, y); bgCtx.lineTo(bgCanvas.width, y); bgCtx.stroke();
+  }
+
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = bgCanvas.width;
+    if (p.x > bgCanvas.width) p.x = 0;
+    if (p.y < 0) p.y = bgCanvas.height;
+    if (p.y > bgCanvas.height) p.y = 0;
+
+    bgCtx.beginPath();
+    bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    bgCtx.fillStyle = p.color;
+    bgCtx.globalAlpha = p.alpha;
+    bgCtx.fill();
+    bgCtx.globalAlpha = 1;
+  });
+
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+// Contact form — submits directly via Formspree (no email app needed)
+const cfForm = document.getElementById('contact-form');
+const cfStatus = document.getElementById('cf-status');
+const cfSubmit = document.getElementById('cf-submit');
+
+cfForm.addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const endpoint = cfForm.getAttribute('action');
+  if (!endpoint || endpoint.includes('YOUR_FORM_ID')) {
+    cfStatus.style.color = '#ff2d78';
+    cfStatus.textContent = 'FORM NOT CONNECTED YET — SEE SETUP NOTE';
+    return;
+  }
+
+  cfSubmit.disabled = true;
+  cfSubmit.style.opacity = '0.6';
+  cfStatus.style.color = 'var(--cyan)';
+  cfStatus.textContent = 'SENDING...';
+
+  const topic = document.getElementById('cf-topic').value;
+  const formData = new FormData(cfForm);
+  formData.set('_subject', `[Neon Breakout] ${topic}`);
+
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (response.ok) {
+      cfStatus.style.color = 'var(--cyan)';
+      cfStatus.textContent = 'MESSAGE SENT — THANKS!';
+      cfForm.reset();
+    } else {
+      cfStatus.style.color = '#ff2d78';
+      cfStatus.textContent = 'SOMETHING WENT WRONG — TRY AGAIN';
+    }
+  } catch (err) {
+    cfStatus.style.color = '#ff2d78';
+    cfStatus.textContent = 'NETWORK ERROR — TRY AGAIN';
+  } finally {
+    cfSubmit.disabled = false;
+    cfSubmit.style.opacity = '1';
+    setTimeout(() => { cfStatus.textContent = ''; }, 5000);
+  }
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
