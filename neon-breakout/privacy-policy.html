@@ -1,225 +1,749 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - Neon Breakout</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #0a0a0f;
-            color: #e2e8f0;
-            line-height: 1.8;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 24px;
-        }
-        .header {
-            text-align: center;
-            padding: 40px 0 32px;
-            border-bottom: 1px solid #22d3ee33;
-            margin-bottom: 40px;
-        }
-        .game-title {
-            font-size: 36px;
-            font-weight: 900;
-            color: #22d3ee;
-            letter-spacing: 4px;
-            font-family: monospace;
-        }
-        .game-subtitle {
-            font-size: 14px;
-            color: #e879f9;
-            letter-spacing: 3px;
-            font-family: monospace;
-            margin-top: 6px;
-        }
-        h1 {
-            font-size: 26px;
-            color: #ffffff;
-            margin: 32px 0 12px;
-            font-family: monospace;
-            letter-spacing: 1px;
-        }
-        h2 {
-            font-size: 18px;
-            color: #22d3ee;
-            margin: 28px 0 10px;
-            font-family: monospace;
-            letter-spacing: 1px;
-            border-left: 3px solid #22d3ee;
-            padding-left: 12px;
-        }
-        p {
-            color: #94a3b8;
-            margin-bottom: 14px;
-            font-size: 15px;
-        }
-        .effective-date {
-            display: inline-block;
-            background: #22d3ee22;
-            border: 1px solid #22d3ee44;
-            color: #22d3ee;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-family: monospace;
-            margin-top: 12px;
-        }
-        .homepage {
-            display: inline-block;
-            background: #22d3ee22;
-            border: 1px solid cyan;
-            color: #22d3ee;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-family: monospace;
-            margin-top: 12px;
-        }
-        .highlight-box {
-            background: #12121a;
-            border: 1px solid #22d3ee33;
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 20px 0;
-        }
-        .highlight-box p {
-            margin: 0;
-            color: #cbd5e1;
-        }
-        ul {
-            color: #94a3b8;
-            padding-left: 20px;
-            margin-bottom: 14px;
-        }
-        ul li {
-            margin-bottom: 8px;
-            font-size: 15px;
-        }
-        a {
-            color: #22d3ee;
-            text-decoration: none;
-        }
-        a:hover { text-decoration: underline; }
-        .footer {
-            text-align: center;
-            margin-top: 60px;
-            padding-top: 24px;
-            border-top: 1px solid #22d3ee22;
-            color: #475569;
-            font-size: 13px;
-            font-family: monospace;
-        }
-        .badge {
-            display: inline-block;
-            background: #e879f922;
-            border: 1px solid #e879f944;
-            color: #e879f9;
-            padding: 3px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-family: monospace;
-            margin: 2px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Neon Breakout</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500&display=swap');
+
+  :root {
+    --cyan: #00f5ff;
+    --pink: #ff2d78;
+    --purple: #9b30ff;
+    --dark: #04040f;
+    --dark2: #080818;
+    --glow-cyan: 0 0 20px #00f5ff88, 0 0 60px #00f5ff44;
+    --glow-pink: 0 0 20px #ff2d7888, 0 0 60px #ff2d7844;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: #e2e8f0;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  #bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .page { position: relative; z-index: 1; }
+
+  /* NAV (shared) */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 40px;
+    background: linear-gradient(to bottom, #04040fcc, transparent);
+    backdrop-filter: blur(4px);
+  }
+  .nav-logo {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 18px;
+    color: var(--cyan);
+    text-shadow: var(--glow-cyan);
+    letter-spacing: 3px;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-links a.active { color: var(--cyan); }
+
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 201;
+    padding: 8px;
+  }
+  .nav-toggle span {
+    width: 24px;
+    height: 2px;
+    background: var(--cyan);
+    box-shadow: var(--glow-cyan);
+    transition: transform 0.3s, opacity 0.3s;
+    display: block;
+  }
+  .nav-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle.active span:nth-child(2) { opacity: 0; }
+  .nav-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .nav-overlay {
+    position: fixed;
+    inset: 0;
+    background: #000000aa;
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 150;
+  }
+  .nav-overlay.open { opacity: 1; pointer-events: auto; }
+
+  /* HERO */
+  .pp-hero {
+    padding: 150px 24px 60px;
+    text-align: center;
+    position: relative;
+  }
+  .pp-eyebrow {
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 20px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .pp-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: clamp(38px, 7vw, 68px);
+    color: #fff;
+    text-shadow: 0 0 40px #ffffff33;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+  .pp-title .accent { color: var(--cyan); text-shadow: var(--glow-cyan); }
+  .pp-sub {
+    font-size: 15px;
+    color: #64748b;
+    max-width: 520px;
+    margin: 20px auto 0;
+    line-height: 1.7;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+  .pp-date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #00f5ff14;
+    border: 1px solid #00f5ff44;
+    color: var(--cyan);
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-family: 'Orbitron', monospace;
+    letter-spacing: 1px;
+    margin-top: 28px;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+
+  .neon-divider {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(to right, var(--cyan), var(--pink));
+    margin: 40px auto 0;
+    box-shadow: var(--glow-cyan);
+  }
+
+  /* SUMMARY CHIPS */
+  .pp-summary {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 50px auto 0;
+    padding: 0 24px;
+  }
+  .summary-chip {
+    background: #080818;
+    border: 1px solid #ffffff0d;
+    border-radius: 14px;
+    padding: 20px 22px;
+    width: 200px;
+    text-align: center;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .summary-chip:hover { transform: translateY(-4px); border-color: #00f5ff33; }
+  .summary-chip .chip-icon { font-size: 26px; margin-bottom: 10px; display: block; }
+  .summary-chip .chip-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .summary-chip .chip-desc { font-size: 12px; color: #64748b; line-height: 1.5; }
+
+  /* LAYOUT: sidebar + content */
+  .pp-layout {
+    max-width: 1100px;
+    margin: 80px auto 0;
+    padding: 0 24px 100px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .pp-toc {
+    position: sticky;
+    top: 100px;
+    background: #080818;
+    border: 1px solid #ffffff0a;
+    border-radius: 16px;
+    padding: 24px 20px;
+  }
+  .pp-toc-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 16px;
+  }
+  .pp-toc a {
+    display: block;
+    font-size: 13px;
+    color: #64748b;
+    text-decoration: none;
+    padding: 9px 0;
+    border-left: 2px solid transparent;
+    padding-left: 12px;
+    margin-left: -1px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .pp-toc a:hover { color: var(--cyan); }
+  .pp-toc a.active { color: var(--cyan); border-left-color: var(--cyan); }
+
+  .pp-content { min-width: 0; }
+
+  .pp-section {
+    background: #080818;
+    border: 1px solid #ffffff0a;
+    border-radius: 18px;
+    padding: 32px 32px 30px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pp-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 0% 0%, var(--glow-col, #00f5ff0a), transparent 55%);
+    pointer-events: none;
+  }
+  .pp-section-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .pp-section-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--dark);
+    background: var(--cyan);
+    box-shadow: var(--glow-cyan);
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .pp-section h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: 17px;
+    letter-spacing: 0.5px;
+    color: #fff;
+  }
+  .pp-section p {
+    color: #94a3b8;
+    font-size: 14.5px;
+    line-height: 1.8;
+    margin-bottom: 12px;
+  }
+  .pp-section ul {
+    color: #94a3b8;
+    padding-left: 20px;
+    margin-bottom: 12px;
+  }
+  .pp-section ul li {
+    margin-bottom: 8px;
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+  .pp-section a { color: var(--cyan); text-decoration: none; border-bottom: 1px dotted #00f5ff55; }
+  .pp-section a:hover { text-decoration: none; border-bottom-color: var(--cyan); }
+  .pp-section strong { color: #fff; }
+
+  .pp-highlight {
+    background: #05050f;
+    border: 1px solid #00f5ff26;
+    border-left: 3px solid var(--cyan);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 14px 0;
+  }
+  .pp-highlight p { margin: 0; color: #cbd5e1; }
+
+  .pp-badge {
+    display: inline-block;
+    background: #e879f918;
+    border: 1px solid #e879f944;
+    color: #e879f9;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-family: 'Orbitron', monospace;
+    letter-spacing: 1px;
+    margin: 3px 4px 3px 0;
+  }
+
+  .pp-contact-box {
+    background: #05050f;
+    border: 1px solid #00f5ff26;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 8px;
+  }
+  .pp-contact-box p { margin: 0 0 8px; }
+  .pp-contact-box p:last-child { margin-bottom: 0; }
+
+  /* Home link CTA at bottom */
+  .pp-back {
+    text-align: center;
+    margin-top: 40px;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--cyan);
+    color: #04040f;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 15px 30px;
+    border-radius: 4px;
+    text-decoration: none;
+    box-shadow: var(--glow-cyan);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 40px #00f5ffaa, 0 0 80px #00f5ff55;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid #ffffff08;
+    padding: 40px 24px;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--cyan);
+    text-shadow: var(--glow-cyan);
+    letter-spacing: 4px;
+    margin-bottom: 12px;
+  }
+  footer p { font-size: 13px; color: #334155; }
+  .footer-links { display: flex; gap: 24px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: #475569; text-decoration: none; letter-spacing: 1px; }
+  .footer-links a:hover { color: var(--cyan); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    .pp-layout { grid-template-columns: 1fr; }
+    .pp-toc {
+      position: static;
+      display: flex;
+      overflow-x: auto;
+      gap: 4px;
+      padding: 16px;
+    }
+    .pp-toc-title { display: none; }
+    .pp-toc a {
+      white-space: nowrap;
+      border-left: none;
+      border-bottom: 2px solid transparent;
+      padding: 8px 14px;
+      margin: 0;
+    }
+    .pp-toc a.active { border-left-color: transparent; border-bottom-color: var(--cyan); }
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 16px 20px; }
+    .nav-toggle { display: flex; }
+    .nav-links {
+      position: fixed;
+      top: 0; right: -100%;
+      width: 72%;
+      max-width: 300px;
+      height: 100vh;
+      background: #04040fee;
+      backdrop-filter: blur(10px);
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 100px 32px;
+      gap: 28px;
+      border-left: 1px solid #00f5ff22;
+      box-shadow: -10px 0 40px #00000088;
+      transition: right 0.35s ease;
+      z-index: 200;
+    }
+    .nav-links.open { right: 0; }
+    .nav-links a { font-size: 15px; letter-spacing: 2px; }
+    .pp-section { padding: 26px 22px 24px; }
+    .pp-summary { gap: 12px; }
+    .summary-chip { width: 100%; max-width: 260px; }
+  }
+</style>
 </head>
 <body>
-<div class="container">
 
-    <div class="header">
-        <div class="game-title">NEON BREAKOUT</div>
-        <div class="game-subtitle">PRIVACY POLICY</div>
-        <div class="effective-date">Effective Date: 1 April, 2026</div>
+<canvas id="bg-canvas"></canvas>
+
+<div class="page">
+
+  <div class="nav-overlay" id="nav-overlay"></div>
+  <nav>
+    <a href="home.html" class="nav-logo">NEON BREAKOUT</a>
+    <div class="nav-links" id="nav-links">
+      <a href="home.html">Home</a>
+      <a href="privacy-policy.html" class="active">Privacy</a>
+      <a href="contact.html">Contact</a>
     </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-    <div class="highlight-box">
-        <p>This Privacy Policy describes how <strong style="color:#fff">Neon Breakout</strong> ("we", "us", or "our") handles information when you use our mobile game application. We are committed to protecting your privacy and complying with the <strong style="color:#fff"> Google Play Families Policy, applicable child privacy laws, and other relevant data protection regulations</strong> where applicable.</p>
+  <!-- HERO -->
+  <section class="pp-hero">
+    <div class="pp-eyebrow">Your Data, Your Rules</div>
+    <h1 class="pp-title">PRIVACY <span class="accent">POLICY</span></h1>
+    <p class="pp-sub">A clear, no-nonsense breakdown of what Neon Breakout does — and doesn't — do with your data.</p>
+    <div class="pp-date-badge">🕐 Effective Date: 1 April, 2026</div>
+    <div class="neon-divider"></div>
+  </section>
+
+  <!-- SUMMARY CHIPS -->
+  <section class="pp-summary">
+    <div class="summary-chip reveal">
+      <span class="chip-icon">🔌</span>
+      <div class="chip-title">OFFLINE FIRST</div>
+      <div class="chip-desc">No personal data collected or transmitted</div>
     </div>
-
-    <h2>1. Information We Collect</h2>
-    <p>Neon Breakout is an offline game. We do <strong style="color:#fff">not</strong> collect, store, or transmit any personal information such as your name, email address, phone number, or location.</p>
-    <p>The only data stored by the app is:</p>
-    <ul>
-        <li>Your <strong style="color:#fff">high scores and player name</strong> — stored locally on your device only</li>
-        <li>Your <strong style="color:#fff">game progress</strong> (levels unlocked) — stored locally on your device only</li>
-    </ul>
-    <p>This data never leaves your device and is not accessible to us.</p>
-
-    <h2>2. Advertising (Google AdMob)</h2>
-    <p>Neon Breakout displays advertisements provided by <strong style="color:#fff">Google AdMob</strong>. AdMob may collect certain information to serve relevant ads, including:</p>
-    <ul>
-        <li>Advertising ID (Android Ad ID)</li>
-        <li>IP address</li>
-        <li>Device information (model, OS version)</li>
-        <li>App usage data</li>
-    </ul>
-    <p>This data is collected by Google, not by us. Google's use of advertising data is governed by Google's Privacy Policy:</p>
-<p><a href="https://policies.google.com/privacy" target="_blank">https://policies.google.com/privacy</a></p>
-<p>When the app is used by children, advertisements are intended to comply with the Google Play Families Policy. We use Google AdMob, a Google Play certified advertising network, and configure advertising to help ensure that ads shown to children are appropriate for younger audiences whenever required. We do not serve advertisements ourselves or use advertising networks that are not permitted under the Google Play Families Policy.</p>
-
-<p>Advertising is provided by Google AdMob in accordance with its own privacy practices and applicable legal requirements, including, where applicable, the Children's Online Privacy Protection Act (COPPA) and the General Data Protection Regulation (GDPR).</p>
-    <p>You can opt out of personalized advertising by adjusting your device settings:</p>
-    <ul>
-        <li>Go to <strong style="color:#fff">Settings → Google → Ads</strong></li>
-        <li>Enable <strong style="color:#fff">"Opt out of Ads Personalization"</strong></li>
-    </ul>
-
-    <h2>3. Children's Privacy</h2>
-    <p>Neon Breakout is suitable for all ages. We do not knowingly collect personal information from children under the age of 13. Since we do not collect any personal data at all, the app is safe for children to use.</p>
-    <p>Google AdMob has been configured to support compliance with the Google Play Families Policy. Where required, advertisements shown to children are intended to be appropriate for younger audiences and are served only through Google Play certified advertising services.</p>
-
-    <h2>4. Data Security</h2>
-    <p>Since Neon Breakout does not collect or transmit personal data, there is no personal data at risk. Your high scores are stored only on your local device and are protected by your device's own security.</p>
-
-    <h2>5. Third-Party Services</h2>
-    <p>The app uses the following third-party service:</p>
-    <div class="highlight-box">
-        <p><span class="badge">GOOGLE ADMOB</span> — Advertising service by Google LLC<br>
-        <a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a> | 
-        <a href="https://policies.google.com/technologies/ads" target="_blank">Ad Technology</a></p>
+    <div class="summary-chip reveal">
+      <span class="chip-icon">📱</span>
+      <div class="chip-title">ON-DEVICE ONLY</div>
+      <div class="chip-desc">Scores &amp; progress stay on your phone</div>
     </div>
-
-    <h2>6. Permissions</h2>
-    <p>Neon Breakout may request the following permissions:</p>
-    <ul>
-        <li><strong style="color:#fff">Internet Access</strong> — Required to load advertisements from Google AdMob</li>
-        <li><strong style="color:#fff">Network State</strong> — Used to check internet connectivity for ads</li>
-    </ul>
-    <p>No other permissions are required or requested.</p>
-
-   <h2>7. Families Policy Compliance</h2>
-<p>Neon Breakout is designed to be suitable for players of all ages, including children. We are committed to complying with the Google Play Families Policy and applicable child privacy regulations.</p>
-
-<ul>
-    <li>Content within the game is intended to be appropriate for children.</li>
-    <li>Advertisements are served through Google AdMob, a Google Play certified advertising network.</li>
-    <li>When required, advertisements shown to children are intended to be appropriate for younger audiences.</li>
-    <li>We do not knowingly collect personal information from children.</li>
-    <li>The app and its integrated services are intended to comply with applicable child privacy laws, including COPPA and GDPR where applicable.</li>
-</ul>
-
-    <h2>8. Changes to This Policy</h2>
-    <p>We may update this Privacy Policy from time to time. Any changes will be reflected by updating the "Effective Date" at the top of this page. We encourage you to review this policy periodically.</p>
-    <p>If changes affect how children's information or advertising is handled, the updated policy will reflect those changes before they become effective.</p>
-
-    <h2>9. Contact Us</h2>
-    <p>If you have any questions about this Privacy Policy, please contact us at:</p>
-    <div class="highlight-box">
-        <p>📧 Email: <a href="mailto: adstv351@gmail.com">adstv351@gmail.com</a><br>
-        🎮 App: Neon Breakout<br>
-        🌐 Platform: <a href="https://play.google.com/store/apps/details?id=com.adarsh.neonbreakout"> Google Play Store</a>/ <a href ="https://indusapp.store/pvl130ss">Indus Appstore</a></p>
+    <div class="summary-chip reveal">
+      <span class="chip-icon">🧒</span>
+      <div class="chip-title">FAMILY SAFE</div>
+      <div class="chip-desc">Google Play Families Policy compliant</div>
     </div>
-
-  <div class="homepage"><a href = "https://shree-1001.github.io/neon-breakout/home.html" > Go To Home Page </a></div>
-
-    <div class="footer">
-        <p>© 2026 Neon Breakout. All rights reserved.</p>
+    <div class="summary-chip reveal">
+      <span class="chip-icon">📢</span>
+      <div class="chip-title">ADMOB ADS</div>
+      <div class="chip-desc">Only third-party service in use</div>
     </div>
+  </section>
+
+  <!-- MAIN LAYOUT -->
+  <div class="pp-layout">
+
+    <!-- TOC -->
+    <aside class="pp-toc">
+      <div class="pp-toc-title">On This Page</div>
+      <a href="#s1">1. Information We Collect</a>
+      <a href="#s2">2. Advertising</a>
+      <a href="#s3">3. Children's Privacy</a>
+      <a href="#s4">4. Data Security</a>
+      <a href="#s5">5. Third-Party Services</a>
+      <a href="#s6">6. Permissions</a>
+      <a href="#s7">7. Families Policy</a>
+      <a href="#s8">8. Policy Changes</a>
+      <a href="#s9">9. Contact Us</a>
+    </aside>
+
+    <!-- CONTENT -->
+    <div class="pp-content">
+
+      <div class="pp-section reveal" id="s1" style="--glow-col:#00f5ff0a">
+        <div class="pp-section-head">
+          <div class="pp-section-num">1</div>
+          <h2>Information We Collect</h2>
+        </div>
+        <p>Neon Breakout is an offline game. We do <strong>not</strong> collect, store, or transmit any personal information such as your name, email address, phone number, or location.</p>
+        <p>The only data stored by the app is:</p>
+        <ul>
+          <li>Your <strong>high scores and player name</strong> — stored locally on your device only</li>
+          <li>Your <strong>game progress</strong> (levels unlocked) — stored locally on your device only</li>
+        </ul>
+        <div class="pp-highlight">
+          <p>This data never leaves your device and is not accessible to us.</p>
+        </div>
+      </div>
+
+      <div class="pp-section reveal" id="s2" style="--glow-col:#ff2d780a">
+        <div class="pp-section-head">
+          <div class="pp-section-num">2</div>
+          <h2>Advertising (Google AdMob)</h2>
+        </div>
+        <p>Neon Breakout displays advertisements provided by <strong>Google AdMob</strong>. AdMob may collect certain information to serve relevant ads, including:</p>
+        <ul>
+          <li>Advertising ID (Android Ad ID)</li>
+          <li>IP address</li>
+          <li>Device information (model, OS version)</li>
+          <li>App usage data</li>
+        </ul>
+        <p>This data is collected by Google, not by us. Google's use of advertising data is governed by Google's Privacy Policy:</p>
+        <p><a href="https://policies.google.com/privacy" target="_blank">https://policies.google.com/privacy</a></p>
+        <p>When the app is used by children, advertisements are intended to comply with the Google Play Families Policy. We use Google AdMob, a Google Play certified advertising network, and configure advertising to help ensure that ads shown to children are appropriate for younger audiences whenever required. We do not serve advertisements ourselves or use advertising networks that are not permitted under the Google Play Families Policy.</p>
+        <p>Advertising is provided by Google AdMob in accordance with its own privacy practices and applicable legal requirements, including, where applicable, the Children's Online Privacy Protection Act (COPPA) and the General Data Protection Regulation (GDPR).</p>
+        <p>You can opt out of personalized advertising by adjusting your device settings:</p>
+        <ul>
+          <li>Go to <strong>Settings → Google → Ads</strong></li>
+          <li>Enable <strong>"Opt out of Ads Personalization"</strong></li>
+        </ul>
+      </div>
+
+      <div class="pp-section reveal" id="s3" style="--glow-col:#9b30ff0a">
+        <div class="pp-section-head">
+          <div class="pp-section-num">3</div>
+          <h2>Children's Privacy</h2>
+        </div>
+        <p>Neon Breakout is suitable for all ages. We do not knowingly collect personal information from children under the age of 13. Since we do not collect any personal data at all, the app is safe for children to use.</p>
+        <p>Google AdMob has been configured to support compliance with the Google Play Families Policy. Where required, advertisements shown to children are intended to be appropriate for younger audiences and are served only through Google Play certified advertising services.</p>
+      </div>
+
+      <div class="pp-section reveal" id="s4" style="--glow-col:#00f5ff0a">
+        <div class="pp-section-head">
+          <div class="pp-section-num">4</div>
+          <h2>Data Security</h2>
+        </div>
+        <p>Since Neon Breakout does not collect or transmit personal data, there is no personal data at risk. Your high scores are stored only on your local device and are protected by your device's own security.</p>
+      </div>
+
+      <div class="pp-section reveal" id="s5" style="--glow-col:#ff2d780a">
+        <div class="pp-section-head">
+          <div class="pp-section-num">5</div>
+          <h2>Third-Party Services</h2>
+        </div>
+        <p>The app uses the following third-party service:</p>
+        <div class="pp-highlight">
+          <span class="pp-badge">GOOGLE ADMOB</span> — Advertising service by Google LLC<br><br>
+          <p><a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a> &nbsp;|&nbsp;
+          <a href="https://policies.google.com/technologies/ads" target="_blank">Ad Technology</a></p>
+        </div>
+      </div>
+
+      <div class="pp-section reveal" id="s6" style="--glow-col:#9b30ff0a">
+        <div class="pp-section-head">
+          <div class="pp-section-num">6</div>
+          <h2>Permissions</h2>
+        </div>
+        <p>Neon Breakout may request the following permissions:</p>
+        <ul>
+          <li><strong>Internet Access</strong> — Required to load advertisements from Google AdMob</li>
+          <li><strong>Network State</strong> — Used to check internet connectivity for ads</li>
+        </ul>
+        <p>No other permissions are required or requested.</p>
+      </div>
+
+      <div class="pp-section reveal" id="s7" style="--glow-col:#00f5ff0a">
+        <div class="pp-section-head">
+          <div class="pp-section-num">7</div>
+          <h2>Families Policy Compliance</h2>
+        </div>
+        <p>Neon Breakout is designed to be suitable for players of all ages, including children. We are committed to complying with the Google Play Families Policy and applicable child privacy regulations.</p>
+        <ul>
+          <li>Content within the game is intended to be appropriate for children.</li>
+          <li>Advertisements are served through Google AdMob, a Google Play certified advertising network.</li>
+          <li>When required, advertisements shown to children are intended to be appropriate for younger audiences.</li>
+          <li>We do not knowingly collect personal information from children.</li>
+          <li>The app and its integrated services are intended to comply with applicable child privacy laws, including COPPA and GDPR where applicable.</li>
+        </ul>
+      </div>
+
+      <div class="pp-section reveal" id="s8" style="--glow-col:#ff2d780a">
+        <div class="pp-section-head">
+          <div class="pp-section-num">8</div>
+          <h2>Changes to This Policy</h2>
+        </div>
+        <p>We may update this Privacy Policy from time to time. Any changes will be reflected by updating the "Effective Date" at the top of this page. We encourage you to review this policy periodically.</p>
+        <p>If changes affect how children's information or advertising is handled, the updated policy will reflect those changes before they become effective.</p>
+      </div>
+
+      <div class="pp-section reveal" id="s9" style="--glow-col:#9b30ff0a">
+        <div class="pp-section-head">
+          <div class="pp-section-num">9</div>
+          <h2>Contact Us</h2>
+        </div>
+        <p>If you have any questions about this Privacy Policy, please contact us at:</p>
+        <div class="pp-contact-box">
+          <p>📧 Email: <a href="mailto:adstv351@gmail.com">adstv351@gmail.com</a></p>
+          <p>🎮 App: Neon Breakout</p>
+          <p>🌐 Platform: <a href="https://play.google.com/store/apps/details?id=com.adarsh.neonbreakout">Google Play Store</a> / <a href="https://indusapp.store/pvl130ss">Indus Appstore</a></p>
+        </div>
+      </div>
+
+      <div class="pp-back reveal">
+        <a href="home.html" class="btn-primary">Back To Home</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">NEON BREAKOUT</div>
+    <p>© 2026 Neon Breakout. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="home.html">Home</a>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </footer>
 
 </div>
+
+<script>
+// Animated particle background
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx = bgCanvas.getContext('2d');
+
+function resizeBg() {
+  bgCanvas.width = window.innerWidth;
+  bgCanvas.height = window.innerHeight;
+}
+resizeBg();
+window.addEventListener('resize', resizeBg);
+
+const particles = Array.from({ length: 50 }, () => ({
+  x: Math.random() * window.innerWidth,
+  y: Math.random() * window.innerHeight,
+  vx: (Math.random() - 0.5) * 0.4,
+  vy: (Math.random() - 0.5) * 0.4,
+  r: Math.random() * 1.5 + 0.5,
+  color: Math.random() > 0.5 ? '#00f5ff' : '#ff2d78',
+  alpha: Math.random() * 0.4 + 0.08,
+}));
+
+function drawBg() {
+  bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+  bgCtx.fillStyle = '#04040f';
+  bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+
+  bgCtx.strokeStyle = '#00f5ff08';
+  bgCtx.lineWidth = 1;
+  const gs = 60;
+  for (let x = 0; x < bgCanvas.width; x += gs) {
+    bgCtx.beginPath(); bgCtx.moveTo(x, 0); bgCtx.lineTo(x, bgCanvas.height); bgCtx.stroke();
+  }
+  for (let y = 0; y < bgCanvas.height; y += gs) {
+    bgCtx.beginPath(); bgCtx.moveTo(0, y); bgCtx.lineTo(bgCanvas.width, y); bgCtx.stroke();
+  }
+
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = bgCanvas.width;
+    if (p.x > bgCanvas.width) p.x = 0;
+    if (p.y < 0) p.y = bgCanvas.height;
+    if (p.y > bgCanvas.height) p.y = 0;
+
+    bgCtx.beginPath();
+    bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    bgCtx.fillStyle = p.color;
+    bgCtx.globalAlpha = p.alpha;
+    bgCtx.fill();
+    bgCtx.globalAlpha = 1;
+  });
+
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+// Mobile nav
+const navToggle = document.getElementById('nav-toggle');
+const navLinks = document.getElementById('nav-links');
+const navOverlay = document.getElementById('nav-overlay');
+
+function closeNav() {
+  navToggle.classList.remove('active');
+  navLinks.classList.remove('open');
+  navOverlay.classList.remove('open');
+}
+navToggle.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  navToggle.classList.toggle('active', isOpen);
+  navOverlay.classList.toggle('open', isOpen);
+});
+navOverlay.addEventListener('click', closeNav);
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0 });
+reveals.forEach(el => observer.observe(el));
+
+// TOC active-section highlighting
+const tocLinks = document.querySelectorAll('.pp-toc a');
+const sections = document.querySelectorAll('.pp-section[id]');
+const tocObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    const link = document.querySelector(`.pp-toc a[href="#${entry.target.id}"]`);
+    if (!link) return;
+    if (entry.isIntersecting) {
+      tocLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => tocObserver.observe(s));
+</script>
 </body>
 </html>
