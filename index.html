@@ -90,6 +90,79 @@ nav {
 }
 .nav-links a:hover { color: var(--gold); }
 
+/* Hamburger — 3-line, right side of glass nav */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 102;
+  padding: 0;
+}
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--gold);
+  border-radius: 1px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: center;
+}
+.nav-toggle.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+.nav-mobile {
+  display: none;
+  position: fixed;
+  top: 0; right: 0;
+  width: min(300px, 85vw);
+  height: 100vh;
+  background: #0A0A08f2;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-left: 1px solid #C9A84C22;
+  z-index: 101;
+  padding: 90px 28px 40px;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -20px 0 60px #00000088;
+}
+.nav-mobile.open { transform: translateX(0); }
+.nav-mobile a {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 14px 8px;
+  border-bottom: 1px solid #C9A84C0A;
+  transition: color 0.2s, padding-left 0.2s;
+  text-decoration: none !important;
+}
+.nav-mobile a:hover,
+.nav-mobile a:active {
+  color: var(--gold);
+  padding-left: 16px;
+}
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #00000066;
+  z-index: 99;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.nav-overlay.open { display: block; opacity: 1; }
+
 /* ── HERO ── */
 .hero {
   min-height: 100vh;
@@ -610,6 +683,8 @@ footer {
 @media (max-width: 768px) {
   nav { padding: 18px 24px; }
   .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .nav-mobile { display: flex; }
   section { padding: 80px 24px; }
   .about-grid { grid-template-columns: 1fr; gap: 48px; }
   .about-frame { display: none; }
@@ -619,6 +694,8 @@ footer {
   .games-inner { padding: 0 24px; }
   .contact-inner { padding: 80px 24px; }
   .phil-item { grid-template-columns: 48px 1fr; gap: 20px; }
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
 }
 </style>
 </head>
@@ -632,14 +709,26 @@ footer {
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Shree</div>
-  <div class="nav-links">
+  <a href="index.html" class="nav-logo" data-common="studio.name">Shree Games & Apps</a>
+  <div class="nav-links" id="nav-links-desktop">
     <a href="index.html">Home</a>
     <a href="privacy-policy.html">Privacy Policy</a>
     <a href="about.html">About Us</a>
     <a href="contact.html">Contact Us</a>
   </div>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 </nav>
+<div class="nav-overlay" id="nav-overlay"></div>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="privacy-policy.html">Privacy Policy</a>
+  <a href="about.html">About Us</a>
+  <a href="contact.html">Contact Us</a>
+</div>
 
 <!-- HERO -->
 <div class="hero">
@@ -858,14 +947,21 @@ footer {
         <div class="contact-icon">✉</div>
         <div class="contact-text">
           <div class="contact-label">Email</div>
-          <div class="contact-value"><a href="mailto:adstv351@gmail.com">adstv351@gmail.com</a></div>
+          <div class="contact-value"><a href="mailto:adstv351@gmail.com" data-common="studio.email">adstv351@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="contact-item reveal">
+        <div class="contact-icon">📱</div>
+        <div class="contact-text">
+          <div class="contact-label">Phone</div>
+          <div class="contact-value"><a href="tel:+918528361935" data-common="studio.phone">+91 8528361935</a></div>
         </div>
       </div>
       <div class="contact-item reveal">
         <div class="contact-icon">🌐</div>
         <div class="contact-text">
           <div class="contact-label">Website</div>
-          <div class="contact-value"><a href="#">shree-1001.github.io</a></div>
+          <div class="contact-value"><a href="https://shree-1001.github.io" target="_blank" data-common="studio.website">shree-1001.github.io</a></div>
         </div>
       </div>
       <div class="contact-item reveal">
@@ -881,15 +977,15 @@ footer {
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Shree Games & Apps</div>
+  <div class="footer-logo" data-common="studio.name">Shree Games & Apps</div>
   <div class="ornament reveal">✦ ◈ ✦</div>
-  <div class="footer-links reveal">
+  <div class="footer-links reveal" id="footer-links">
     <a href="index.html">Home</a>
     <a href="privacy-policy.html">Privacy Policy</a>
     <a href="about.html">About Us</a>
     <a href="contact.html">Contact Us</a>
   </div>
-  <p class="footer-copy reveal">© 2026 Shree Games & Apps · All Rights Reserved</p>
+  <p class="footer-copy reveal" data-common="studio.copyright">© 2026 Shree Games & Apps · All Rights Reserved</p>
 </footer>
 
 </div>
@@ -1011,21 +1107,85 @@ window.addEventListener('scroll', () => {
   nav.style.borderBottomColor = scrollY > 80 ? '#C9A84C22' : '#C9A84C11';
 });
 
+// ── MOBILE NAV TOGGLE ──
+(function() {
+  const toggle = document.getElementById('nav-toggle');
+  const mobile = document.getElementById('nav-mobile');
+  const overlay = document.getElementById('nav-overlay');
+  if (!toggle || !mobile || !overlay) return;
+  function closeMenu() {
+    toggle.classList.remove('open');
+    mobile.classList.remove('open');
+    overlay.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+  function openMenu() {
+    toggle.classList.add('open');
+    mobile.classList.add('open');
+    overlay.classList.add('open');
+    toggle.setAttribute('aria-expanded', 'true');
+  }
+  toggle.addEventListener('click', () => {
+    if (mobile.classList.contains('open')) closeMenu();
+    else openMenu();
+  });
+  overlay.addEventListener('click', closeMenu);
+  mobile.addEventListener('click', e => {
+    if (e.target.tagName === 'A') closeMenu();
+  });
+})();
+
 // ══════════════════════════════════════════════════════════════
-// ── GITHUB data.json CONNECT ──
-// Fetches data.json from GitHub Pages.
-// Renders app cards dynamically with logo, click, store links.
-// Falls back to static HTML if fetch fails.
+// ── common.json + data.json ──
+// common.json: studio name, email, phone, nav, footer (shared)
+// data.json: app cards (home page only)
 // ══════════════════════════════════════════════════════════════
 (function() {
 
-  // ── BUILD ONE CARD ──
-  // Card is ALWAYS a <div>. Only the top content (logo/name/desc)
-  // is wrapped in <a> when a website exists. Buttons are plain <a>
-  // tags INSIDE the card div — 100% valid HTML, no nesting issues.
-  function buildCard(a, i) {
+  function getByPath(obj, path) {
+    return path.split('.').reduce((o, k) => (o && o[k] != null) ? o[k] : null, obj);
+  }
 
-    // Store buttons
+  function applyCommon(common) {
+    if (!common) return;
+    document.querySelectorAll('[data-common]').forEach(el => {
+      const path = el.getAttribute('data-common');
+      const val = getByPath(common, path);
+      if (val == null) return;
+      if (el.tagName === 'A') {
+        if (path.includes('email')) {
+          el.href = 'mailto:' + val;
+          el.textContent = val;
+        } else if (path.includes('phone')) {
+          el.href = 'tel:' + String(val).replace(/\s/g, '');
+          el.textContent = val;
+        } else if (path.includes('website')) {
+          el.href = (common.studio && common.studio.websiteUrl) || ('https://' + val);
+          el.textContent = val;
+          el.target = '_blank';
+        } else {
+          el.textContent = val;
+        }
+      } else {
+        el.textContent = val;
+      }
+    });
+    const desktop = document.getElementById('nav-links-desktop');
+    const mobile = document.getElementById('nav-mobile');
+    if (common.nav && desktop && mobile) {
+      const html = common.nav.map(n => `<a href="${n.href}">${n.label}</a>`).join('');
+      desktop.innerHTML = html;
+      mobile.innerHTML = html;
+    }
+    const foot = document.getElementById('footer-links');
+    if (common.footerLinks && foot) {
+      foot.innerHTML = common.footerLinks.map(n =>
+        `<a href="${n.href}">${n.label}</a>`
+      ).join('');
+    }
+  }
+
+  function buildCard(a, i) {
     const links = [];
     if (a.status === 'live') {
       if (a.indus)
@@ -1042,34 +1202,26 @@ window.addEventListener('scroll', () => {
     if (a.website)
       links.push(`<a href="${a.website}" target="_blank" class="game-btn game-btn-outline">✦ Learn More About This App</a>`);
 
-    // Logo or emoji
     const mediaHtml = a.logo
       ? `<img src="${a.logo}" class="game-logo" alt="${a.name}"
              onerror="this.style.display='none';this.nextElementSibling.style.display='block';"/>
          <span class="game-icon" style="display:none">${a.icon || '🎮'}</span>`
       : `<span class="game-icon">${a.icon || '🎮'}</span>`;
 
-    // Status
     const statusClass = a.status === 'live' ? 'status-live' : 'status-soon';
     const statusText  = a.status === 'live' ? '✦ Live'
                       : a.status === 'coming-soon' ? '⏳ Coming Soon' : '🔮 In Dev';
-
-    // Tags
     const tagsHtml = (a.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
-
-    // Top content — wrapped in <a> only if website, no buttons inside = valid HTML
     const topInner = `
       ${mediaHtml}
       <div class="game-name">${a.name}</div>
       <div class="game-genre">${a.genre || ''}</div>
       <p class="game-desc">${a.desc || ''}</p>
       <div class="game-tags">${tagsHtml}</div>`;
-
     const topSection = a.website
       ? `<a href="${a.website}" target="_blank" class="card-top-link">${topInner}</a>`
       : `<div class="card-top-plain">${topInner}</div>`;
 
-    // Card is ALWAYS a plain div
     return `
       <div class="game-card reveal visible">
         <div class="game-number">0${i + 1}</div>
@@ -1079,29 +1231,6 @@ window.addEventListener('scroll', () => {
       </div>`;
   }
 
-  // ── APPLY STUDIO INFO ──
-  function applyStudio(studio) {
-    if (!studio) return;
-    // Update any mailto links
-    if (studio.email) {
-      document.querySelectorAll('a[href^="mailto:"]').forEach(el => {
-        el.href = 'mailto:' + studio.email;
-        el.textContent = studio.email;
-      });
-    }
-    // Update website link in contact section
-    if (studio.website) {
-      document.querySelectorAll('.contact-value a').forEach(el => {
-        if (el.textContent.includes('github') || el.textContent.includes('shree-1001')) {
-          el.href = 'https://' + studio.website;
-          el.textContent = studio.website;
-          el.target = '_blank';
-        }
-      });
-    }
-  }
-
-  // ── APPLY APPS ──
   function applyApps(apps) {
     if (!apps || !apps.length) return;
     const grid = document.getElementById('games-grid-dynamic');
@@ -1109,24 +1238,15 @@ window.addEventListener('scroll', () => {
     grid.innerHTML = apps.map((a, i) => buildCard(a, i)).join('');
   }
 
-  // ── FETCH data.json ──
-  // Replace YOUR_GITHUB_USERNAME with your actual username
-  const DATA_URL = 'https://shree-1001.github.io/data.json';
+  fetch('common.json?v=' + Date.now())
+    .then(r => { if (!r.ok) throw new Error('common.json missing'); return r.json(); })
+    .then(applyCommon)
+    .catch(() => console.log('Using static common fallback'));
 
-  fetch(DATA_URL + '?v=' + Date.now()) // cache-bust
-    .then(res => {
-      if (!res.ok) throw new Error('data.json not found');
-      return res.json();
-    })
-    .then(data => {
-      applyStudio(data.studio);
-      applyApps(data.apps);
-    })
-    .catch(() => {
-      // Silently fail — static HTML cards remain visible
-      console.log('Using static fallback cards');
-    });
-
+  fetch('data.json?v=' + Date.now())
+    .then(r => { if (!r.ok) throw new Error('data.json missing'); return r.json(); })
+    .then(data => { applyApps(data.apps); })
+    .catch(() => console.log('Using static fallback cards'));
 })();
 
 </script>
