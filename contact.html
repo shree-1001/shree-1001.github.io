@@ -13,10 +13,21 @@ a{text-decoration:none;color:inherit}
 canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 .page{position:relative;z-index:1}
 nav{background:#050505ee;border-bottom:1px solid #C9A84C11;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
-.nav-logo{font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:var(--gold);letter-spacing:2px}
+.nav-logo{font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:var(--gold);letter-spacing:2px;z-index:102}
 .nav-links{display:flex;gap:24px}
 .nav-links a{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-family:'Cinzel',serif;transition:color .2s}
 .nav-links a:hover{color:var(--gold)}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:6px;width:28px;height:28px;background:none;border:none;cursor:pointer;z-index:102;padding:0}
+.nav-toggle span{display:block;width:100%;height:2px;background:var(--gold);border-radius:1px;transition:transform .3s ease,opacity .3s ease;transform-origin:center}
+.nav-toggle.open span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.nav-toggle.open span:nth-child(2){opacity:0}
+.nav-toggle.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+.nav-mobile{display:none;position:fixed;top:0;right:0;width:min(300px,85vw);height:100vh;background:#0A0A08f2;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-left:1px solid #C9A84C22;z-index:101;padding:90px 28px 40px;flex-direction:column;gap:8px;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);box-shadow:-20px 0 60px #00000088}
+.nav-mobile.open{transform:translateX(0)}
+.nav-mobile a{font-family:'Cinzel',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);padding:14px 8px;border-bottom:1px solid #C9A84C0A;transition:color .2s,padding-left .2s}
+.nav-mobile a:hover,.nav-mobile a:active{color:var(--gold);padding-left:16px}
+.nav-overlay{display:none;position:fixed;inset:0;background:#00000066;z-index:99;opacity:0;transition:opacity .3s}
+.nav-overlay.open{display:block;opacity:1}
 .hero{padding:120px 5% 72px;text-align:center}
 .eye{font-family:'Cinzel',serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:16px}
 .htitle{font-family:'Cinzel Decorative',serif;font-size:clamp(28px,6vw,68px);font-weight:900;color:var(--gold-l);text-shadow:0 0 60px #C9A84C44;margin-bottom:8px}
@@ -95,21 +106,31 @@ footer{background:var(--s1);border-top:1px solid #C9A84C08;padding:40px 5%;text-
 .fcopy{font-size:11px;color:#705820;letter-spacing:2px;font-family:'Cinzel',serif}
 .rv{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
 .rv.on{opacity:1;transform:translateY(0)}
-@media(max-width:640px){.nav-links{display:none}.form-card{padding:24px}}
+@media(max-width:768px){.nav-links{display:none}.nav-toggle{display:flex}.nav-mobile{display:flex}.form-card{padding:24px}}
 </style>
 </head>
 <body>
 <canvas id="bg"></canvas>
 <div class="page">
 <nav>
-  <a href="index.html" class="nav-logo">Shree Games & Apps</a>
-  <div class="nav-links">
+  <a href="index.html" class="nav-logo" data-common="studio.name">Shree Games & Apps</a>
+  <div class="nav-links" id="nav-links-desktop">
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
     <a href="index.html#games">Games</a>
     <a href="privacy-policy.html">Privacy Policy</a>
   </div>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="nav-overlay" id="nav-overlay"></div>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="index.html#games">Games</a>
+  <a href="privacy-policy.html">Privacy Policy</a>
+</div>
 
 <div class="hero">
   <div class="eye rv">We're Here</div>
@@ -127,15 +148,23 @@ footer{background:var(--s1);border-top:1px solid #C9A84C08;padding:40px 5%;text-
         <div class="ci-icon">✉</div>
         <div>
           <div class="ci-label">Primary Email</div>
-          <div class="ci-val"><a href="mailto: adstv351@gmail.com">adstv351@gmail.com</a></div>
+          <div class="ci-val"><a href="mailto:adstv351@gmail.com" data-common="studio.email">adstv351@gmail.com</a></div>
           <div class="ci-hint">Best for general inquiries, partnerships</div>
+        </div>
+      </div>
+      <div class="ci rv">
+        <div class="ci-icon">📱</div>
+        <div>
+          <div class="ci-label">Phone</div>
+          <div class="ci-val"><a href="tel:+918528361935" data-common="studio.phone">+91 8528361935</a></div>
+          <div class="ci-hint">WhatsApp / call during IST business hours</div>
         </div>
       </div>
       <div class="ci rv">
         <div class="ci-icon">🐛</div>
         <div>
           <div class="ci-label">Bug Reports</div>
-          <div class="ci-val"><a href="mailto:adstv351@gmail.com?subject=Bug Report">adstv351@gmail.com</a></div>
+          <div class="ci-val"><a href="mailto:adstv351@gmail.com?subject=Bug Report" data-common="studio.email">adstv351@gmail.com</a></div>
           <div class="ci-hint">Include app name, device, and Android version</div>
         </div>
       </div>
@@ -143,22 +172,22 @@ footer{background:var(--s1);border-top:1px solid #C9A84C08;padding:40px 5%;text-
         <div class="ci-icon">📍</div>
         <div>
           <div class="ci-label">Location</div>
-          <div class="ci-val">India</div>
-          <div class="ci-hint">Time zone: IST (UTC+5:30)</div>
+          <div class="ci-val" data-common="studio.location">India</div>
+          <div class="ci-hint">Time zone: <span data-common="studio.timezone">IST (UTC+5:30)</span></div>
         </div>
       </div>
       <div class="ci rv">
         <div class="ci-icon">🌐</div>
         <div>
           <div class="ci-label">Website</div>
-          <div class="ci-val"><a href="https://shree-1001.github.io" target="_blank">shree-1001.github.io</a></div>
+          <div class="ci-val"><a href="https://shree-1001.github.io" target="_blank" data-common="studio.website">shree-1001.github.io</a></div>
           <div class="ci-hint">Games, privacy policy, updates</div>
         </div>
       </div>
     </div>
 
     <div class="social-title rv">Find Us Online</div>
-    <div class="social-links rv">
+    <div class="social-links rv" id="social-links">
       <a class="sl" href="https://github.com/shree-1001" target="_blank">
         <span class="sl-icon">⌨</span><span class="sl-text">GitHub — shree-1001</span>
       </a>
@@ -169,10 +198,12 @@ footer{background:var(--s1);border-top:1px solid #C9A84C08;padding:40px 5%;text-
 
     <div class="resp-box rv">
       <div class="resp-box-title">Response Times</div>
-      <div class="resp-item"><span>General Inquiry</span><span>Within 24–48 hrs</span></div>
-      <div class="resp-item"><span>Bug Report</span><span>Within 24 hrs</span></div>
-      <div class="resp-item"><span>Partnership</span><span>Within 72 hrs</span></div>
-      <div class="resp-item"><span>Privacy Request</span><span>Within 48 hrs</span></div>
+      <div id="response-times">
+        <div class="resp-item"><span>General Inquiry</span><span>Within 24–48 hrs</span></div>
+        <div class="resp-item"><span>Bug Report</span><span>Within 24 hrs</span></div>
+        <div class="resp-item"><span>Partnership</span><span>Within 72 hrs</span></div>
+        <div class="resp-item"><span>Privacy Request</span><span>Within 48 hrs</span></div>
+      </div>
     </div>
   </div>
 
@@ -259,14 +290,14 @@ footer{background:var(--s1);border-top:1px solid #C9A84C08;padding:40px 5%;text-
 </div>
 
 <footer>
-  <div class="fl">Shree Games & Apps</div>
-  <div class="flinks">
+  <div class="fl" data-common="studio.name">Shree Games & Apps</div>
+  <div class="flinks" id="footer-links">
     <a href="index.html">Home</a>
     <a href="index.html#games">Games</a>
     <a href="privacy-policy.html">Privacy Policy</a>
     <a href="about.html">About Us</a>
   </div>
-  <p class="fcopy">© 2026 Shree Games & Apps · All Rights Reserved</p>
+  <p class="fcopy" data-common="studio.copyright">© 2026 Shree Games & Apps · All Rights Reserved</p>
 </footer>
 </div>
 
@@ -312,6 +343,52 @@ function toggleFaq(btn){
   document.querySelectorAll('.faq-q').forEach(q=>q.classList.remove('open'));
   if(!isOpen){ans.classList.add('open');btn.classList.add('open');}
 }
+
+(function(){
+  const toggle=document.getElementById('nav-toggle');
+  const mobile=document.getElementById('nav-mobile');
+  const overlay=document.getElementById('nav-overlay');
+  if(!toggle||!mobile||!overlay)return;
+  function closeMenu(){toggle.classList.remove('open');mobile.classList.remove('open');overlay.classList.remove('open');toggle.setAttribute('aria-expanded','false');}
+  function openMenu(){toggle.classList.add('open');mobile.classList.add('open');overlay.classList.add('open');toggle.setAttribute('aria-expanded','true');}
+  toggle.addEventListener('click',()=>{if(mobile.classList.contains('open'))closeMenu();else openMenu();});
+  overlay.addEventListener('click',closeMenu);
+  mobile.addEventListener('click',e=>{if(e.target.tagName==='A')closeMenu();});
+})();
+(function(){
+  function getByPath(obj,path){return path.split('.').reduce((o,k)=>(o&&o[k]!=null)?o[k]:null,obj);}
+  function applyCommon(common){
+    if(!common)return;
+    document.querySelectorAll('[data-common]').forEach(el=>{
+      const path=el.getAttribute('data-common');
+      const val=getByPath(common,path);
+      if(val==null)return;
+      if(el.tagName==='A'){
+        if(path.includes('email')){el.href='mailto:'+val;el.textContent=val;}
+        else if(path.includes('phone')){el.href='tel:'+String(val).replace(/\s/g,'');el.textContent=val;}
+        else if(path.includes('website')){el.href=(common.studio&&common.studio.websiteUrl)||('https://'+val);el.textContent=val;el.target='_blank';}
+        else{el.textContent=val;}
+      }else{el.textContent=val;}
+    });
+    const desktop=document.getElementById('nav-links-desktop');
+    const mobile=document.getElementById('nav-mobile');
+    if(common.nav&&desktop&&mobile){
+      const html=common.nav.map(n=>`<a href="${n.href}">${n.label}</a>`).join('');
+      desktop.innerHTML=html;mobile.innerHTML=html;
+    }
+    const foot=document.getElementById('footer-links');
+    if(common.footerLinks&&foot){foot.innerHTML=common.footerLinks.map(n=>`<a href="${n.href}">${n.label}</a>`).join('');}
+    const social=document.getElementById('social-links');
+    if(common.social&&social){
+      social.innerHTML=common.social.map(s=>`<a class="sl" href="${s.href}" target="_blank"><span class="sl-icon">${s.icon}</span><span class="sl-text">${s.label}</span></a>`).join('');
+    }
+    const resp=document.getElementById('response-times');
+    if(common.responseTimes&&resp){
+      resp.innerHTML=common.responseTimes.map(r=>`<div class="resp-item"><span>${r.type}</span><span>${r.time}</span></div>`).join('');
+    }
+  }
+  fetch('common.json?v='+Date.now()).then(r=>{if(!r.ok)throw new Error('missing');return r.json();}).then(applyCommon).catch(()=>console.log('Using static common fallback'));
+})();
 </script>
 </body>
 </html>
