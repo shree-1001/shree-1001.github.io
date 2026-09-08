@@ -1,0 +1,46 @@
+{
+  "studio": {
+    "name": "Shree Games & Apps",
+    "shortName": "Shree",
+    "tagline": "Crafting worlds worth playing in. One game at a time.",
+    "email": "adstv351@gmail.com",
+    "phone": "+91 8528361935",
+    "website": "shree-1001.github.io",
+    "websiteUrl": "https://shree-1001.github.io",
+    "location": "India",
+    "timezone": "IST (UTC+5:30)",
+    "founded": "2026",
+    "copyright": "© 2026 Shree Games & Apps · All Rights Reserved"
+  },
+  "nav": [
+    { "label": "Home", "href": "index.html" },
+    { "label": "About Us", "href": "about.html" },
+    { "label": "Games", "href": "index.html#games" },
+    { "label": "Contact Us", "href": "contact.html" },
+    { "label": "Privacy Policy", "href": "privacy-policy.html" }
+  ],
+  "footerLinks": [
+    { "label": "Home", "href": "index.html" },
+    { "label": "About Us", "href": "about.html" },
+    { "label": "Contact", "href": "contact.html" },
+    { "label": "Privacy Policy", "href": "privacy-policy.html" }
+  ],
+  "social": [
+    {
+      "label": "GitHub — shree-1001",
+      "href": "https://github.com/shree-1001",
+      "icon": "⌨"
+    },
+    {
+      "label": "Website — shree-1001.github.io",
+      "href": "https://shree-1001.github.io",
+      "icon": "🌐"
+    }
+  ],
+  "responseTimes": [
+    { "type": "General Inquiry", "time": "Within 24–48 hrs" },
+    { "type": "Bug Report", "time": "Within 24 hrs" },
+    { "type": "Partnership", "time": "Within 72 hrs" },
+    { "type": "Privacy Request", "time": "Within 48 hrs" }
+  ]
+}
