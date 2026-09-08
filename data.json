@@ -26,7 +26,7 @@
       "genre": "Arcade · Casual Runner Game",
       "icon": "🎮",
       "status": "live",
-      "desc": "Dodge neon obstacles, survive longer, and master the endless challenge! in this fast-paced arcade classic. Smooth controls, stunning neon visuals, and an endless high-score chase — all offline.",
+      "desc": "Dodge neon obstacles, survive longer, and master the endless challenge in this fast-paced arcade classic. Smooth controls, stunning neon visuals, and an endless high-score chase — all offline.",
       "tags": ["Free", "Offline", "Android", "Arcade"],
       "website": "https://shree-1001.github.io/neon-dodge/",
       "playstore": "https://play.google.com/store/apps/details?id=com.shree.neondodge",
@@ -39,7 +39,7 @@
       "genre": "Shooter · Casual Shooter Game",
       "icon": "🎮",
       "status": "coming-soon",
-      "desc": "Every level in Burst the Bubble is generated fresh — new shapes, new hazards, gradually rising difficulty, forever. Aim, chain color combos, dodge moving obstacles, and take down bubble bosses, all with a mascot who's never short of a comment. — all offline.",
+      "desc": "Every level in Burst the Bubble is generated fresh — new shapes, new hazards, gradually rising difficulty, forever. Aim, chain color combos, dodge moving obstacles, and take down bubble bosses, all with a mascot who's never short of a comment — all offline.",
       "tags": ["Free", "Offline", "Android", "Shooter"],
       "website": "https://shree-1001.github.io/burst-the-bubble/",
       "playstore": "",
@@ -62,11 +62,11 @@
     {
       "id": "tratakam",
       "name": "Tratakam",
-      "genre": "Meditation: Focus Booster",
+      "genre": "Meditation · Focus Booster",
       "icon": "🕯️",
       "status": "coming-soon",
       "desc": "Tratakam guides candle-gazing meditation, mantra japa, and focus training with eye-care tools, streaks, and rewards — in 8 languages.",
-      "tags": ["Free", "Offline", "Android", "Meditation","Focus"],
+      "tags": ["Free", "Offline", "Android", "Meditation", "Focus"],
       "website": "",
       "playstore": "",
       "indus": "",
@@ -74,4 +74,3 @@
     }
   ]
 }
- 
