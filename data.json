@@ -58,7 +58,20 @@
       "playstore": "",
       "indus": "",
       "logo": "https://shree-1001.github.io/chaturanga/Chaturanga-logo.png"
-    }
+    },
+    {
+      "id": "tratakam",
+      "name": "Tratakam",
+      "genre": "Meditation: Focus Booster",
+      "icon": "🕯️",
+      "status": "coming-soon",
+      "desc": "Tratakam guides candle-gazing meditation, mantra japa, and focus training with eye-care tools, streaks, and rewards — in 8 languages.",
+      "tags": ["Free", "Offline", "Android", "Meditation","Focus"],
+      "website": "",
+      "playstore": "",
+      "indus": "",
+      "logo": ""
+    },
   ]
 }
  
