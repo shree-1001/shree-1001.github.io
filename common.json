@@ -217,6 +217,39 @@
         }
       ],
       "copyright": "© 2026 Chaturanga: Legacy of Kings. All rights reserved."
+    },
+    "tratakam": {
+      "id": "tratakam",
+      "displayName": "TRATAKAM",
+      "nav": [
+        {
+          "label": "Home",
+          "href": "index.html"
+        },
+        {
+          "label": "Privacy Policy",
+          "href": "privacy-policy.html"
+        },
+        {
+          "label": "Contact",
+          "href": "contact.html"
+        }
+      ],
+      "footerLinks": [
+        {
+          "label": "Home",
+          "href": "index.html"
+        },
+        {
+          "label": "Privacy Policy",
+          "href": "privacy-policy.html"
+        },
+        {
+          "label": "Contact",
+          "href": "contact.html"
+        }
+      ],
+      "copyright": "© 2026 Tratakam · All rights reserved."
     }
   }
 }
