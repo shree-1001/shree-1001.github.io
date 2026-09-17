@@ -437,7 +437,7 @@
   }
 </style>
 </head>
-<body>
+<body data-app-id="neon-breakout">
 
 <canvas id="bg-canvas"></canvas>
 
@@ -445,8 +445,8 @@
 
   <div class="nav-overlay" id="nav-overlay"></div>
   <nav>
-    <a href="home.html" class="nav-logo">NEON BREAKOUT</a>
-    <div class="nav-links" id="nav-links">
+    <a href="home.html" class="nav-logo" data-app-name>NEON BREAKOUT</a>
+    <div class="nav-links" id="nav-links" data-app-nav>
       <a href="home.html">Home</a>
       <a href="privacy-policy.html" class="active">Privacy Policy</a>
       <a href="contact.html">Contact</a>
@@ -541,11 +541,15 @@
         <p><a href="https://policies.google.com/privacy" target="_blank">https://policies.google.com/privacy</a></p>
         <p>When the app is used by children, advertisements are intended to comply with the Google Play Families Policy. We use Google AdMob, a Google Play certified advertising network, and configure advertising to help ensure that ads shown to children are appropriate for younger audiences whenever required. We do not serve advertisements ourselves or use advertising networks that are not permitted under the Google Play Families Policy.</p>
         <p>Advertising is provided by Google AdMob in accordance with its own privacy practices and applicable legal requirements, including, where applicable, the Children's Online Privacy Protection Act (COPPA) and the General Data Protection Regulation (GDPR).</p>
-        <p>You can opt out of personalized advertising by adjusting your device settings:</p>
+        <p><strong>Consent for personalized ads (UMP regions only):</strong></p>
+        <p>In countries and regions where Google's User Messaging Platform (UMP) applies — including the European Economic Area (EEA), the United Kingdom, Switzerland, and other jurisdictions where consent is required for personalized advertising — you will see a consent form when you first open the app. On that form you can choose to allow personalized ads or to receive non-personalized ads instead.</p>
+        <p>If you are in a UMP region, you can later <strong>revoke, change, or give consent again</strong> at any time from the app's <strong>Settings</strong> page (Privacy / Ad consent options). The in-app consent form and Settings control apply only in UMP countries; they are not shown where consent is not required under applicable law.</p>
+        <p>You can also opt out of personalized advertising at the device level (all regions):</p>
         <ul>
           <li>Go to <strong>Settings → Google → Ads</strong></li>
           <li>Enable <strong>"Opt out of Ads Personalization"</strong></li>
         </ul>
+        <p>Declining or opting out of personalized ads means you may still see ads, but they will not be personalized to your interests.</p>
       </div>
 
       <div class="pp-section reveal" id="s3" style="--glow-col:#9b30ff0a">
@@ -622,7 +626,7 @@
         </div>
         <p>If you have any questions about this Privacy Policy, please contact us at:</p>
         <div class="pp-contact-box">
-          <p>📧 Email: <a href="mailto:adstv351@gmail.com">adstv351@gmail.com</a></p>
+          <p>📧 Email: <a href="mailto:shreegamesandapps@zohomail.in" data-common="studio.email">shreegamesandapps@zohomail.in</a></p>
           <p>🎮 App: Neon Breakout</p>
           <p>🌐 Platform: <a href="https://play.google.com/store/apps/details?id=com.adarsh.neonbreakout">Google Play Store</a> / <a href="https://indusapp.store/pvl130ss">Indus Appstore</a></p>
         </div>
@@ -636,9 +640,9 @@
   </div>
 
   <footer>
-    <div class="footer-logo">NEON BREAKOUT</div>
-    <p>© 2026 Neon Breakout. All rights reserved.</p>
-    <div class="footer-links">
+    <div class="footer-logo" data-app-name>NEON BREAKOUT</div>
+    <p data-app-copyright>© 2026 Neon Breakout. All rights reserved.</p>
+    <div class="footer-links" data-app-footer>
       <a href="home.html">Home</a>
       <a href="privacy-policy.html">Privacy Policy</a>
       <a href="contact.html">Contact</a>
@@ -745,5 +749,103 @@ const tocObserver = new IntersectionObserver(entries => {
 }, { rootMargin: '-20% 0px -70% 0px' });
 sections.forEach(s => tocObserver.observe(s));
 </script>
+
+<script>
+/* ── Shared common.json loader (app pages) ── */
+(function(){
+  var APP_ID = document.body.getAttribute('data-app-id') || '';
+  function getByPath(obj, path){
+    return path.split('.').reduce(function(o,k){ return (o && o[k] != null) ? o[k] : null; }, obj);
+  }
+  function applyCommon(common){
+    if(!common) return;
+    var APP_ID = document.body.getAttribute('data-app-id') || '';
+    var st = common.studio || {};
+    if (st.email) window.__studioEmail = st.email;
+    if (st.phone) window.__studioPhone = st.phone;
+
+    function getByPath(obj, path){
+      return path.split('.').reduce(function(o,k){ return (o && o[k] != null) ? o[k] : null; }, obj);
+    }
+
+    // 1) data-common attributes
+    document.querySelectorAll('[data-common]').forEach(function(el){
+      var path = el.getAttribute('data-common');
+      var val = getByPath(common, path);
+      if(val == null) return;
+      if(el.tagName === 'A'){
+        if(path.indexOf('email') !== -1){ el.href = 'mailto:' + val; el.textContent = val; }
+        else if(path.indexOf('phone') !== -1){ el.href = 'tel:' + String(val).replace(/\s/g,''); el.textContent = val; }
+        else if(path.indexOf('website') !== -1){
+          el.href = st.websiteUrl || ('https://' + val);
+          el.textContent = val; el.target = '_blank';
+        } else { el.textContent = val; }
+      } else { el.textContent = val; }
+    });
+
+    // 2) ALL mailto links + form actions + short email-only text
+    if(st.email){
+      document.querySelectorAll('a[href*="mailto"]').forEach(function(el){
+        var href = el.getAttribute('href') || '';
+        var rest = href.indexOf('?') >= 0 ? href.slice(href.indexOf('?')) : '';
+        el.href = 'mailto:' + st.email + rest;
+        var tc = el.textContent || '';
+        if(/@/.test(tc)) el.textContent = st.email;
+        else if(/email\s+/i.test(tc) && !/@/.test(tc)) el.textContent = 'Email ' + st.email;
+      });
+      document.querySelectorAll('form[action*="mailto"]').forEach(function(f){
+        var act = f.getAttribute('action') || '';
+        var rest = act.indexOf('?') >= 0 ? act.slice(act.indexOf('?')) : '';
+        f.setAttribute('action', 'mailto:' + st.email + rest);
+      });
+      document.querySelectorAll('p, span, div, li, td').forEach(function(el){
+        if(el.children.length) return;
+        var t = el.textContent || '';
+        if(/shreegamesandapps@zohomail\.in/i.test(t) && t.length < 120){
+          el.textContent = t.replace(/shreegamesandapps@zohomail\.in/gi, st.email);
+        }
+      });
+    }
+
+    // 3) Phone
+    if(st.phone){
+      var tel = String(st.phone).replace(/\s/g,'');
+      document.querySelectorAll('a[href^="tel:"]').forEach(function(el){
+        el.href = 'tel:' + tel;
+        if(/\+?\d[\d\s\-]{8,}/.test(el.textContent||'')) el.textContent = st.phone;
+      });
+    }
+
+    // 4) Per-app name, nav, footer, copyright
+    var app = (common.apps && APP_ID) ? common.apps[APP_ID] : null;
+    if(app){
+      document.querySelectorAll('[data-app-name]').forEach(function(el){
+        if(app.displayName) el.textContent = app.displayName;
+      });
+      document.querySelectorAll('[data-app-copyright]').forEach(function(el){
+        if(app.copyright) el.textContent = app.copyright;
+      });
+      if(app.nav && app.nav.length){
+        var navHtml = app.nav.map(function(n){ return '<a href="' + n.href + '">' + n.label + '</a>'; }).join('');
+        document.querySelectorAll('[data-app-nav]').forEach(function(el){ el.innerHTML = navHtml; });
+        document.querySelectorAll('[data-app-nav] a').forEach(function(a){
+          if(/contact/i.test(a.textContent) && a.parentElement && /navlinks/i.test(a.parentElement.className||'')){
+            a.classList.add('nav-cta');
+          }
+        });
+      }
+      if(app.footerLinks && app.footerLinks.length){
+        var footHtml = app.footerLinks.map(function(n){ return '<a href="' + n.href + '">' + n.label + '</a>'; }).join('');
+        document.querySelectorAll('[data-app-footer]').forEach(function(el){ el.innerHTML = footHtml; });
+      }
+    }
+  }
+  fetch('../common.json?v=' + Date.now())
+    .then(function(r){ if(!r.ok) throw new Error('missing'); return r.json(); })
+    .then(applyCommon)
+    .catch(function(){ console.log('Using static common fallback'); });
+})();
+</script>
+
 </body>
 </html>
