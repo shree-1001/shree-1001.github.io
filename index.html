@@ -830,69 +830,8 @@ footer {
     <div class="gold-rule reveal"></div>
 
     <div class="games-grid" id="games-grid-dynamic">
-    <div class="games-grid" id="games-grid-dynamic">
-
-      <div class="game-card reveal">
-        <div class="game-number">01</div>
-        <span class="game-status status-live">✦ Live</span>
-        <div class="card-top-plain">
-          <span class="game-icon">🎮</span>
-          <div class="game-name">Neon Breakout</div>
-          <div class="game-genre">Arcade · Brick Breaker</div>
-          <p class="game-desc">Break glowing neon bricks in this fast-paced arcade classic. Smooth paddle controls, stunning neon visuals, and an endless high-score chase — all offline.</p>
-          <div class="game-tags">
-            <span class="tag">Free</span>
-            <span class="tag">Offline</span>
-            <span class="tag">Android</span>
-            <span class="tag">Arcade</span>
-          </div>
-        </div>
-        <div class="game-links">
-          <a href="#" class="game-btn">Get on Indus Appstore</a>
-          <a href="#" class="game-btn game-btn-outline">✦ Learn More About This App</a>
-        </div>
-      </div>
-
-      <div class="game-card reveal">
-        <div class="game-number">02</div>
-        <span class="game-status status-soon">⏳ Coming Soon</span>
-        <div class="card-top-plain">
-          <span class="game-icon">♛</span>
-          <div class="game-name">Chaturanga</div>
-          <div class="game-genre">Strategy · Historical Chess</div>
-          <p class="game-desc">The ancient game of kings, reimagined for Android. Experience chess as it was played in the courts of ancient India — with a full economy, leagues, and multiplayer.</p>
-          <div class="game-tags">
-            <span class="tag">Strategy</span>
-            <span class="tag">Historical</span>
-            <span class="tag">Multiplayer</span>
-            <span class="tag">Android</span>
-          </div>
-        </div>
-        <div class="game-links">
-          <span class="game-btn game-btn-disabled">Coming Soon</span>
-        </div>
-      </div>
-
-      <div class="game-card reveal">
-        <div class="game-number">03</div>
-        <span class="game-status status-soon">✦ In Dev</span>
-        <div class="card-top-plain">
-          <span class="game-icon">🔮</span>
-          <div class="game-name">Next Title</div>
-          <div class="game-genre">To Be Revealed</div>
-          <p class="game-desc">Something new is being forged in the studio. We are designing an experience that pushes the limits of what a small team can build. Stay tuned.</p>
-          <div class="game-tags">
-            <span class="tag">Mystery</span>
-            <span class="tag">Android</span>
-          </div>
-        </div>
-        <div class="game-links">
-          <span class="game-btn game-btn-disabled">Stay Tuned</span>
-        </div>
-      </div>
-
+      <!-- Cards loaded from data.json -->
     </div>
-  </div>
 </div>
 <!-- PHILOSOPHY -->
 <section id="philosophy">
@@ -1130,7 +1069,7 @@ window.addEventListener('scroll', () => {
 
 // ══════════════════════════════════════════════════════════════
 // ── common.json + data.json ──
-// common.json: studio name, email, phone, nav, footer (shared)
+// common.json: studio name, email, nav, footer (shared)
 // data.json: app cards (home page only)
 // ══════════════════════════════════════════════════════════════
 (function() {
@@ -1176,6 +1115,31 @@ window.addEventListener('scroll', () => {
         `<a href="${n.href}">${n.label}</a>`
       ).join('');
     }
+    // Email/phone sweep
+    if (common.studio) {
+      var st = common.studio;
+      if (st.email) {
+        window.__studioEmail = st.email;
+        document.querySelectorAll('a[href*="mailto"]').forEach(function(el) {
+          var href = el.getAttribute('href') || '';
+          var rest = href.indexOf('?') >= 0 ? href.slice(href.indexOf('?')) : '';
+          el.href = 'mailto:' + st.email + rest;
+          if (el.textContent && /@/.test(el.textContent)) el.textContent = st.email;
+        });
+        document.querySelectorAll('form[action*="mailto"]').forEach(function(f) {
+          var act = f.getAttribute('action') || '';
+          var rest = act.indexOf('?') >= 0 ? act.slice(act.indexOf('?')) : '';
+          f.setAttribute('action', 'mailto:' + st.email + rest);
+        });
+      }
+      if (st.phone) {
+        var tel = String(st.phone).replace(/\s/g, '');
+        document.querySelectorAll('a[href^="tel:"]').forEach(function(el) {
+          el.href = 'tel:' + tel;
+          if (/\+?\d[\d\s\-]{8,}/.test(el.textContent || '')) el.textContent = st.phone;
+        });
+      }
+    }
   }
 
   function buildCard(a, i) {
@@ -1204,7 +1168,7 @@ window.addEventListener('scroll', () => {
     const statusClass = a.status === 'live' ? 'status-live' : 'status-soon';
     const statusText  = a.status === 'live' ? '✦ Live'
                       : a.status === 'coming-soon' ? '⏳ Coming Soon' : '🔮 In Dev';
-    const tagsHtml = (a.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+    const tagsHtml = (a.tags || []).map(tg => `<span class="tag">${tg}</span>`).join('');
     const topInner = `
       ${mediaHtml}
       <div class="game-name">${a.name}</div>
@@ -1217,7 +1181,7 @@ window.addEventListener('scroll', () => {
 
     return `
       <div class="game-card reveal visible">
-        <div class="game-number">0${i + 1}</div>
+        <div class="game-number">${String(i + 1).padStart(2, '0')}</div>
         <span class="game-status ${statusClass}">${statusText}</span>
         ${topSection}
         <div class="game-links">${links.join('')}</div>
@@ -1230,39 +1194,14 @@ window.addEventListener('scroll', () => {
     if (!grid) return;
     grid.innerHTML = apps.map((a, i) => buildCard(a, i)).join('');
   }
-  
-    // Full email/phone sweep for main site
-    if (common.studio) {
-      var st = common.studio;
-      if (st.email) {
-        window.__studioEmail = st.email;
-        document.querySelectorAll('a[href*="mailto"]').forEach(function(el) {
-          var href = el.getAttribute('href') || '';
-          var rest = href.indexOf('?') >= 0 ? href.slice(href.indexOf('?')) : '';
-          el.href = 'mailto:' + st.email + rest;
-          if (el.textContent && /@/.test(el.textContent)) el.textContent = st.email;
-        });
-        document.querySelectorAll('form[action*="mailto"]').forEach(function(f) {
-          var act = f.getAttribute('action') || '';
-          var rest = act.indexOf('?') >= 0 ? act.slice(act.indexOf('?')) : '';
-          f.setAttribute('action', 'mailto:' + st.email + rest);
-        });
-        document.querySelectorAll('p, span, div, li').forEach(function(el) {
-          if (el.children.length) return;
-          var t = el.textContent || '';
-          if (/shreegamesandapps@zohomail\.in/i.test(t) && t.length < 120) {
-            el.textContent = t.replace(/shreegamesandapps@zohomail\.in/gi, st.email);
-          }
-        });
-      }
-      if (st.phone) {
-        var tel = String(st.phone).replace(/\s/g, '');
-        document.querySelectorAll('a[href^="tel:"]').forEach(function(el) {
-          el.href = 'tel:' + tel;
-          if (/\+?\d[\d\s\-]{8,}/.test(el.textContent || '')) el.textContent = st.phone;
-        });
-      }
-    }
+
+  function applyStudioFromData(studio) {
+    if (!studio) return;
+    // Optional: tagline etc. already handled by common.json; keep for parity with original
+    document.querySelectorAll('[data-studio-tagline]').forEach(el => {
+      if (studio.tagline) el.textContent = studio.tagline;
+    });
+  }
 
   fetch('common.json?v=' + Date.now())
     .then(r => { if (!r.ok) throw new Error('common.json missing'); return r.json(); })
@@ -1271,9 +1210,13 @@ window.addEventListener('scroll', () => {
 
   fetch('data.json?v=' + Date.now())
     .then(r => { if (!r.ok) throw new Error('data.json missing'); return r.json(); })
-    .then(data => { applyApps(data.apps); })
+    .then(data => {
+      if (data.studio) applyStudioFromData(data.studio);
+      applyApps(data.apps);
+    })
     .catch(() => console.log('Using static fallback cards'));
 })();
+
 
 </script>
 </body>
