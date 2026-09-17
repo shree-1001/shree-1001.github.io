@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Tratakam</title>
+<meta name="description" content="Get in touch about Tratakam — bug reports, feedback, and questions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0B0603; --void-2:#130B05; --void-3:#1C1208;
+    --flame:#FF8A3D; --flame-light:#FFD37A; --ember:#D9481E; --gold:#D9A24B;
+    --ice:#FFF3E0; --ice-dim:#C9A87A; --line:rgba(255,138,61,0.15);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--void); color:var(--ice); font-family:'Inter',sans-serif; font-size:17px; line-height:1.65; }
+  h1,h2,.logo{ font-family:'Cinzel',serif; }
+  .mono{ font-family:'Share Tech Mono',monospace; }
+  a{ color:var(--flame-light); }
+  ::selection{ background:var(--ember); color:var(--void); }
+  @media (prefers-reduced-motion: reduce){ *{ animation-duration:0.001ms !important; } }
+
+  .nav{
+    position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between;
+    padding:18px clamp(20px,5vw,64px); background:rgba(11,6,3,0.85); backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(255,243,224,0.08);
+  }
+  .brand{ display:flex; align-items:center; gap:10px; font-weight:700; font-size:1.05rem; text-decoration:none; color:var(--ice); letter-spacing:1px; }
+  .brand .dot{ width:9px; height:9px; border-radius:50%; background:var(--flame); box-shadow:0 0 10px var(--flame); }
+  .navlinks{ display:flex; gap:clamp(14px,3vw,32px); font-family:'Share Tech Mono',monospace; font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase; }
+  .navlinks a{ color:var(--ice-dim); text-decoration:none; }
+  .navlinks a:hover{ color:var(--flame-light); }
+
+  @keyframes fadeUp{ from{ opacity:0; transform:translateY(16px); } to{ opacity:1; transform:translateY(0); } }
+  @keyframes twinkle{ 0%,100%{ opacity:0.15; } 50%{ opacity:0.85; } }
+
+  .header-band{
+    position:relative; padding:100px clamp(20px,6vw,64px) 96px; overflow:hidden; text-align:center;
+    background:linear-gradient(180deg, #0B0603 0%, #1C1208 42%, #2A1508 68%, #130B05 100%);
+    border-bottom:1px solid rgba(255,138,61,0.15);
+  }
+  .header-band .embers{ position:absolute; inset:0; z-index:0; }
+  .header-band .embers span{ position:absolute; width:2px; height:2px; background:var(--flame-light); border-radius:50%; animation:twinkle 3.4s ease-in-out infinite; }
+
+  .beacon{ position:relative; width:64px; height:64px; margin:0 auto 22px; z-index:2; }
+  .beacon-core{ position:absolute; inset:24px; border-radius:50%; background:radial-gradient(circle, #fff, var(--flame)); box-shadow:0 0 18px var(--flame), 0 0 36px rgba(255,138,61,0.6); }
+  .beacon-ring{ position:absolute; inset:0; border-radius:50%; border:1.5px solid var(--flame); opacity:0; animation:beaconPing 2.6s ease-out infinite; }
+  .beacon-ring.r2{ animation-delay:0.86s; }
+  .beacon-ring.r3{ animation-delay:1.72s; }
+  @keyframes beaconPing{ 0%{ transform:scale(0.25); opacity:0.85; } 100%{ transform:scale(2); opacity:0; } }
+
+  .signal-pill{
+    position:relative; z-index:2; display:inline-flex; align-items:center; gap:8px; margin-top:22px;
+    font-family:'Share Tech Mono',monospace; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase;
+    color:var(--gold); border:1px solid rgba(217,162,75,0.4); padding:7px 15px; border-radius:20px;
+    opacity:0; animation:fadeUp .8s ease .55s forwards;
+  }
+  .signal-pill .ping{ width:7px; height:7px; border-radius:50%; background:var(--gold); box-shadow:0 0 10px var(--gold); animation:sPing 1.4s ease-in-out infinite; }
+  @keyframes sPing{ 0%,100%{ opacity:1; } 50%{ opacity:0.3; } }
+
+  .eyebrow{ position:relative; z-index:2; font-family:'Share Tech Mono',monospace; letter-spacing:0.3em; text-transform:uppercase; font-size:0.75rem; color:var(--flame-light); text-shadow:0 0 12px rgba(255,138,61,0.6);
+    opacity:0; animation:fadeUp .7s ease .05s forwards; }
+  .header-band h1{ position:relative; z-index:2; font-size:clamp(2.2rem,5vw,3.4rem); margin-top:16px;
+    background:linear-gradient(180deg,#fff,var(--flame-light)); -webkit-background-clip:text; background-clip:text; color:transparent;
+    opacity:0; animation:fadeUp .8s ease .18s forwards; }
+  .header-band p{ position:relative; z-index:2; margin:18px auto 0; color:var(--ice-dim); max-width:520px; font-size:1.05rem;
+    opacity:0; animation:fadeUp .8s ease .34s forwards; }
+
+  .layout{ max-width:1080px; margin:0 auto; padding:70px 20px 110px; display:grid; grid-template-columns:1.1fr 0.9fr; gap:50px; }
+
+  .panel{
+    background:var(--void-2); border:1px solid rgba(255,243,224,0.08); border-radius:16px; padding:36px;
+    position:relative; overflow:hidden;
+  }
+  .panel::before{
+    content:''; position:absolute; top:-1px; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, transparent, var(--flame), var(--ember), transparent);
+  }
+  .panel h2{ font-size:1.3rem; margin-bottom:6px; }
+  .panel .sub{ color:var(--ice-dim); font-size:0.95rem; margin-bottom:28px; }
+
+  .reveal{ opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  .field{ margin-bottom:20px; }
+  .field label{ display:block; font-family:'Share Tech Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--flame-light); margin-bottom:8px; }
+  .field input, .field select, .field textarea{
+    width:100%; background:var(--void-3); border:1px solid rgba(255,243,224,0.15); border-radius:8px;
+    padding:12px 14px; color:var(--ice); font-family:'Inter',sans-serif; font-size:1rem; transition:border-color .2s, box-shadow .2s;
+  }
+  .field textarea{ resize:vertical; min-height:120px; }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:none; border-color:var(--flame); box-shadow:0 0 0 3px rgba(255,138,61,0.15);
+  }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+  .submit-btn{
+    width:100%; margin-top:6px; font-family:'Share Tech Mono',monospace; text-transform:uppercase; letter-spacing:0.1em;
+    font-size:0.88rem; padding:15px; border-radius:8px; border:none; cursor:pointer;
+    background:linear-gradient(90deg, var(--ember), var(--flame)); color:#1a0e04; font-weight:700;
+    box-shadow:0 6px 24px rgba(255,138,61,0.3); transition:transform .2s, box-shadow .2s;
+  }
+  .submit-btn:hover{ transform:translateY(-2px); box-shadow:0 10px 30px rgba(255,138,61,0.5); }
+  .form-note{ margin-top:14px; font-size:0.85rem; color:var(--ice-dim); text-align:center; }
+
+  .side-card{
+    background:var(--void-2); border:1px solid rgba(255,243,224,0.08); border-radius:16px; padding:28px; margin-bottom:22px;
+    position:relative; transition:transform .3s ease, border-color .3s ease;
+  }
+  .side-card::before{
+    content:''; position:absolute; inset:-1px; border-radius:16px; padding:1px;
+    background:conic-gradient(from var(--ang,0deg), var(--flame), var(--ember), var(--gold), var(--flame));
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+    opacity:0; transition:opacity .35s; animation:spinAng 5s linear infinite paused; pointer-events:none;
+  }
+  @property --ang{ syntax:'<angle>'; inherits:false; initial-value:0deg; }
+  @keyframes spinAng{ to{ --ang:360deg; } }
+  .side-card:hover{ transform:translateY(-4px); border-color:transparent; }
+  .side-card:hover::before{ opacity:1; animation-play-state:running; }
+  .side-card h3{ font-size:1.02rem; margin-bottom:10px; display:flex; align-items:center; gap:10px; }
+  .side-card .glyph{ width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, rgba(255,138,61,0.15), rgba(217,72,30,0.15)); color:var(--flame-light); }
+  .side-card p{ color:var(--ice-dim); font-size:0.95rem; }
+  .side-card a.email{ display:inline-block; margin-top:10px; font-family:'Share Tech Mono',monospace; color:var(--flame-light); text-decoration:none; border-bottom:1px solid rgba(255,138,61,0.4); }
+  .side-card a.email:hover{ text-shadow:0 0 10px rgba(255,138,61,0.6); }
+
+  .faq{ background:var(--void-3); }
+  .faq-item{ border-bottom:1px solid rgba(255,243,224,0.08); }
+  .faq-item:last-child{ border-bottom:none; }
+  .faq-q{ width:100%; text-align:left; background:none; border:none; color:var(--ice); font-family:'Inter',sans-serif; font-size:1rem; font-weight:600; padding:16px 4px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .faq-q .plus{ font-family:'Share Tech Mono',monospace; color:var(--flame-light); transition:transform .25s; flex-shrink:0; }
+  .faq-item.open .plus{ transform:rotate(45deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .faq-item.open .faq-a{ max-height:200px; }
+  .faq-a p{ color:var(--ice-dim); font-size:0.92rem; padding:0 4px 16px; }
+
+  footer{ background:var(--void); padding:40px clamp(20px,6vw,64px); border-top:1px solid rgba(255,243,224,0.08); text-align:center; color:var(--ice-dim); font-size:0.85rem; }
+  footer a{ color:var(--ice-dim); text-decoration:none; }
+  footer a:hover{ color:var(--flame-light); }
+
+  .toast{
+    position:fixed; bottom:26px; left:50%; transform:translate(-50%,20px); z-index:200;
+    background:var(--void-3); border:1px solid var(--flame); color:var(--ice); padding:14px 22px; border-radius:10px;
+    font-family:'Share Tech Mono',monospace; font-size:0.85rem; opacity:0; pointer-events:none; transition:opacity .3s, transform .3s;
+    box-shadow:0 0 24px rgba(255,138,61,0.3);
+  }
+  .toast.show{ opacity:1; transform:translate(-50%,0); }
+
+  @media (max-width:840px){ .layout{ grid-template-columns:1fr; } .row2{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body data-app-id="tratakam">
+
+<nav class="nav">
+  <a href="index.html" class="brand"><span class="dot"></span><span data-app-name>TRATAKAM</span></a>
+  <div class="navlinks" data-app-nav>
+    <a href="index.html">Home</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<header class="header-band">
+  <div class="embers" id="embers"></div>
+  <div class="beacon">
+    <div class="beacon-ring"></div>
+    <div class="beacon-ring r2"></div>
+    <div class="beacon-ring r3"></div>
+    <div class="beacon-core"></div>
+  </div>
+  <div class="eyebrow">Get in touch</div>
+  <h1>Contact Us</h1>
+  <p>A bug you've hit, feedback on the practice, or a question about the app — this goes straight to the team behind Tratakam.</p>
+  <div class="signal-pill"><span class="ping"></span>Signal Open</div>
+</header>
+
+<div class="layout">
+  <div class="panel reveal">
+    <h2>Send a message</h2>
+    <div class="sub">Fill this in and it'll open in your mail app, ready to send.</div>
+    <form id="contactForm">
+      <div class="row2">
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" type="text" placeholder="Your name" required>
+        </div>
+        <div class="field">
+          <label for="email">Your email</label>
+          <input id="email" type="email" placeholder="you@example.com" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="reason">Reason for contact</label>
+        <select id="reason">
+          <option>Launch notification request</option>
+          <option>Bug report</option>
+          <option>Feedback / suggestion</option>
+          <option>Privacy question</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="What's on your mind?" required></textarea>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">▸ Open in Mail App</button>
+      <div class="form-note">Or email us directly at <a href="mailto:shreegamesandapps@zohomail.in" data-common="studio.email" style="text-decoration:none; border-bottom:1px solid rgba(255,138,61,0.4);">shreegamesandapps@zohomail.in</a></div>
+    </form>
+  </div>
+
+  <div>
+    <div class="side-card reveal">
+      <h3><span class="glyph">✉</span>Email</h3>
+      <p>For questions, bugs, or anything else — this reaches us directly.</p>
+      <a class="email" href="mailto:shreegamesandapps@zohomail.in" data-common="studio.email">shreegamesandapps@zohomail.in</a>
+    </div>
+    <div class="side-card reveal">
+      <h3><span class="glyph">⏱</span>Response time</h3>
+      <p>We're a small team — expect a reply within a few business days.</p>
+    </div>
+    <div class="side-card faq reveal">
+      <h3 style="margin-bottom:4px;"><span class="glyph">?</span>Quick answers</h3>
+      <div class="faq-item">
+        <button class="faq-q">When does Tratakam launch on Google Play?<span class="plus">+</span></button>
+        <div class="faq-a"><p>We're finishing final preparations now. Send us a message with "Launch notification request" as the reason and we'll let you know the moment it's live.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">I found a bug — what should I include?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Your device model, Android version, which gazing mode you were using, and the steps that led to it help us track it down fastest.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How do I clear my local session data?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Uninstall the app, or clear its storage from your device's Settings → Apps → Tratakam. See our <a href="privacy-policy.html">Privacy Policy</a> for details.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p><span data-app-copyright>© 2026 Tratakam</span> · <a href="index.html">Home</a> · <a href="privacy-policy.html">Privacy Policy</a></p>
+</footer>
+
+<div class="toast" id="toast">Opening your mail app…</div>
+
+<script>
+  const emberField = document.getElementById('embers');
+  for(let i=0;i<40;i++){
+    const s = document.createElement('span');
+    s.style.left = Math.random()*100+'%';
+    s.style.top = Math.random()*55+'%';
+    s.style.animationDelay = (Math.random()*3.4)+'s';
+    emberField.appendChild(s);
+  }
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold:0.12 });
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    item.querySelector('.faq-q').addEventListener('click', ()=>{
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+
+  const form = document.getElementById('contactForm');
+  const toast = document.getElementById('toast');
+  const submitBtn = document.getElementById('submitBtn');
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const reason = document.getElementById('reason').value;
+    const message = document.getElementById('message').value;
+    const subject = encodeURIComponent('Tratakam — ' + reason);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nReason: ${reason}\n\n${message}`);
+    submitBtn.textContent = '▸ Opening Mail App…';
+    window.location.href = `mailto:${(window.__studioEmail||'shreegamesandapps@zohomail.in')}?subject=${subject}&body=${body}`;
+    toast.classList.add('show');
+    setTimeout(()=>{ toast.classList.remove('show'); submitBtn.textContent = '▸ Open in Mail App'; }, 3000);
+  });
+</script>
+
+<script>
+/* ── Shared common.json loader (app pages) ── */
+(function(){
+  var APP_ID = document.body.getAttribute('data-app-id') || '';
+  function getByPath(obj, path){
+    return path.split('.').reduce(function(o,k){ return (o && o[k] != null) ? o[k] : null; }, obj);
+  }
+  function applyCommon(common){
+    if(!common) return;
+    var st = common.studio || {};
+    if (st.email) window.__studioEmail = st.email;
+
+    document.querySelectorAll('[data-common]').forEach(function(el){
+      var path = el.getAttribute('data-common');
+      var val = getByPath(common, path);
+      if(val == null) return;
+      if(el.tagName === 'A'){
+        if(path.indexOf('email') !== -1){ el.href = 'mailto:' + val; el.textContent = val; }
+        else if(path.indexOf('website') !== -1){ el.href = st.websiteUrl || ('https://' + val); el.textContent = val; el.target = '_blank'; }
+        else { el.textContent = val; }
+      } else { el.textContent = val; }
+    });
+
+    if(st.email){
+      document.querySelectorAll('a[href*="mailto"]').forEach(function(el){
+        var href = el.getAttribute('href') || '';
+        var rest = href.indexOf('?') >= 0 ? href.slice(href.indexOf('?')) : '';
+        el.href = 'mailto:' + st.email + rest;
+        var tc = el.textContent || '';
+        if(/@/.test(tc)) el.textContent = st.email;
+        else if(/email\s+/i.test(tc) && !/@/.test(tc)) el.textContent = 'Email ' + st.email;
+      });
+      document.querySelectorAll('form[action*="mailto"]').forEach(function(f){
+        var act = f.getAttribute('action') || '';
+        var rest = act.indexOf('?') >= 0 ? act.slice(act.indexOf('?')) : '';
+        f.setAttribute('action', 'mailto:' + st.email + rest);
+      });
+    }
+
+    var app = (common.apps && APP_ID) ? common.apps[APP_ID] : null;
+    if(app){
+      document.querySelectorAll('[data-app-name]').forEach(function(el){ if(app.displayName) el.textContent = app.displayName; });
+      document.querySelectorAll('[data-app-copyright]').forEach(function(el){ if(app.copyright) el.textContent = app.copyright; });
+      if(app.nav && app.nav.length){
+        var navHtml = app.nav.map(function(n){ return '<a href="' + n.href + '">' + n.label + '</a>'; }).join('');
+        document.querySelectorAll('[data-app-nav]').forEach(function(el){ el.innerHTML = navHtml; });
+      }
+      if(app.footerLinks && app.footerLinks.length){
+        var footHtml = app.footerLinks.map(function(n){ return '<a href="' + n.href + '">' + n.label + '</a>'; }).join('');
+        document.querySelectorAll('[data-app-footer]').forEach(function(el){ el.innerHTML = footHtml; });
+      }
+    }
+  }
+  fetch('../common.json?v=' + Date.now())
+    .then(function(r){ if(!r.ok) throw new Error('missing'); return r.json(); })
+    .then(applyCommon)
+    .catch(function(){ console.log('Using static common fallback'); });
+})();
+</script>
+
+</body>
+</html>
