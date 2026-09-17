@@ -1,58 +1,492 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found | Shree Games & Apps</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            text-align: center;
-            padding: 50px 20px;
-            margin: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        h1 {
-            font-size: 80px;
-            margin: 0;
-            color: #ff4757;
-        }
-        h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        p {
-            color: #a4b0be;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-        .btn {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 12px 30px;
-            background-color: #2ed573;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background 0.2s;
-        }
-        .btn:hover {
-            background-color: #26af5f;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Page Not Found · Shree Games & Apps</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="This page doesn't exist — but the games do. Head back to Shree Games & Apps.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600&family=Cinzel+Decorative:wght@400;700;900&display=swap');
+
+:root {
+  --gold: #D4A843;
+  --gold-light: #FFE566;
+  --gold-bright: #FFF0A0;
+  --gold-dark: #8B6914;
+  --black: #050505;
+  --black2: #0A0A0A;
+  --surface: #0F0F0A;
+  --text: #FFF8E7;
+  --text-dim: #C8A84A;
+  --border: #2A2410;
+  --glow: 0 0 30px #C9A84C44, 0 0 80px #C9A84C22;
+  --glow-strong: 0 0 20px #C9A84C88, 0 0 60px #C9A84C44;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; height: 100%; }
+body {
+  min-height: 100%;
+  background: var(--black);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+a { text-decoration: none; color: inherit; }
+
+/* Custom cursor */
+.cursor {
+  position: fixed; width: 12px; height: 12px;
+  background: var(--gold); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .2s, height .2s, opacity .2s;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  position: fixed; width: 40px; height: 40px;
+  border: 1px solid var(--gold); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform .15s ease-out, width .3s, height .3s;
+  opacity: .5;
+}
+.cursor.hover { width: 20px; height: 20px; }
+.cursor-ring.hover { width: 56px; height: 56px; opacity: .8; }
+
+#stars {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+
+.page {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 100px 24px 60px;
+  text-align: center;
+}
+
+/* Nav */
+.top {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 40px;
+  background: linear-gradient(to bottom, #050505ee, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #C9A84C11;
+}
+.logo {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 14px; font-weight: 700;
+  color: var(--gold); letter-spacing: 3px;
+  text-shadow: var(--glow);
+  transition: color .2s;
+}
+.logo:hover { color: var(--gold-light); }
+.top-link {
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--text-dim); transition: color .2s;
+}
+.top-link:hover { color: var(--gold); }
+
+/* 404 number */
+.glitch-wrap {
+  position: relative;
+  margin-bottom: 8px;
+  user-select: none;
+}
+.code {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(7rem, 22vw, 12rem);
+  font-weight: 900;
+  line-height: .85;
+  letter-spacing: .04em;
+  background: linear-gradient(180deg, var(--gold-bright) 0%, var(--gold) 45%, var(--gold-dark) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  position: relative;
+  filter: drop-shadow(0 0 40px #C9A84C55);
+  animation: floatY 5s ease-in-out infinite;
+}
+.code::before,
+.code::after {
+  content: attr(data-text);
+  position: absolute; left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  pointer-events: none;
+}
+.code::before {
+  animation: glitch1 2.5s infinite linear alternate-reverse;
+  clip-path: inset(0 0 55% 0);
+  opacity: .7;
+  transform: translateX(-3px);
+}
+.code::after {
+  animation: glitch2 3s infinite linear alternate-reverse;
+  clip-path: inset(45% 0 0 0);
+  opacity: .6;
+  transform: translateX(3px);
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes glitch1 {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(-4px, 2px); }
+  94% { transform: translate(3px, -1px); }
+  96% { transform: translate(-2px, -2px); }
+}
+@keyframes glitch2 {
+  0%, 88%, 100% { transform: translate(0); }
+  91% { transform: translate(3px, 1px); }
+  93% { transform: translate(-3px, 2px); }
+  95% { transform: translate(2px, -1px); }
+}
+
+.eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; letter-spacing: 6px; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 16px;
+  opacity: 0; animation: fadeUp .8s .2s forwards;
+}
+.title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700; color: var(--text);
+  margin-bottom: 14px;
+  opacity: 0; animation: fadeUp .8s .35s forwards;
+}
+.sub {
+  max-width: 440px; margin: 0 auto 36px;
+  font-size: 15px; line-height: 1.7; color: #a89870;
+  font-weight: 300;
+  opacity: 0; animation: fadeUp .8s .5s forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mini game strip */
+.play-strip {
+  width: min(420px, 100%);
+  margin: 0 auto 40px;
+  padding: 20px 18px;
+  background: linear-gradient(145deg, #12120c, #0a0a08);
+  border: 1px solid #C9A84C33;
+  border-radius: 16px;
+  box-shadow: var(--glow), inset 0 1px 0 #ffffff08;
+  opacity: 0; animation: fadeUp .8s .65s forwards;
+}
+.play-label {
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 12px;
+}
+.play-row {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  min-height: 52px; align-items: center;
+}
+.orb {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 2px solid var(--gold);
+  background: radial-gradient(circle at 35% 30%, #ffe566aa, #d4a84355 50%, #8b691422);
+  box-shadow: 0 0 16px #C9A84C55, inset 0 0 12px #ffe56633;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, opacity .3s;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; user-select: none;
+  animation: orbPulse 2s ease-in-out infinite;
+}
+.orb:nth-child(2) { animation-delay: .2s; }
+.orb:nth-child(3) { animation-delay: .4s; }
+.orb:nth-child(4) { animation-delay: .6s; }
+.orb:nth-child(5) { animation-delay: .8s; }
+.orb:hover { transform: scale(1.15); box-shadow: 0 0 28px #C9A84C99; }
+.orb.popped {
+  transform: scale(0); opacity: 0; pointer-events: none;
+}
+@keyframes orbPulse {
+  0%, 100% { box-shadow: 0 0 12px #C9A84C44, inset 0 0 10px #ffe56622; }
+  50% { box-shadow: 0 0 22px #C9A84C88, inset 0 0 14px #ffe56644; }
+}
+.score-line {
+  margin-top: 14px;
+  font-size: 12px; letter-spacing: 1px; color: var(--gold-light);
+  min-height: 1.2em;
+}
+.score-line span { color: var(--gold); font-weight: 600; }
+
+/* Buttons */
+.actions {
+  display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
+  opacity: 0; animation: fadeUp .8s .8s forwards;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 28px;
+  font-family: 'Cinzel', serif;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  border-radius: 4px;
+  transition: transform .2s, box-shadow .2s, background .2s, color .2s;
+  position: relative; overflow: hidden;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #0a0a05; font-weight: 700;
+  box-shadow: 0 4px 24px #C9A84C44;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px #C9A84C66;
+  color: #000;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid #C9A84C66;
+}
+.btn-ghost:hover {
+  background: #C9A84C18;
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+/* Floating deco */
+.deco {
+  position: fixed; pointer-events: none; z-index: 0;
+  font-size: 1.5rem; opacity: .15;
+  animation: drift 12s ease-in-out infinite;
+}
+.deco:nth-child(1) { top: 18%; left: 8%; animation-delay: 0s; }
+.deco:nth-child(2) { top: 28%; right: 10%; animation-delay: 2s; font-size: 2rem; }
+.deco:nth-child(3) { bottom: 22%; left: 12%; animation-delay: 4s; }
+.deco:nth-child(4) { bottom: 18%; right: 14%; animation-delay: 1s; font-size: 1.2rem; }
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(12px, -18px) rotate(8deg); }
+}
+
+.footer-note {
+  margin-top: 48px;
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: #5a4a28;
+  opacity: 0; animation: fadeUp .8s 1s forwards;
+}
+.footer-note a { color: var(--text-dim); transition: color .2s; }
+.footer-note a:hover { color: var(--gold); }
+
+/* Particles burst on click */
+.spark {
+  position: fixed; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold-light); pointer-events: none; z-index: 100;
+  box-shadow: 0 0 8px var(--gold);
+}
+
+@media (max-width: 600px) {
+  .top { padding: 16px 20px; }
+  .logo { font-size: 12px; letter-spacing: 2px; }
+  .actions { flex-direction: column; width: 100%; max-width: 280px; }
+  .btn { width: 100%; justify-content: center; }
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .code, .orb, .deco { animation: none !important; }
+  .eyebrow, .title, .sub, .play-strip, .actions, .footer-note {
+    opacity: 1; animation: none;
+  }
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>404</h1>
-        <h2>Oops! Game Over for this Link</h2>
-        <p>The page or game you are looking for might have been moved, renamed, or doesn't exist anymore.</p>
-        <a href="https://shree-1001.github.io/" class="btn">Back to Homepage</a>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+<canvas id="stars"></canvas>
+
+<span class="deco" aria-hidden="true">✦</span>
+<span class="deco" aria-hidden="true">◆</span>
+<span class="deco" aria-hidden="true">✧</span>
+<span class="deco" aria-hidden="true">◈</span>
+
+<header class="top">
+  <a href="index.html" class="logo interactive">Shree Games & Apps</a>
+  <a href="index.html" class="top-link interactive">Home</a>
+</header>
+
+<main class="page">
+  <p class="eyebrow">Lost in the grid</p>
+
+  <div class="glitch-wrap">
+    <h1 class="code" data-text="404">404</h1>
+  </div>
+
+  <h2 class="title">This level doesn’t exist</h2>
+  <p class="sub">
+    The page you’re looking for vanished into the void — or never shipped.
+    Don’t worry: the real games are still online.
+  </p>
+
+  <div class="play-strip">
+    <div class="play-label">Mini quest · Tap the orbs</div>
+    <div class="play-row" id="orb-row" aria-label="Tap golden orbs">
+      <button type="button" class="orb interactive" data-pts="10" aria-label="Orb 1">✦</button>
+      <button type="button" class="orb interactive" data-pts="20" aria-label="Orb 2">◆</button>
+      <button type="button" class="orb interactive" data-pts="15" aria-label="Orb 3">✧</button>
+      <button type="button" class="orb interactive" data-pts="25" aria-label="Orb 4">◈</button>
+      <button type="button" class="orb interactive" data-pts="30" aria-label="Orb 5">★</button>
     </div>
+    <div class="score-line" id="score-line">Score: <span id="score">0</span> — clear all orbs</div>
+  </div>
+
+  <div class="actions">
+    <a href="index.html" class="btn btn-primary interactive">← Back to Home</a>
+    <a href="index.html#games" class="btn btn-ghost interactive">Browse Games</a>
+    <a href="contact.html" class="btn btn-ghost interactive">Contact</a>
+  </div>
+
+  <p class="footer-note">
+    <a href="index.html" class="interactive">shree-1001.github.io</a>
+    · Crafting worlds worth playing in
+  </p>
+</main>
+
+<script>
+(function () {
+  // ── Custom cursor ──
+  const cur = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  const fine = window.matchMedia('(pointer: fine)').matches;
+
+  if (fine) {
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cur.style.left = mx + 'px';
+      cur.style.top = my + 'px';
+    });
+    (function follow() {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(follow);
+    })();
+    document.querySelectorAll('.interactive').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cur.classList.add('hover'); ring.classList.add('hover');
+      });
+      el.addEventListener('mouseleave', () => {
+        cur.classList.remove('hover'); ring.classList.remove('hover');
+      });
+    });
+  } else {
+    cur.style.display = 'none';
+    ring.style.display = 'none';
+  }
+
+  // ── Starfield ──
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let w, h, stars = [];
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+    stars = Array.from({ length: Math.min(120, Math.floor(w * h / 12000)) }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.4 + 0.3,
+      a: Math.random(),
+      s: Math.random() * 0.02 + 0.005,
+      vx: (Math.random() - 0.5) * 0.15
+    }));
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function drawStars() {
+    ctx.clearRect(0, 0, w, h);
+    for (const st of stars) {
+      st.a += st.s;
+      st.x += st.vx;
+      if (st.x < 0) st.x = w;
+      if (st.x > w) st.x = 0;
+      const alpha = 0.25 + Math.sin(st.a) * 0.35;
+      ctx.beginPath();
+      ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(212, 168, 67, ${alpha})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+
+  // ── Orb mini-game ──
+  let score = 0;
+  let left = 5;
+  const scoreEl = document.getElementById('score');
+  const scoreLine = document.getElementById('score-line');
+
+  function burst(x, y) {
+    for (let i = 0; i < 12; i++) {
+      const s = document.createElement('div');
+      s.className = 'spark';
+      s.style.left = x + 'px';
+      s.style.top = y + 'px';
+      document.body.appendChild(s);
+      const angle = (Math.PI * 2 * i) / 12;
+      const dist = 40 + Math.random() * 50;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist;
+      s.animate([
+        { transform: 'translate(0,0) scale(1)', opacity: 1 },
+        { transform: `translate(${dx}px,${dy}px) scale(0)`, opacity: 0 }
+      ], { duration: 500 + Math.random() * 200, easing: 'ease-out' });
+      setTimeout(() => s.remove(), 700);
+    }
+  }
+
+  document.querySelectorAll('.orb').forEach(orb => {
+    orb.addEventListener('click', e => {
+      if (orb.classList.contains('popped')) return;
+      const pts = parseInt(orb.dataset.pts, 10) || 10;
+      score += pts;
+      left--;
+      scoreEl.textContent = score;
+      orb.classList.add('popped');
+      burst(e.clientX, e.clientY);
+      if (left <= 0) {
+        scoreLine.innerHTML = 'Perfect clear · <span>' + score + '</span> pts — now go play a real game →';
+      } else {
+        scoreLine.innerHTML = 'Score: <span>' + score + '</span> — ' + left + ' orb' + (left === 1 ? '' : 's') + ' left';
+      }
+    });
+  });
+
+  // Parallax on 404
+  const code = document.querySelector('.code');
+  if (fine && code) {
+    document.addEventListener('mousemove', e => {
+      const px = (e.clientX / window.innerWidth - 0.5) * 12;
+      const py = (e.clientY / window.innerHeight - 0.5) * 8;
+      code.style.transform = `translate(${px}px, ${py}px)`;
+    });
+  }
+})();
+</script>
 </body>
 </html>
