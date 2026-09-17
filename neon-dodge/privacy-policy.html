@@ -120,11 +120,11 @@
   }
 </style>
 </head>
-<body>
+<body data-app-id="neon-dodge">
 
 <nav class="nav">
-  <div class="brand"><span class="dot"></span>NEON DODGE</div>
-  <div class="navlinks">
+  <div class="brand"><span class="dot"></span><span data-app-name>NEON DODGE</span></div>
+  <div class="navlinks" data-app-nav>
     <a href="index.html">Home</a>
     <a href="privacy-policy.html">Privacy Policy</a>
     <a href="contact.html">Contact</a>
@@ -197,6 +197,8 @@
         <p style="margin-bottom:0;">Google processes this data under its own privacy policy, not ours. We don't receive or see the raw data Google collects — we only see aggregate performance reports.</p>
       </div>
       <p>You can read more about how Google handles this data at <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">policies.google.com/technologies/partner-sites</a> and Google's main <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+      <p><strong>Consent for personalized ads (UMP regions only).</strong> In countries and regions where Google's User Messaging Platform (UMP) applies — including the European Economic Area (EEA), the United Kingdom, Switzerland, and other jurisdictions where consent is required for personalized advertising — you will see a consent form when you first open the app. On that form you can choose to allow personalized ads or to receive non-personalized ads instead. If you are in a UMP region, you can later revoke, change, or give consent again at any time from the app's <strong>Settings</strong> page (Privacy / Ad consent options). The in-app consent form and Settings control apply only in UMP countries; they are not shown where consent is not required under applicable law.</p>
+      <p>Outside those regions, and as an additional control everywhere, you can limit ad personalization in your device settings (for example <span class="mono">Settings → Privacy → Ads</span> or <span class="mono">Settings → Google → Ads</span>). Declining personalized ads means you may still see ads, but they will not be personalized to your interests.</p>
     </section>
 
     <section id="permissions">
@@ -225,7 +227,8 @@
     <section id="choices">
       <h2><span class="num">08</span>Your choices</h2>
       <ul>
-        <li><strong>Reset or limit your advertising ID</strong> — in your Android device's <span class="mono">Settings → Privacy → Ads</span>, you can opt out of personalized ads or reset your advertising identifier.</li>
+        <li><strong>Personalized ads (UMP regions)</strong> — where Google UMP applies, use the in-app consent form on first launch, and later revoke or change your choice in the app's <strong>Settings</strong> page. Outside UMP regions that form is not shown.</li>
+        <li><strong>Reset or limit your advertising ID</strong> — in your Android device's <span class="mono">Settings → Privacy → Ads</span> (or Google → Ads), you can opt out of personalized ads or reset your advertising identifier in any region.</li>
         <li><strong>Clear local game data</strong> — uninstall the app, or clear its storage from <span class="mono">Settings → Apps → Neon Dodge → Storage</span>, to remove all locally saved scores and settings.</li>
         <li><strong>Contact us</strong> — reach out with any privacy question or request using the details below.</li>
       </ul>
@@ -287,6 +290,104 @@
   }, { rootMargin:'-40% 0px -50% 0px' });
 
   sections.forEach(s=> io.observe(s));
+</script>
+
+
+<script>
+/* ── Shared common.json loader (app pages) ── */
+(function(){
+  var APP_ID = document.body.getAttribute('data-app-id') || '';
+  function getByPath(obj, path){
+    return path.split('.').reduce(function(o,k){ return (o && o[k] != null) ? o[k] : null; }, obj);
+  }
+  function applyCommon(common){
+    if(!common) return;
+    var APP_ID = document.body.getAttribute('data-app-id') || '';
+    var st = common.studio || {};
+    if (st.email) window.__studioEmail = st.email;
+    if (st.phone) window.__studioPhone = st.phone;
+
+    function getByPath(obj, path){
+      return path.split('.').reduce(function(o,k){ return (o && o[k] != null) ? o[k] : null; }, obj);
+    }
+
+    // 1) data-common attributes
+    document.querySelectorAll('[data-common]').forEach(function(el){
+      var path = el.getAttribute('data-common');
+      var val = getByPath(common, path);
+      if(val == null) return;
+      if(el.tagName === 'A'){
+        if(path.indexOf('email') !== -1){ el.href = 'mailto:' + val; el.textContent = val; }
+        else if(path.indexOf('phone') !== -1){ el.href = 'tel:' + String(val).replace(/\s/g,''); el.textContent = val; }
+        else if(path.indexOf('website') !== -1){
+          el.href = st.websiteUrl || ('https://' + val);
+          el.textContent = val; el.target = '_blank';
+        } else { el.textContent = val; }
+      } else { el.textContent = val; }
+    });
+
+    // 2) ALL mailto links + form actions + short email-only text
+    if(st.email){
+      document.querySelectorAll('a[href*="mailto"]').forEach(function(el){
+        var href = el.getAttribute('href') || '';
+        var rest = href.indexOf('?') >= 0 ? href.slice(href.indexOf('?')) : '';
+        el.href = 'mailto:' + st.email + rest;
+        var tc = el.textContent || '';
+        if(/@/.test(tc)) el.textContent = st.email;
+        else if(/email\s+/i.test(tc) && !/@/.test(tc)) el.textContent = 'Email ' + st.email;
+      });
+      document.querySelectorAll('form[action*="mailto"]').forEach(function(f){
+        var act = f.getAttribute('action') || '';
+        var rest = act.indexOf('?') >= 0 ? act.slice(act.indexOf('?')) : '';
+        f.setAttribute('action', 'mailto:' + st.email + rest);
+      });
+      document.querySelectorAll('p, span, div, li, td').forEach(function(el){
+        if(el.children.length) return;
+        var t = el.textContent || '';
+        if(/shreegamesandapps@zohomail\.in/i.test(t) && t.length < 120){
+          el.textContent = t.replace(/shreegamesandapps@zohomail\.in/gi, st.email);
+        }
+      });
+    }
+
+    // 3) Phone
+    if(st.phone){
+      var tel = String(st.phone).replace(/\s/g,'');
+      document.querySelectorAll('a[href^="tel:"]').forEach(function(el){
+        el.href = 'tel:' + tel;
+        if(/\+?\d[\d\s\-]{8,}/.test(el.textContent||'')) el.textContent = st.phone;
+      });
+    }
+
+    // 4) Per-app name, nav, footer, copyright
+    var app = (common.apps && APP_ID) ? common.apps[APP_ID] : null;
+    if(app){
+      document.querySelectorAll('[data-app-name]').forEach(function(el){
+        if(app.displayName) el.textContent = app.displayName;
+      });
+      document.querySelectorAll('[data-app-copyright]').forEach(function(el){
+        if(app.copyright) el.textContent = app.copyright;
+      });
+      if(app.nav && app.nav.length){
+        var navHtml = app.nav.map(function(n){ return '<a href="' + n.href + '">' + n.label + '</a>'; }).join('');
+        document.querySelectorAll('[data-app-nav]').forEach(function(el){ el.innerHTML = navHtml; });
+        document.querySelectorAll('[data-app-nav] a').forEach(function(a){
+          if(/contact/i.test(a.textContent) && a.parentElement && /navlinks/i.test(a.parentElement.className||'')){
+            a.classList.add('nav-cta');
+          }
+        });
+      }
+      if(app.footerLinks && app.footerLinks.length){
+        var footHtml = app.footerLinks.map(function(n){ return '<a href="' + n.href + '">' + n.label + '</a>'; }).join('');
+        document.querySelectorAll('[data-app-footer]').forEach(function(el){ el.innerHTML = footHtml; });
+      }
+    }
+  }
+  fetch('../common.json?v=' + Date.now())
+    .then(function(r){ if(!r.ok) throw new Error('missing'); return r.json(); })
+    .then(applyCommon)
+    .catch(function(){ console.log('Using static common fallback'); });
+})();
 </script>
 
 </body>
