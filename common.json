@@ -3,8 +3,7 @@
     "name": "Shree Games & Apps",
     "shortName": "Shree",
     "tagline": "Crafting worlds worth playing in. One game at a time.",
-    "email": "adstv351@gmail.com",
-    "phone": "+91 8528361935",
+    "email": "shreegamesandapps@zohomail.in",
     "website": "shree-1001.github.io",
     "websiteUrl": "https://shree-1001.github.io",
     "location": "India",
@@ -13,17 +12,44 @@
     "copyright": "© 2026 Shree Games & Apps · All Rights Reserved"
   },
   "nav": [
-    { "label": "Home", "href": "index.html" },
-    { "label": "About Us", "href": "about.html" },
-    { "label": "Games", "href": "index.html#games" },
-    { "label": "Contact Us", "href": "contact.html" },
-    { "label": "Privacy Policy", "href": "privacy-policy.html" }
+    {
+      "label": "Home",
+      "href": "index.html"
+    },
+    {
+      "label": "About Us",
+      "href": "about.html"
+    },
+    {
+      "label": "Games",
+      "href": "index.html#games"
+    },
+    {
+      "label": "Contact Us",
+      "href": "contact.html"
+    },
+    {
+      "label": "Privacy Policy",
+      "href": "privacy-policy.html"
+    }
   ],
   "footerLinks": [
-    { "label": "Home", "href": "index.html" },
-    { "label": "About Us", "href": "about.html" },
-    { "label": "Contact", "href": "contact.html" },
-    { "label": "Privacy Policy", "href": "privacy-policy.html" }
+    {
+      "label": "Home",
+      "href": "index.html"
+    },
+    {
+      "label": "About Us",
+      "href": "about.html"
+    },
+    {
+      "label": "Contact",
+      "href": "contact.html"
+    },
+    {
+      "label": "Privacy Policy",
+      "href": "privacy-policy.html"
+    }
   ],
   "social": [
     {
@@ -38,9 +64,159 @@
     }
   ],
   "responseTimes": [
-    { "type": "General Inquiry", "time": "Within 24–48 hrs" },
-    { "type": "Bug Report", "time": "Within 24 hrs" },
-    { "type": "Partnership", "time": "Within 72 hrs" },
-    { "type": "Privacy Request", "time": "Within 48 hrs" }
-  ]
+    {
+      "type": "General Inquiry",
+      "time": "Within 24–48 hrs"
+    },
+    {
+      "type": "Bug Report",
+      "time": "Within 24 hrs"
+    },
+    {
+      "type": "Partnership",
+      "time": "Within 72 hrs"
+    },
+    {
+      "type": "Privacy Request",
+      "time": "Within 48 hrs"
+    }
+  ],
+  "apps": {
+    "neon-breakout": {
+      "id": "neon-breakout",
+      "displayName": "NEON BREAKOUT",
+      "nav": [
+        {
+          "label": "Home",
+          "href": "home.html"
+        },
+        {
+          "label": "Privacy Policy",
+          "href": "privacy-policy.html"
+        },
+        {
+          "label": "Contact",
+          "href": "contact.html"
+        }
+      ],
+      "footerLinks": [
+        {
+          "label": "Privacy Policy",
+          "href": "privacy-policy.html"
+        },
+        {
+          "label": "Contact",
+          "href": "contact.html"
+        }
+      ],
+      "copyright": "© 2026 Neon Breakout. All rights reserved."
+    },
+    "neon-dodge": {
+      "id": "neon-dodge",
+      "displayName": "NEON DODGE",
+      "nav": [
+        {
+          "label": "Home",
+          "href": "index.html"
+        },
+        {
+          "label": "Privacy Policy",
+          "href": "privacy-policy.html"
+        },
+        {
+          "label": "Contact",
+          "href": "contact.html"
+        }
+      ],
+      "footerLinks": [
+        {
+          "label": "Home",
+          "href": "index.html"
+        },
+        {
+          "label": "Privacy Policy",
+          "href": "privacy-policy.html"
+        },
+        {
+          "label": "Contact",
+          "href": "contact.html"
+        }
+      ],
+      "copyright": "© 2026 Neon Dodge · All rights reserved."
+    },
+    "burst-the-bubble": {
+      "id": "burst-the-bubble",
+      "displayName": "Burst the Bubble",
+      "nav": [
+        {
+          "label": "Home",
+          "href": "index.html"
+        },
+        {
+          "label": "Privacy Policy",
+          "href": "privacy-policy.html"
+        },
+        {
+          "label": "Contact",
+          "href": "contact.html"
+        }
+      ],
+      "footerLinks": [
+        {
+          "label": "Home",
+          "href": "index.html"
+        },
+        {
+          "label": "Privacy Policy",
+          "href": "privacy-policy.html"
+        },
+        {
+          "label": "Contact",
+          "href": "contact.html"
+        }
+      ],
+      "copyright": "© 2026 Burst the Bubble. All rights reserved."
+    },
+    "chaturanga": {
+      "id": "chaturanga",
+      "displayName": "Chaturanga: Legacy of Kings",
+      "nav": [
+        {
+          "label": "Home",
+          "href": "home.html"
+        },
+        {
+          "label": "The Game",
+          "href": "home.html#game"
+        },
+        {
+          "label": "Leagues",
+          "href": "home.html#leagues"
+        },
+        {
+          "label": "Privacy Policy",
+          "href": "privacy-policy.html"
+        }
+      ],
+      "footerLinks": [
+        {
+          "label": "Privacy Policy",
+          "href": "privacy-policy.html"
+        },
+        {
+          "label": "The Game",
+          "href": "home.html#game"
+        },
+        {
+          "label": "Leagues",
+          "href": "home.html#leagues"
+        },
+        {
+          "label": "Contact",
+          "href": "mailto:shreegamesandapps@zohomail.in"
+        }
+      ],
+      "copyright": "© 2026 Chaturanga: Legacy of Kings. All rights reserved."
+    }
+  }
 }
