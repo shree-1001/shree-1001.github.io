@@ -491,7 +491,7 @@
   }
 </style>
 </head>
-<body>
+<body data-app-id="neon-breakout">
 
 <canvas id="bg-canvas"></canvas>
 
@@ -499,8 +499,8 @@
 
   <div class="nav-overlay" id="nav-overlay"></div>
   <nav>
-    <a href="home.html" class="nav-logo">NEON BREAKOUT</a>
-    <div class="nav-links" id="nav-links">
+    <a href="home.html" class="nav-logo" data-app-name>NEON BREAKOUT</a>
+    <div class="nav-links" id="nav-links" data-app-nav>
       <a href="home.html">Home</a>
       <a href="privacy-policy.html">Privacy Policy</a>
       <a href="contact.html">Contact</a>
@@ -521,11 +521,11 @@
   <section class="contact-section">
     <div class="contact-grid">
 
-      <a href="mailto:adstv351@gmail.com" class="contact-card reveal" style="--border-col:#00f5ff33; --icon-glow:#00f5ff44; --glow-col:#00f5ff11; --val-col:#00f5ff;">
+      <a href="mailto:shreegamesandapps@zohomail.in" class="contact-card reveal" style="--border-col:#00f5ff33; --icon-glow:#00f5ff44; --glow-col:#00f5ff11; --val-col:#00f5ff;" data-common="studio.email">
         <div class="contact-icon">📧</div>
         <div class="contact-card-title">Email Us</div>
         <div class="contact-card-desc">The fastest way to reach the developer directly.</div>
-        <div class="contact-card-value">adstv351@gmail.com</div>
+        <div class="contact-card-value" data-common="studio.email">shreegamesandapps@zohomail.in</div>
       </a>
 
       <a href="https://play.google.com/store/apps/details?id=com.adarsh.neonbreakout" class="contact-card reveal" style="--border-col:#ff2d7833; --icon-glow:#ff2d7844; --glow-col:#ff2d7811; --val-col:#ff2d78;">
@@ -589,7 +589,7 @@
 
         <button type="submit" class="form-submit">Send Message</button>
         <p class="form-status" id="cf-status"></p>
-        <p class="form-note">Submitting opens your email app with the message pre-filled, sent to adstv351@gmail.com</p>
+        <p class="form-note">Submitting opens your email app with the message pre-filled, sent to <span data-common="studio.email">shreegamesandapps@zohomail.in</span></p>
       </form>
     </div>
   </section>
@@ -638,16 +638,16 @@
     <div class="cta-glow"></div>
     <h2 class="cta-title reveal">Still Have Questions?</h2>
     <p class="cta-sub reveal">Drop us an email and we'll get back to you as soon as we can.</p>
-    <a href="mailto:adstv351@gmail.com" class="btn-primary reveal">Email adstv351@gmail.com</a>
+    <a href="mailto:shreegamesandapps@zohomail.in" class="btn-primary reveal" data-common="studio.email">Email shreegamesandapps@zohomail.in</a>
   </section>
 
   <footer>
-    <div class="footer-logo">NEON BREAKOUT</div>
-    <p>© 2026 Neon Breakout. All rights reserved.</p>
-    <div class="footer-links">
+    <div class="footer-logo" data-app-name>NEON BREAKOUT</div>
+    <p data-app-copyright>© 2026 Neon Breakout. All rights reserved.</p>
+    <div class="footer-links" data-app-footer>
       <a href="home.html">Home</a>
       <a href="privacy-policy.html">Privacy Policy</a>
-      <a href="mailto:adstv351@gmail.com">Contact</a>
+      <a href="mailto:shreegamesandapps@zohomail.in" data-common="studio.email">Contact</a>
     </div>
   </footer>
 
@@ -728,7 +728,7 @@ cfForm.addEventListener('submit', function (e) {
     `Topic: ${topic}\n\n` +
     `Message:\n${message}`;
 
-  const mailto = `mailto:adstv351@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const mailto = `mailto:${(window.__studioEmail||'shreegamesandapps@zohomail.in')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   window.location.href = mailto;
 
   cfStatus.textContent = 'OPENING YOUR EMAIL APP...';
@@ -762,5 +762,103 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0 });
 reveals.forEach(el => observer.observe(el));
 </script>
+
+<script>
+/* ── Shared common.json loader (app pages) ── */
+(function(){
+  var APP_ID = document.body.getAttribute('data-app-id') || '';
+  function getByPath(obj, path){
+    return path.split('.').reduce(function(o,k){ return (o && o[k] != null) ? o[k] : null; }, obj);
+  }
+  function applyCommon(common){
+    if(!common) return;
+    var APP_ID = document.body.getAttribute('data-app-id') || '';
+    var st = common.studio || {};
+    if (st.email) window.__studioEmail = st.email;
+    if (st.phone) window.__studioPhone = st.phone;
+
+    function getByPath(obj, path){
+      return path.split('.').reduce(function(o,k){ return (o && o[k] != null) ? o[k] : null; }, obj);
+    }
+
+    // 1) data-common attributes
+    document.querySelectorAll('[data-common]').forEach(function(el){
+      var path = el.getAttribute('data-common');
+      var val = getByPath(common, path);
+      if(val == null) return;
+      if(el.tagName === 'A'){
+        if(path.indexOf('email') !== -1){ el.href = 'mailto:' + val; el.textContent = val; }
+        else if(path.indexOf('phone') !== -1){ el.href = 'tel:' + String(val).replace(/\s/g,''); el.textContent = val; }
+        else if(path.indexOf('website') !== -1){
+          el.href = st.websiteUrl || ('https://' + val);
+          el.textContent = val; el.target = '_blank';
+        } else { el.textContent = val; }
+      } else { el.textContent = val; }
+    });
+
+    // 2) ALL mailto links + form actions + short email-only text
+    if(st.email){
+      document.querySelectorAll('a[href*="mailto"]').forEach(function(el){
+        var href = el.getAttribute('href') || '';
+        var rest = href.indexOf('?') >= 0 ? href.slice(href.indexOf('?')) : '';
+        el.href = 'mailto:' + st.email + rest;
+        var tc = el.textContent || '';
+        if(/@/.test(tc)) el.textContent = st.email;
+        else if(/email\s+/i.test(tc) && !/@/.test(tc)) el.textContent = 'Email ' + st.email;
+      });
+      document.querySelectorAll('form[action*="mailto"]').forEach(function(f){
+        var act = f.getAttribute('action') || '';
+        var rest = act.indexOf('?') >= 0 ? act.slice(act.indexOf('?')) : '';
+        f.setAttribute('action', 'mailto:' + st.email + rest);
+      });
+      document.querySelectorAll('p, span, div, li, td').forEach(function(el){
+        if(el.children.length) return;
+        var t = el.textContent || '';
+        if(/shreegamesandapps@zohomail\.in/i.test(t) && t.length < 120){
+          el.textContent = t.replace(/shreegamesandapps@zohomail\.in/gi, st.email);
+        }
+      });
+    }
+
+    // 3) Phone
+    if(st.phone){
+      var tel = String(st.phone).replace(/\s/g,'');
+      document.querySelectorAll('a[href^="tel:"]').forEach(function(el){
+        el.href = 'tel:' + tel;
+        if(/\+?\d[\d\s\-]{8,}/.test(el.textContent||'')) el.textContent = st.phone;
+      });
+    }
+
+    // 4) Per-app name, nav, footer, copyright
+    var app = (common.apps && APP_ID) ? common.apps[APP_ID] : null;
+    if(app){
+      document.querySelectorAll('[data-app-name]').forEach(function(el){
+        if(app.displayName) el.textContent = app.displayName;
+      });
+      document.querySelectorAll('[data-app-copyright]').forEach(function(el){
+        if(app.copyright) el.textContent = app.copyright;
+      });
+      if(app.nav && app.nav.length){
+        var navHtml = app.nav.map(function(n){ return '<a href="' + n.href + '">' + n.label + '</a>'; }).join('');
+        document.querySelectorAll('[data-app-nav]').forEach(function(el){ el.innerHTML = navHtml; });
+        document.querySelectorAll('[data-app-nav] a').forEach(function(a){
+          if(/contact/i.test(a.textContent) && a.parentElement && /navlinks/i.test(a.parentElement.className||'')){
+            a.classList.add('nav-cta');
+          }
+        });
+      }
+      if(app.footerLinks && app.footerLinks.length){
+        var footHtml = app.footerLinks.map(function(n){ return '<a href="' + n.href + '">' + n.label + '</a>'; }).join('');
+        document.querySelectorAll('[data-app-footer]').forEach(function(el){ el.innerHTML = footHtml; });
+      }
+    }
+  }
+  fetch('../common.json?v=' + Date.now())
+    .then(function(r){ if(!r.ok) throw new Error('missing'); return r.json(); })
+    .then(applyCommon)
+    .catch(function(){ console.log('Using static common fallback'); });
+})();
+</script>
+
 </body>
 </html>
