@@ -301,6 +301,40 @@ rvs.forEach(el=>ob.observe(el));
     const foot=document.getElementById('footer-links');
     if(common.footerLinks&&foot){foot.innerHTML=common.footerLinks.map(n=>`<a href="${n.href}">${n.label}</a>`).join('');}
   }
+  
+    // Full email/phone sweep for main site
+    if (common.studio) {
+      var st = common.studio;
+      if (st.email) {
+        window.__studioEmail = st.email;
+        document.querySelectorAll('a[href*="mailto"]').forEach(function(el) {
+          var href = el.getAttribute('href') || '';
+          var rest = href.indexOf('?') >= 0 ? href.slice(href.indexOf('?')) : '';
+          el.href = 'mailto:' + st.email + rest;
+          if (el.textContent && /@/.test(el.textContent)) el.textContent = st.email;
+        });
+        document.querySelectorAll('form[action*="mailto"]').forEach(function(f) {
+          var act = f.getAttribute('action') || '';
+          var rest = act.indexOf('?') >= 0 ? act.slice(act.indexOf('?')) : '';
+          f.setAttribute('action', 'mailto:' + st.email + rest);
+        });
+        document.querySelectorAll('p, span, div, li').forEach(function(el) {
+          if (el.children.length) return;
+          var t = el.textContent || '';
+          if (/shreegamesandapps@zohomail\.in/i.test(t) && t.length < 120) {
+            el.textContent = t.replace(/shreegamesandapps@zohomail\.in/gi, st.email);
+          }
+        });
+      }
+      if (st.phone) {
+        var tel = String(st.phone).replace(/\s/g, '');
+        document.querySelectorAll('a[href^="tel:"]').forEach(function(el) {
+          el.href = 'tel:' + tel;
+          if (/\+?\d[\d\s\-]{8,}/.test(el.textContent || '')) el.textContent = st.phone;
+        });
+      }
+    }
+
   fetch('common.json?v='+Date.now()).then(r=>{if(!r.ok)throw new Error('missing');return r.json();}).then(applyCommon).catch(()=>console.log('Using static common fallback'));
 })();
 </script>
