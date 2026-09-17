@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tratakam — Candle Gazing Meditation &amp; Focus Training</title>
+<meta name="description" content="Tratakam guides candle-gazing meditation, mantra japa, and focus training with eye-care tools, streaks, and rewards — in 8 languages. Free, offline, ad-supported.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --flame:#FF8A3D; --flame-light:#FFD37A; --flame-bright:#FFEEC0; --ember:#D9481E;
+  --gold:#D9A24B; --void:#0B0603; --void2:#130B05; --void3:#1C1208;
+  --text:#FFF3E0; --text-dim:#C9A87A; --border:#2A1D0F;
+  --glow: 0 0 30px #FF8A3D44, 0 0 80px #FF8A3D22;
+  --nav-h:70px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--void);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+::selection{background:var(--flame);color:var(--void)}
+@media (prefers-reduced-motion: reduce){*{animation-duration:0.001ms !important}}
+
+canvas#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+.page{position:relative;z-index:1}
+
+/* ── NAV ── */
+nav.top{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 5%;
+  background:linear-gradient(to bottom,#0B0603ee,transparent);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid #FF8A3D11;
+}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:'Cinzel',serif;font-size:15px;font-weight:700;color:var(--gold);letter-spacing:3px;text-shadow:var(--glow)}
+.nav-logo .flame-dot{width:8px;height:8px;border-radius:50%;background:var(--flame);box-shadow:0 0 10px var(--flame)}
+.nav-links{display:flex;gap:36px}
+.nav-links a{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--text-dim);transition:color .2s;font-family:'Inter',sans-serif}
+.nav-links a:hover{color:var(--gold)}
+
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:6px;width:28px;height:28px;background:none;border:none;cursor:pointer;z-index:102;padding:0}
+.nav-toggle span{display:block;width:100%;height:2px;background:var(--gold);border-radius:1px;transition:transform .3s ease,opacity .3s ease;transform-origin:center}
+.nav-toggle.open span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.nav-toggle.open span:nth-child(2){opacity:0}
+.nav-toggle.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+
+.nav-mobile{display:none;position:fixed;top:0;right:0;width:min(300px,85vw);height:100vh;background:#130B05f2;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-left:1px solid #FF8A3D22;z-index:101;padding:90px 28px 40px;flex-direction:column;gap:8px;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);box-shadow:-20px 0 60px #00000088}
+.nav-mobile.open{transform:translateX(0)}
+.nav-mobile a{font-family:'Cinzel',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--text-dim);padding:14px 8px;border-bottom:1px solid #FF8A3D0A;transition:color .2s,padding-left .2s}
+.nav-mobile a:hover,.nav-mobile a:active{color:var(--gold);padding-left:16px}
+.nav-overlay{display:none;position:fixed;inset:0;background:#00000066;z-index:99;opacity:0;transition:opacity .3s}
+.nav-overlay.open{display:block;opacity:1}
+
+@media (max-width:760px){
+  .nav-links{display:none}
+  .nav-toggle{display:flex}
+  .nav-mobile{display:flex}
+}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:140px 24px 100px;position:relative}
+.hero-eyebrow{font-family:'Cinzel',serif;font-size:11px;letter-spacing:8px;text-transform:uppercase;color:var(--gold);margin-bottom:32px;opacity:.85;animation:fadeUp 1s ease both}
+.hero-flame-icon{font-size:44px;margin-bottom:18px;filter:drop-shadow(0 0 24px #FF8A3D88);animation:fadeUp 1s ease .05s both, flicker 3s ease-in-out infinite}
+@keyframes flicker{0%,100%{transform:scale(1) rotate(0deg)}25%{transform:scale(1.03) rotate(-1deg)}50%{transform:scale(0.98) rotate(1deg)}75%{transform:scale(1.02) rotate(-0.5deg)}}
+.hero-title{font-family:'Cinzel Decorative',serif;font-weight:900;font-size:clamp(44px,9vw,104px);color:var(--flame-light);text-shadow:0 0 60px #FF8A3D66,0 0 120px #FF8A3D33;letter-spacing:6px;line-height:1;animation:fadeUp 1s ease .1s both}
+.hero-sub{font-family:'Cinzel',serif;font-size:clamp(14px,2vw,20px);color:var(--text-dim);letter-spacing:6px;text-transform:uppercase;margin-top:10px;font-weight:400;animation:fadeUp 1s ease .15s both}
+.hero-line{width:120px;height:1px;background:linear-gradient(to right,transparent,var(--flame),transparent);margin:32px auto;animation:fadeUp 1s ease .2s both}
+.hero-tagline{font-size:15px;color:var(--text-dim);letter-spacing:1px;max-width:520px;line-height:1.8;animation:fadeUp 1s ease .25s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+.hero-cta{margin-top:44px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;animation:fadeUp 1s ease .35s both}
+.btn{font-family:'Cinzel',serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:15px 32px;border-radius:6px;transition:transform .2s,box-shadow .2s;display:inline-flex;align-items:center;gap:10px}
+.btn-primary{background:linear-gradient(90deg,var(--ember),var(--flame));color:#1a0e04;font-weight:700;box-shadow:0 8px 30px #FF8A3D44}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px #FF8A3D66}
+.btn-outline{border:1px solid var(--gold);color:var(--gold)}
+.btn-outline:hover{background:#FF8A3D14;transform:translateY(-2px)}
+.btn-disabled{opacity:.55;cursor:default;border:1px solid var(--border);color:var(--text-dim)}
+.btn-disabled:hover{transform:none;box-shadow:none}
+
+.hero-scroll{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;animation:fadeUp 1s ease .5s both}
+.hero-scroll span{font-size:10px;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;font-family:'Cinzel',serif}
+.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--flame),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
+
+/* ── SECTION BASE ── */
+section{padding:100px 5%;max-width:1200px;margin:0 auto}
+.s-eyebrow{font-family:'Cinzel',serif;font-size:10px;letter-spacing:6px;text-transform:uppercase;color:var(--gold);opacity:.75;margin-bottom:16px;text-align:center}
+.s-title{font-family:'Cinzel Decorative',serif;font-size:clamp(26px,4vw,46px);font-weight:700;color:var(--flame-light);text-align:center;margin-bottom:16px;text-shadow:0 0 40px #FF8A3D33}
+.s-sub{text-align:center;color:var(--text-dim);max-width:560px;margin:0 auto 60px;line-height:1.8;font-size:15px}
+.gold-rule{width:60px;height:1px;background:linear-gradient(to right,transparent,var(--flame),transparent);margin:0 auto 60px}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── STATS ── */
+.stats-wrap{padding:56px 5%;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stats-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+.stat-item{display:flex;flex-direction:column;gap:6px}
+.stat-num{font-family:'Cinzel Decorative',serif;font-size:clamp(20px,3vw,32px);color:var(--flame-light);font-weight:700}
+.stat-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);font-family:'Cinzel',serif}
+@media(max-width:640px){.stats-inner{grid-template-columns:repeat(2,1fr);gap:32px}}
+
+/* ── PRACTICES (gazing modes) ── */
+.practice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px}
+.practice-card{background:var(--void2);border:1px solid var(--border);border-radius:14px;padding:28px 20px;text-align:center;transition:transform .25s,border-color .25s}
+.practice-card:hover{transform:translateY(-4px);border-color:#FF8A3D55}
+.practice-icon{font-size:34px;margin-bottom:12px;filter:drop-shadow(0 0 14px #FF8A3D55)}
+.practice-name{font-family:'Cinzel',serif;font-size:13px;letter-spacing:1px;color:var(--text)}
+
+/* ── FEATURES ── */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;margin-top:20px}
+.feat-card{background:var(--void2);border:1px solid var(--border);border-radius:16px;padding:32px;transition:transform .25s,border-color .25s}
+.feat-card:hover{transform:translateY(-4px);border-color:#FF8A3D44}
+.feat-icon{font-size:30px;margin-bottom:16px}
+.feat-title{font-family:'Cinzel',serif;font-size:16px;color:var(--flame-light);margin-bottom:10px;letter-spacing:.5px}
+.feat-desc{font-size:14px;color:var(--text-dim);line-height:1.7}
+
+/* ── LANGUAGES ── */
+.lang-wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:12px}
+.lang-pill{font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;color:var(--text-dim);border:1px solid var(--border);padding:9px 20px;border-radius:30px;transition:color .2s,border-color .2s}
+.lang-pill:hover{color:var(--gold);border-color:#FF8A3D55}
+
+/* ── PHILOSOPHY ── */
+.phil-wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+.phil-item{display:flex;gap:24px}
+.phil-num{font-family:'Cinzel Decorative',serif;font-size:26px;color:var(--flame);opacity:.6;flex-shrink:0;width:40px}
+.phil-content h3{font-family:'Cinzel',serif;font-size:16px;color:var(--flame-light);margin-bottom:8px;letter-spacing:.5px}
+.phil-content p{color:var(--text-dim);line-height:1.8;font-size:14.5px}
+
+/* ── SAFETY NOTE ── */
+.safety-box{max-width:760px;margin:40px auto 0;background:var(--void2);border:1px solid var(--border);border-left:3px solid var(--flame);border-radius:10px;padding:24px 28px}
+.safety-box .safety-title{font-family:'Cinzel',serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.safety-box p{font-size:13.5px;color:var(--text-dim);line-height:1.7}
+
+/* ── CTA / DOWNLOAD ── */
+.cta-section{text-align:center;padding:110px 5%}
+.cta-title{font-family:'Cinzel Decorative',serif;font-size:clamp(24px,4vw,40px);color:var(--flame-light);margin-bottom:16px}
+.cta-sub{color:var(--text-dim);max-width:480px;margin:0 auto 36px;line-height:1.8;font-size:14.5px}
+
+/* ── FOOTER ── */
+footer{padding:60px 5% 40px;text-align:center;border-top:1px solid var(--border)}
+.footer-logo{font-family:'Cinzel Decorative',serif;font-size:18px;color:var(--gold);letter-spacing:3px;margin-bottom:16px}
+.ornament{color:var(--flame);opacity:.5;font-size:14px;margin-bottom:20px}
+.footer-links{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
+.footer-links a{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);transition:color .2s;font-family:'Cinzel',serif}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:12px;color:var(--text-dim);opacity:.6}
+</style>
+</head>
+<body data-app-id="tratakam">
+
+<canvas id="bg"></canvas>
+
+<div class="page">
+
+<!-- NAV -->
+<nav class="top">
+  <a href="index.html" class="nav-logo"><span class="flame-dot"></span><span data-app-name>TRATAKAM</span></a>
+  <div class="nav-links" id="nav-links-desktop" data-app-nav>
+    <a href="index.html">Home</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-overlay" id="nav-overlay"></div>
+<div class="nav-mobile" id="nav-mobile" data-app-nav>
+  <a href="index.html">Home</a>
+  <a href="privacy-policy.html">Privacy Policy</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">✦ Trāṭaka · Yogic Gazing Practice ✦</div>
+  <div class="hero-flame-icon">🕯️</div>
+  <h1 class="hero-title">TRATAKAM</h1>
+  <div class="hero-sub">Gaze. Breathe. Focus.</div>
+  <div class="hero-line"></div>
+  <p class="hero-tagline">Candle-gazing meditation, mantra japa, and focus training — with eye-care tools, streaks, and rewards. Free, offline, and available in 8 languages.</p>
+  <div class="hero-cta">
+    <span class="btn btn-disabled">🕯️ Coming Soon to Google Play</span>
+    <a href="contact.html" class="btn btn-outline">✦ Get Notified at Launch</a>
+  </div>
+  <div class="hero-scroll">
+    <span>Explore</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-wrap reveal">
+  <div class="stats-inner">
+    <div class="stat-item"><span class="stat-num">5</span><span class="stat-label">Gazing Modes</span></div>
+    <div class="stat-item"><span class="stat-num">8</span><span class="stat-label">Languages</span></div>
+    <div class="stat-item"><span class="stat-num">100%</span><span class="stat-label">Offline</span></div>
+    <div class="stat-item"><span class="stat-num">Free</span><span class="stat-label">To Use</span></div>
+  </div>
+</div>
+
+<!-- PRACTICES -->
+<section id="practices">
+  <div class="s-eyebrow reveal">Choose Your Focus</div>
+  <h2 class="s-title reveal">Five Ways to Gaze</h2>
+  <div class="gold-rule reveal"></div>
+  <div class="practice-grid">
+    <div class="practice-card reveal"><div class="practice-icon">🕯️</div><div class="practice-name">Candle</div></div>
+    <div class="practice-card reveal"><div class="practice-icon">🔴</div><div class="practice-name">Bindu / Dot</div></div>
+    <div class="practice-card reveal"><div class="practice-icon">🔯</div><div class="practice-name">Sri Yantra</div></div>
+    <div class="practice-card reveal"><div class="practice-icon">🌙</div><div class="practice-name">Chandra</div></div>
+    <div class="practice-card reveal"><div class="practice-icon">🔮</div><div class="practice-name">Crystal Sphere</div></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="s-eyebrow reveal">What's Inside</div>
+  <h2 class="s-title reveal">Built for a Steady Mind</h2>
+  <p class="s-sub reveal">Every tool is designed to make the practice easier to start, and easier to keep — without pulling focus away from it.</p>
+  <div class="feat-grid">
+    <div class="feat-card reveal">
+      <div class="feat-icon">🧘</div>
+      <div class="feat-title">Mantra Japa</div>
+      <div class="feat-desc">A traditional 108-bead counter with soft binaural tones (108/432/528 Hz), or set your own personal mantra.</div>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">🎯</div>
+      <div class="feat-title">Focus Games</div>
+      <div class="feat-desc">Steady Gaze, box-breathing counter, and a focus tracker — short exercises for training sustained attention.</div>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">👁️</div>
+      <div class="feat-title">Eye-Care Mode</div>
+      <div class="feat-desc">A warm, blue-light-reduced overlay that gently deepens through your session, plus blink reminders and an in-session safety guide.</div>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">🔥</div>
+      <div class="feat-title">Streaks &amp; Progress</div>
+      <div class="feat-desc">Track session history and daily streaks, with streak-freeze and repair tools so one missed day doesn't undo your practice.</div>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">💎</div>
+      <div class="feat-title">Dhyan Points</div>
+      <div class="feat-desc">Earn points by completing sessions and spend them on cosmetic unlocks — flame colors, gazing targets, and profile titles. Entirely free, no purchases required.</div>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-icon">🔔</div>
+      <div class="feat-title">Daily Reminders</div>
+      <div class="feat-desc">Gentle, configurable notifications to help the practice become a habit — never louder or more frequent than you choose.</div>
+    </div>
+  </div>
+</section>
+
+<!-- LANGUAGES -->
+<section id="languages">
+  <div class="s-eyebrow reveal">Speak Your Language</div>
+  <h2 class="s-title reveal">Available in 8 Languages</h2>
+  <div class="gold-rule reveal"></div>
+  <div class="lang-wrap reveal">
+    <span class="lang-pill">English</span>
+    <span class="lang-pill">हिन्दी</span>
+    <span class="lang-pill">संस्कृतम्</span>
+    <span class="lang-pill">ગુજરાતી</span>
+    <span class="lang-pill">मराठी</span>
+    <span class="lang-pill">राजस्थानी</span>
+    <span class="lang-pill">日本語</span>
+    <span class="lang-pill">한국어</span>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section id="philosophy">
+  <div class="s-eyebrow reveal">Why Trāṭaka</div>
+  <h2 class="s-title reveal">An Ancient Practice, Gently Modernized</h2>
+  <div class="gold-rule reveal"></div>
+  <div class="phil-wrap">
+    <div class="phil-item reveal">
+      <div class="phil-num">I</div>
+      <div class="phil-content">
+        <h3>Rooted in tradition</h3>
+        <p>Trāṭaka — steady, unblinking gazing — is one of the six classical shatkarmas of hatha yoga, practiced for centuries to sharpen concentration and quiet the mind.</p>
+      </div>
+    </div>
+    <div class="phil-item reveal">
+      <div class="phil-num">II</div>
+      <div class="phil-content">
+        <h3>Made for daily life</h3>
+        <p>Tratakam keeps the practice simple: pick a gazing object, set a duration, and begin. No account, no clutter, no pressure — just a few quiet minutes.</p>
+      </div>
+    </div>
+    <div class="phil-item reveal">
+      <div class="phil-num">III</div>
+      <div class="phil-content">
+        <h3>Comfort comes first</h3>
+        <p>An in-session eye-care overlay, blink reminders, and an environment guide help you practice safely and comfortably, session after session.</p>
+      </div>
+    </div>
+    <div class="phil-item reveal">
+      <div class="phil-num">IV</div>
+      <div class="phil-content">
+        <h3>Private by design</h3>
+        <p>No account, no sign-in. Your sessions, streaks, and settings stay on your device. Read the full details in our <a href="privacy-policy.html" style="color:var(--gold);border-bottom:1px solid #D9A24B55">Privacy Policy</a>.</p>
+      </div>
+    </div>
+  </div>
+  <div class="safety-box reveal">
+    <div class="safety-title">A Gentle Note</div>
+    <p>Tratakam's candle mode uses a softly flickering flame animation. If you're sensitive to flickering or strobing visuals, we'd recommend starting with the Bindu (dot) or Crystal Sphere modes instead, or practicing in shorter sessions.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="s-eyebrow reveal">Coming Soon</div>
+  <h2 class="cta-title reveal">Ready to Begin?</h2>
+  <p class="cta-sub reveal">Tratakam is currently in final preparation for release on Google Play. Reach out and we'll let you know the moment it's live.</p>
+  <div class="hero-cta reveal" style="margin-top:0">
+    <a href="contact.html" class="btn btn-primary">✦ Get Notified at Launch</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo" data-app-name>TRATAKAM</div>
+  <div class="ornament reveal">✦ 🕯️ ✦</div>
+  <div class="footer-links reveal" id="footer-links" data-app-footer>
+    <a href="index.html">Home</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <p class="footer-copy reveal" data-app-copyright>© 2026 Tratakam · All rights reserved.</p>
+</footer>
+
+</div>
+
+<script>
+// ── CANDLE-EMBER BACKGROUND ──
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+resize(); addEventListener('resize', resize);
+
+const embers = [];
+for (let i = 0; i < 50; i++) {
+  embers.push({
+    x: Math.random() * innerWidth,
+    y: Math.random() * innerHeight,
+    r: 0.6 + Math.random() * 1.8,
+    vy: -(0.15 + Math.random() * 0.35),
+    vx: (Math.random() - 0.5) * 0.3,
+    alpha: 0.15 + Math.random() * 0.5,
+    warm: Math.random() > 0.4
+  });
+}
+function drawBg(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#0B0603';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  const grad = ctx.createRadialGradient(canvas.width/2, canvas.height*0.15, 0, canvas.width/2, canvas.height*0.15, canvas.width*0.7);
+  grad.addColorStop(0, '#FF8A3D0C');
+  grad.addColorStop(1, '#FF8A3D00');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  embers.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+    if (p.x < -10) p.x = canvas.width + 10;
+    if (p.x > canvas.width + 10) p.x = -10;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    ctx.fillStyle = p.warm ? `rgba(255,138,61,${p.alpha})` : `rgba(217,72,30,${p.alpha*0.6})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+// ── SCROLL REVEAL ──
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 50);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => obs.observe(el));
+
+// ── MOBILE NAV TOGGLE ──
+(function(){
+  const toggle = document.getElementById('nav-toggle');
+  const mobile = document.getElementById('nav-mobile');
+  const overlay = document.getElementById('nav-overlay');
+  if (!toggle || !mobile || !overlay) return;
+  function closeMenu(){ toggle.classList.remove('open'); mobile.classList.remove('open'); overlay.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); }
+  function openMenu(){ toggle.classList.add('open'); mobile.classList.add('open'); overlay.classList.add('open'); toggle.setAttribute('aria-expanded','true'); }
+  toggle.addEventListener('click', () => { mobile.classList.contains('open') ? closeMenu() : openMenu(); });
+  overlay.addEventListener('click', closeMenu);
+  mobile.addEventListener('click', e => { if (e.target.tagName === 'A') closeMenu(); });
+})();
+</script>
+
+<script>
+/* ── Shared common.json loader (app pages) ── */
+(function(){
+  var APP_ID = document.body.getAttribute('data-app-id') || '';
+  function getByPath(obj, path){
+    return path.split('.').reduce(function(o,k){ return (o && o[k] != null) ? o[k] : null; }, obj);
+  }
+  function applyCommon(common){
+    if(!common) return;
+    var st = common.studio || {};
+    if (st.email) window.__studioEmail = st.email;
+
+    document.querySelectorAll('[data-common]').forEach(function(el){
+      var path = el.getAttribute('data-common');
+      var val = getByPath(common, path);
+      if(val == null) return;
+      if(el.tagName === 'A'){
+        if(path.indexOf('email') !== -1){ el.href = 'mailto:' + val; el.textContent = val; }
+        else if(path.indexOf('website') !== -1){ el.href = st.websiteUrl || ('https://' + val); el.textContent = val; el.target = '_blank'; }
+        else { el.textContent = val; }
+      } else { el.textContent = val; }
+    });
+
+    if(st.email){
+      document.querySelectorAll('a[href*="mailto"]').forEach(function(el){
+        var href = el.getAttribute('href') || '';
+        var rest = href.indexOf('?') >= 0 ? href.slice(href.indexOf('?')) : '';
+        el.href = 'mailto:' + st.email + rest;
+        var tc = el.textContent || '';
+        if(/@/.test(tc)) el.textContent = st.email;
+      });
+    }
+
+    var app = (common.apps && APP_ID) ? common.apps[APP_ID] : null;
+    if(app){
+      document.querySelectorAll('[data-app-name]').forEach(function(el){ if(app.displayName) el.textContent = app.displayName; });
+      document.querySelectorAll('[data-app-copyright]').forEach(function(el){ if(app.copyright) el.textContent = app.copyright; });
+      if(app.nav && app.nav.length){
+        var navHtml = app.nav.map(function(n){ return '<a href="' + n.href + '">' + n.label + '</a>'; }).join('');
+        document.querySelectorAll('[data-app-nav]').forEach(function(el){ el.innerHTML = navHtml; });
+      }
+      if(app.footerLinks && app.footerLinks.length){
+        var footHtml = app.footerLinks.map(function(n){ return '<a href="' + n.href + '">' + n.label + '</a>'; }).join('');
+        document.querySelectorAll('[data-app-footer]').forEach(function(el){ el.innerHTML = footHtml; });
+      }
+    }
+  }
+  fetch('../common.json?v=' + Date.now())
+    .then(function(r){ if(!r.ok) throw new Error('missing'); return r.json(); })
+    .then(applyCommon)
+    .catch(function(){ console.log('Using static common fallback'); });
+})();
+</script>
+
+</body>
+</html>
