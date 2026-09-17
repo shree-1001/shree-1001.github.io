@@ -148,15 +148,13 @@ footer{background:var(--s1);border-top:1px solid #C9A84C08;padding:40px 5%;text-
         <div class="ci-icon">✉</div>
         <div>
           <div class="ci-label">Primary Email</div>
-          <div class="ci-val"><a href="mailto:adstv351@gmail.com" data-common="studio.email">adstv351@gmail.com</a></div>
+          <div class="ci-val"><a href="mailto:shreegamesandapps@zohomail.in" data-common="studio.email">shreegamesandapps@zohomail.in</a></div>
           <div class="ci-hint">Best for general inquiries, partnerships</div>
         </div>
       </div>
       <div class="ci rv">
         <div class="ci-icon">📱</div>
         <div>
-          <div class="ci-label">Phone</div>
-          <div class="ci-val"><a href="tel:+918528361935" data-common="studio.phone">+91 8528361935</a></div>
           <div class="ci-hint">WhatsApp / call during IST business hours</div>
         </div>
       </div>
@@ -164,7 +162,7 @@ footer{background:var(--s1);border-top:1px solid #C9A84C08;padding:40px 5%;text-
         <div class="ci-icon">🐛</div>
         <div>
           <div class="ci-label">Bug Reports</div>
-          <div class="ci-val"><a href="mailto:adstv351@gmail.com?subject=Bug Report" data-common="studio.email">adstv351@gmail.com</a></div>
+          <div class="ci-val"><a href="mailto:shreegamesandapps@zohomail.in?subject=Bug Report" data-common="studio.email">shreegamesandapps@zohomail.in</a></div>
           <div class="ci-hint">Include app name, device, and Android version</div>
         </div>
       </div>
@@ -330,7 +328,7 @@ function submitForm(){
   const device=document.getElementById('f-device').value.trim();
   const body=`Name: ${name}\nEmail: ${email}\nApp: ${app||'N/A'}\nDevice: ${device||'N/A'}\n\nMessage:\n${msg}`;
   const subjectLine=`[${subject.toUpperCase()}] ${app?`[${app}] `:''}Message from ${name}`;
-  window.location.href=`mailto:adstv351@gmail.com?subject=${encodeURIComponent(subjectLine)}&body=${encodeURIComponent(body)}`;
+  const _em=(window.__studioEmail||'shreegamesandapps@zohomail.in');window.location.href=`mailto:${_em}?subject=${encodeURIComponent(subjectLine)}&body=${encodeURIComponent(body)}`;
   document.getElementById('form-success').style.display='block';
   setTimeout(()=>document.getElementById('form-success').style.display='none',5000);
 }
@@ -387,6 +385,40 @@ function toggleFaq(btn){
       resp.innerHTML=common.responseTimes.map(r=>`<div class="resp-item"><span>${r.type}</span><span>${r.time}</span></div>`).join('');
     }
   }
+  
+    // Full email/phone sweep for main site
+    if (common.studio) {
+      var st = common.studio;
+      if (st.email) {
+        window.__studioEmail = st.email;
+        document.querySelectorAll('a[href*="mailto"]').forEach(function(el) {
+          var href = el.getAttribute('href') || '';
+          var rest = href.indexOf('?') >= 0 ? href.slice(href.indexOf('?')) : '';
+          el.href = 'mailto:' + st.email + rest;
+          if (el.textContent && /@/.test(el.textContent)) el.textContent = st.email;
+        });
+        document.querySelectorAll('form[action*="mailto"]').forEach(function(f) {
+          var act = f.getAttribute('action') || '';
+          var rest = act.indexOf('?') >= 0 ? act.slice(act.indexOf('?')) : '';
+          f.setAttribute('action', 'mailto:' + st.email + rest);
+        });
+        document.querySelectorAll('p, span, div, li').forEach(function(el) {
+          if (el.children.length) return;
+          var t = el.textContent || '';
+          if (/shreegamesandapps@zohomail\.in/i.test(t) && t.length < 120) {
+            el.textContent = t.replace(/shreegamesandapps@zohomail\.in/gi, st.email);
+          }
+        });
+      }
+      if (st.phone) {
+        var tel = String(st.phone).replace(/\s/g, '');
+        document.querySelectorAll('a[href^="tel:"]').forEach(function(el) {
+          el.href = 'tel:' + tel;
+          if (/\+?\d[\d\s\-]{8,}/.test(el.textContent || '')) el.textContent = st.phone;
+        });
+      }
+    }
+
   fetch('common.json?v='+Date.now()).then(r=>{if(!r.ok)throw new Error('missing');return r.json();}).then(applyCommon).catch(()=>console.log('Using static common fallback'));
 })();
 </script>
