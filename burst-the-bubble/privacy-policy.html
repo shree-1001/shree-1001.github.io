@@ -477,16 +477,16 @@ a { color: inherit; text-decoration: none; }
   }
 </style>
 </head>
-<body>
+<body data-app-id="burst-the-bubble">
 <div class="starfield"></div>
 
 <header class="site-header">
   <div class="wrap">
     <a href="index.html" class="brand">
       <span class="dot-cluster"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-      Burst the Bubble
+      <span data-app-name>Burst the Bubble</span>
     </a>
-    <nav class="nav-links">
+    <nav class="nav-links" data-app-nav>
       <a href="index.html">Home</a>
       <a href="privacy-policy.html">Privacy Policy</a>
       <a href="contact.html">Contact</a>
@@ -495,7 +495,7 @@ a { color: inherit; text-decoration: none; }
     <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span></button>
   </div>
   <div class="mobile-menu">
-    <div class="wrap">
+    <div class="wrap" data-app-nav>
       <a href="index.html">Home</a>
       <a href="privacy-policy.html">Privacy Policy</a>
       <a href="contact.html">Contact</a>
@@ -599,6 +599,13 @@ a { color: inherit; text-decoration: none; }
         <li><a class="inline-link" href="https://support.google.com/ads/answer/2662922" target="_blank" rel="noopener">How Google uses advertising data</a></li>
         <li><a class="inline-link" href="https://adssettings.google.com" target="_blank" rel="noopener">Google Ads Settings</a> — manage or opt out of personalized ads</li>
       </ul>
+      <p>
+        <strong>Consent for personalized ads (UMP regions only).</strong>
+        In countries and regions where Google's User Messaging Platform (UMP) applies — including the European Economic Area (EEA), the United Kingdom, Switzerland, and other jurisdictions where consent is required for personalized advertising — you will see a consent form when you first open the app. On that form you can choose to allow personalized ads or to receive non-personalized ads instead.
+        If you are in a UMP region, you can later <strong>revoke, change, or give consent again</strong> at any time from the app's <strong>Settings</strong> page (Privacy / Ad consent options).
+        The in-app consent form and Settings control apply only in UMP countries; they are not shown where consent is not required under applicable law.
+        Declining personalized ads means you may still see ads, but they will not be personalized to your interests.
+      </p>
 
       <h2 id="permissions">🔐 App Permissions</h2>
       <p>Burst the Bubble requests the minimum permissions needed to run and show ads:</p>
@@ -639,7 +646,8 @@ a { color: inherit; text-decoration: none; }
 
       <h2 id="choices">✅ Your Choices</h2>
       <ul>
-        <li><strong>Ad personalization:</strong> opt out or manage ad topics anytime at <a class="inline-link" href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>, or reset your device's advertising ID in your device's privacy settings.</li>
+        <li><strong>Personalized ads (UMP regions):</strong> where Google UMP applies, use the consent form on first launch, and later revoke or change your choice in the app's <strong>Settings</strong> page. Outside UMP regions that form is not shown.</li>
+        <li><strong>Ad personalization (all regions):</strong> opt out or manage ad topics anytime at <a class="inline-link" href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>, or reset your device's advertising ID in your device's privacy settings.</li>
         <li><strong>Notifications:</strong> toggle in-app notification preferences off anytime from the App's Settings screen, or disable notification permission entirely from Android Settings.</li>
         <li><strong>Sound &amp; vibration:</strong> fully adjustable from the App's Settings screen.</li>
       </ul>
@@ -654,7 +662,7 @@ a { color: inherit; text-decoration: none; }
       <h2 id="contact">✉️ Contact Us</h2>
       <p>
         Questions about this policy or how the App handles data? Reach us at
-        <a class="inline-link" href="mailto: adstv351@gmail.com">adstv351@gmail.com</a>
+        <a class="inline-link" href="mailto:shreegamesandapps@zohomail.in" data-common="studio.email">shreegamesandapps@zohomail.in</a>
          or through our
         <a class="inline-link" href="contact.html">Contact page</a>.
       </p>
@@ -669,7 +677,7 @@ a { color: inherit; text-decoration: none; }
         <span class="dot-cluster"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
         Burst the Bubble
       </a>
-      <div class="footer-links">
+      <div class="footer-links" data-app-footer>
         <a href="index.html">Home</a>
         <a href="privacy-policy.html">Privacy Policy</a>
         <a href="contact.html">Contact</a>
@@ -771,5 +779,103 @@ a { color: inherit; text-decoration: none; }
     sections.forEach(function (s) { io.observe(s); });
   })();
 </script>
+
+<script>
+/* ── Shared common.json loader (app pages) ── */
+(function(){
+  var APP_ID = document.body.getAttribute('data-app-id') || '';
+  function getByPath(obj, path){
+    return path.split('.').reduce(function(o,k){ return (o && o[k] != null) ? o[k] : null; }, obj);
+  }
+  function applyCommon(common){
+    if(!common) return;
+    var APP_ID = document.body.getAttribute('data-app-id') || '';
+    var st = common.studio || {};
+    if (st.email) window.__studioEmail = st.email;
+    if (st.phone) window.__studioPhone = st.phone;
+
+    function getByPath(obj, path){
+      return path.split('.').reduce(function(o,k){ return (o && o[k] != null) ? o[k] : null; }, obj);
+    }
+
+    // 1) data-common attributes
+    document.querySelectorAll('[data-common]').forEach(function(el){
+      var path = el.getAttribute('data-common');
+      var val = getByPath(common, path);
+      if(val == null) return;
+      if(el.tagName === 'A'){
+        if(path.indexOf('email') !== -1){ el.href = 'mailto:' + val; el.textContent = val; }
+        else if(path.indexOf('phone') !== -1){ el.href = 'tel:' + String(val).replace(/\s/g,''); el.textContent = val; }
+        else if(path.indexOf('website') !== -1){
+          el.href = st.websiteUrl || ('https://' + val);
+          el.textContent = val; el.target = '_blank';
+        } else { el.textContent = val; }
+      } else { el.textContent = val; }
+    });
+
+    // 2) ALL mailto links + form actions + short email-only text
+    if(st.email){
+      document.querySelectorAll('a[href*="mailto"]').forEach(function(el){
+        var href = el.getAttribute('href') || '';
+        var rest = href.indexOf('?') >= 0 ? href.slice(href.indexOf('?')) : '';
+        el.href = 'mailto:' + st.email + rest;
+        var tc = el.textContent || '';
+        if(/@/.test(tc)) el.textContent = st.email;
+        else if(/email\s+/i.test(tc) && !/@/.test(tc)) el.textContent = 'Email ' + st.email;
+      });
+      document.querySelectorAll('form[action*="mailto"]').forEach(function(f){
+        var act = f.getAttribute('action') || '';
+        var rest = act.indexOf('?') >= 0 ? act.slice(act.indexOf('?')) : '';
+        f.setAttribute('action', 'mailto:' + st.email + rest);
+      });
+      document.querySelectorAll('p, span, div, li, td').forEach(function(el){
+        if(el.children.length) return;
+        var t = el.textContent || '';
+        if(/shreegamesandapps@zohomail\.in/i.test(t) && t.length < 120){
+          el.textContent = t.replace(/shreegamesandapps@zohomail\.in/gi, st.email);
+        }
+      });
+    }
+
+    // 3) Phone
+    if(st.phone){
+      var tel = String(st.phone).replace(/\s/g,'');
+      document.querySelectorAll('a[href^="tel:"]').forEach(function(el){
+        el.href = 'tel:' + tel;
+        if(/\+?\d[\d\s\-]{8,}/.test(el.textContent||'')) el.textContent = st.phone;
+      });
+    }
+
+    // 4) Per-app name, nav, footer, copyright
+    var app = (common.apps && APP_ID) ? common.apps[APP_ID] : null;
+    if(app){
+      document.querySelectorAll('[data-app-name]').forEach(function(el){
+        if(app.displayName) el.textContent = app.displayName;
+      });
+      document.querySelectorAll('[data-app-copyright]').forEach(function(el){
+        if(app.copyright) el.textContent = app.copyright;
+      });
+      if(app.nav && app.nav.length){
+        var navHtml = app.nav.map(function(n){ return '<a href="' + n.href + '">' + n.label + '</a>'; }).join('');
+        document.querySelectorAll('[data-app-nav]').forEach(function(el){ el.innerHTML = navHtml; });
+        document.querySelectorAll('[data-app-nav] a').forEach(function(a){
+          if(/contact/i.test(a.textContent) && a.parentElement && /navlinks/i.test(a.parentElement.className||'')){
+            a.classList.add('nav-cta');
+          }
+        });
+      }
+      if(app.footerLinks && app.footerLinks.length){
+        var footHtml = app.footerLinks.map(function(n){ return '<a href="' + n.href + '">' + n.label + '</a>'; }).join('');
+        document.querySelectorAll('[data-app-footer]').forEach(function(el){ el.innerHTML = footHtml; });
+      }
+    }
+  }
+  fetch('../common.json?v=' + Date.now())
+    .then(function(r){ if(!r.ok) throw new Error('missing'); return r.json(); })
+    .then(applyCommon)
+    .catch(function(){ console.log('Using static common fallback'); });
+})();
+</script>
+
 </body>
 </html>
